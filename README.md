@@ -1,5 +1,4 @@
 # Colline
-Code for the AI system Colline , subreddit r/Colline
 Colline is an open source AI system. The code, originally developed in 2001-2003 has not been touched since then
 
 The current code (Oct 6th 2019), along with the documentation (see folder) should be enough to get us started.
