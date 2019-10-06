@@ -1,0 +1,4 @@
+agent dies after mating
+
+C_mat_start: 3.0 (2.5)
+c_mat_stop: 0.3 (0.2)
