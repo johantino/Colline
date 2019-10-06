@@ -8,8 +8,8 @@
 #include "math.h"
 #include "Konst.h"
 #include <conio.h> //for press key
-//#include "resource.h" //for cout
-#include "iostream.h"
+//#include "resource.h" //for std::cout
+#include <iostream>
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -31,7 +31,7 @@ Message::Message()
 /*Message::Message(unsigned int val, unsigned int sz) //value can exceed bit length, when using this constructor
 {
 	if (sz>MAX_MSIZEPART || val>=pow(2,sz) ) {
-		cout << "ERROR: message pSize error"; 
+		std::cout << "ERROR: message pSize error"; 
 		while (true) {} //exit(0);
 	}
 	pSize = sz;
@@ -44,19 +44,19 @@ Message::Message()
 Message::Message(int val, int sz) //value must always match length in this constructor
 {
 	if ((val<0) || (sz < 0) ) {
-		cout << "ERROR: message construct negative!" << endl;
-		cout << "value: " << val << endl;
-		cout << "size : " << sz << endl;
+		std::cout << "ERROR: message construct negative!" << std::endl;
+		std::cout << "value: " << val << std::endl;
+		std::cout << "size : " << sz << std::endl;
 		pressSpaceToQuit();
 	}
 	if (val >= pow(2,sz) ) {
-		cout << "ERROR: message size error (value too big for length)" << endl; 
-		cout << "value: " << val << endl;
-		cout << "size: " << sz << endl;
+		std::cout << "ERROR: message size error (value too big for length)" << std::endl; 
+		std::cout << "value: " << val << std::endl;
+		std::cout << "size: " << sz << std::endl;
 		pressSpaceToQuit(); //exit(0);
 	}
 	if (sz > MAX_MSIZE) {
-		cout << "ERROR: message size too large!" << endl;
+		std::cout << "ERROR: message size too large!" << std::endl;
 		pressSpaceToQuit();
 	}
 
@@ -72,7 +72,7 @@ Message::~Message()
 //test: ok
 int Message::flipBits(int promilleChance) {
 	if (promilleChance<0 || promilleChance>1000) {
-		cout << "ERROR: message flipbits, must be promille" << endl;
+		std::cout << "ERROR: message flipbits, must be promille" << std::endl;
 		pressSpaceToQuit();
 	}
 	int numFlipped = 0;
@@ -89,7 +89,7 @@ int Message::flipBits(int promilleChance) {
 
 void Message::flipBit(int bNum) {
 	if (bNum>= size) {
-		cout << "ERROR: flipbit" << endl;
+		std::cout << "ERROR: flipbit" << std::endl;
 		pressSpaceToQuit();
 	}
 	bool isOne = bitNum(bNum);
@@ -132,7 +132,7 @@ bool Message::getBoolValue() {
 	else if (value==1)
 		bVal = true;
 	else {
-		cout << "ERROR: wrong getBoolValue call! " << endl;
+		std::cout << "ERROR: wrong getBoolValue call! " << std::endl;
 		pressSpaceToQuit();
 	}
 	return bVal;
@@ -149,7 +149,7 @@ bool Message::getBoolValue() {
 		bNumValue = tempMess->getBoolValue();
 	}
 	else {
-		cout << "ERROR: bitNum exceeds size!" << endl;
+		std::cout << "ERROR: bitNum exceeds size!" << std::endl;
 		while (true) {}
 	}
 	return bNumValue;
@@ -157,7 +157,7 @@ bool Message::getBoolValue() {
 
 bool Message::bitNum(unsigned int bNum) {
 	if (bNum >= getSize()) {
-		cout << "ERROR: Message, bitnum2 error" << endl;
+		std::cout << "ERROR: Message, bitnum2 error" << std::endl;
 		pressSpaceToQuit();
 	}
 	int tempVal = getValue();
@@ -182,7 +182,7 @@ Message* Message::readLeftMost(int numOfBits) {
     int rightShift = getSize() - numOfBits;
 	if (rightShift<0) {
 		rightShift = 0;
-		cout << "ERROR: readLeftMost, message too small!" << endl;
+		std::cout << "ERROR: readLeftMost, message too small!" << std::endl;
 		pressSpaceToQuit();
 	}
 	newVal = getValue() / pow(2,rightShift); //newVal >> rightShift;	
@@ -211,7 +211,7 @@ Message* Message::readRightMost(int numOfBits) {
 Message* Message::takeLeftMost(unsigned int numOfBits) {
 	char bitsLeft = getSize() - numOfBits;
 	if ( numOfBits > getSize() ) { //cant use bitsLeft because of unsigned to signed conversion
-		cout << "ERROR: takeLeftMost numOfBits less than zero!" << endl;
+		std::cout << "ERROR: takeLeftMost numOfBits less than zero!" << std::endl;
 		pressSpaceToQuit();
 	}
 	Message* retMess = readLeftMost(numOfBits);
@@ -223,7 +223,7 @@ Message* Message::takeLeftMost(unsigned int numOfBits) {
 Message* Message::takeRightMost(unsigned int numOfBits) {
 	char bitsLeft = getSize() - numOfBits;
 	if ( numOfBits > getSize() ) { //cant use bitsLeft because of unsigned to signed conversion
-		cout << "ERROR: takeRightMost numOfBits less than zero!" << endl;
+		std::cout << "ERROR: takeRightMost numOfBits less than zero!" << std::endl;
 		pressSpaceToQuit();
 	}
 	Message* retMess = readRightMost(numOfBits);
@@ -274,7 +274,7 @@ CString Message::toStringBits() {
 CString Message::toStringBits(Message* filter) {
 	CString info;
 	if (getSize() != filter->getSize()) {
-		cout << "ERROR: toStringBits size error!" << endl;
+		std::cout << "ERROR: toStringBits size error!" << std::endl;
 		pressSpaceToQuit();
 	}
 	if (getSize() == 0)
@@ -318,7 +318,7 @@ Message* Message::readRange(unsigned int startPos, int numOfBits) {
 	if (numOfBits < 1)
 		return new Message(0,0);
 	if ((startPos + numOfBits) > getSize()) {
-		cout << "ERROR; readRange() position error!" << endl;
+		std::cout << "ERROR; readRange() position error!" << std::endl;
 		pressSpaceToQuit();
 	}		
 	Message* newM;
@@ -370,14 +370,14 @@ int Message::messageContained(Message* subMess) {
 bool Message::isEqualTo(Message* compareMess, Message* pickiness) {
 	//temp test (delete later):
 	if ((getValue() < 0) || (compareMess->getValue() < 0)) {
-		cout << "ERROR: mess, isEqualTo, value negative" << endl;
+		std::cout << "ERROR: mess, isEqualTo, value negative" << std::endl;
 		pressSpaceToQuit();
 	}
 	//end temp test
 	bool doCare, accepted;
 	int numOfBits = compareMess->getSize();
 	if (numOfBits != getSize() ) {
-		cout << "ERROR: isEqualTo length mismatch!" << endl;
+		std::cout << "ERROR: isEqualTo length mismatch!" << std::endl;
 		pressSpaceToQuit();
 	}
 	accepted = true;
@@ -397,9 +397,9 @@ void Message::addToEnd(Message* tail) {
 	int sizeTail = tail->getSize();
 	int valueTail = tail->getValue();
 	if ((size+sizeTail) > 31) {
-		//cout << "ERROR: addToEnd do not support big mess (>31 bit)!" << endl;
+		//std::cout << "ERROR: addToEnd do not support big mess (>31 bit)!" << std::endl;
 		//pressSpaceToQuit();
-		cout << "WARNING: addToEnd do not support big mess (>31 bit). Message truncated." << endl;
+		std::cout << "WARNING: addToEnd do not support big mess (>31 bit). Message truncated." << std::endl;
 		pressSpaceOrQuit();
 		int newTailSize = 31 - size;
 		int newTailValue = valueTail / pow(2, (sizeTail-newTailSize));
@@ -463,7 +463,7 @@ Message* Message::clone() {
 
 void Message::pressSpaceToQuit() {
 	int ch;
-	cout << "press space..." << endl;
+	std::cout << "press space..." << std::endl;
 	while (ch != ' ') {
 		ch = _getch();
 	}
@@ -472,7 +472,7 @@ void Message::pressSpaceToQuit() {
 
 void Message::pressSpaceOrQuit() {
 	int ch;
-	cout << "press space or 'q' to quit..." << endl;
+	std::cout << "press space or 'q' to quit..." << std::endl;
 	while ((ch != ' ') && (ch != 'q')) {
 		ch = _getch();
 	}

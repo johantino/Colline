@@ -6,7 +6,7 @@
 #include "Colline.h"
 #include "WndColline.h"
 #include <conio.h> //for press key
-#include "iostream.h"
+#include <iostream>
 
 
 #ifdef _DEBUG
@@ -67,14 +67,14 @@ void WndColline::paintGrid( /*CUIntArray* gridView*/ /*CByteArray* gridView*/) {
 }
 
 /*void WndColline::OnDraw( CDC* pdc, const CRect& rcBounds, const CRect& rcInvalid ) {
-	cout << "OnDraw called!!! " << endl;
+	std::cout << "OnDraw called!!! " << std::endl;
 
 }*/
 
 
 void WndColline::pressSpaceOrQuit() {
 	int ch;
-	cout << "press space or 'q' to quit..." << endl;
+	std::cout << "press space or 'q' to quit..." << std::endl;
 	while ((ch != ' ') && (ch != 'q')) {
 		ch = _getch();
 	}

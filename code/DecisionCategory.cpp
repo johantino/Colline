@@ -6,7 +6,7 @@
 #include "Colline.h"
 #include "DecisionCategory.h"
 #include "Effector.h"
-#include "iostream.h"
+#include <iostream>
 #include "Konst.h"
 
 #ifdef _DEBUG
@@ -74,7 +74,7 @@ void DecisionCategory::fillFitnessBuffer_env(bool bufferType) {
 		fromEnv = maxBufferSize - getFitnessBuffer_env(bufferType);
 	setFitnessBuffer_env(bufferType, getFitnessBuffer_env(bufferType) + env->payFitness( fromEnv ));
 	statHandler->adjustFitnessEnvironment( -fromEnv);
-	//cout << "fitnessBuffer_env for rewards next session: " << fitnessBuffer_env << endl;
+	//std::cout << "fitnessBuffer_env for rewards next session: " << fitnessBuffer_env << std::endl;
 	statHandler->setThisSesFitnessBuffer(false, fitnessBuffer0_env);
 	statHandler->setThisSesFitnessBuffer(true, fitnessBuffer1_env);
 	bufferAtStartOfSession = getFitnessBuffer_env(bufferType);
@@ -94,7 +94,7 @@ void DecisionCategory::giveRemainCatBuffToMatBonusBuff(bool bufferType) {
 /*void DecisionCategory::chooseLevel() {
 	return; //NB! the pickiLevel is ignored
 	int okTotal = statHandler->getLastCorrectRespTotal( env->getLoadedCategory() );
-	//cout << "number of OK responses total: " << okTotal << endl;
+	//std::cout << "number of OK responses total: " << okTotal << std::endl;
 	if (okTotal < DC_MIN_OK_RESP_EFF) {
 		chosenPickiLevel--;
 		if (chosenPickiLevel<1)
@@ -104,7 +104,7 @@ void DecisionCategory::giveRemainCatBuffToMatBonusBuff(bool bufferType) {
 		if (chosenPickiLevel>(NUM_OF_PICKI_LEVELS - 1))
 			chosenPickiLevel = NUM_OF_PICKI_LEVELS - 1;
 	}
-	//cout << "DEBUG: pickilevel = " << chosenPickiLevel << endl;
+	//std::cout << "DEBUG: pickilevel = " << chosenPickiLevel << std::endl;
 }*/
 
 //NOTE: make method to calc estimated number of OK resp
@@ -123,7 +123,7 @@ void DecisionCategory::setRewardsOnLevels() {
 	int levelReward = 0;
 	for (level=0; level<rewardsFromBidLevel; level++) {
 		rewardOnLevel->setValue(0, level, 0);
-		//cout << "reward on level " << level << " : 0" << endl;
+		//std::cout << "reward on level " << level << " : 0" << std::endl;
 	}
 	for (level=rewardsFromBidLevel; level<NUM_OF_BID_LEVELS; level++) {
 		estNumOfEffOK_level = getEstimatedNumOfOkRespEff(loadedCategory, level);
@@ -132,7 +132,7 @@ void DecisionCategory::setRewardsOnLevels() {
 			levelReward = MAX_REWARD; 
 		if (levelReward < MIN_REWARD)
 			levelReward = MIN_REWARD;
-		//cout << "reward on level " << level << " : " << levelReward << endl;
+		//std::cout << "reward on level " << level << " : " << levelReward << std::endl;
 		rewardOnLevel->setValue(levelReward, level, 0);
 	}
 	statHandler->setThisSesRewardOnLevels(rewardOnLevel->clone());
@@ -183,7 +183,7 @@ int DecisionCategory::getEstimatedNumOfOkRespEff(bool loadedCat, int level) {
 }
 
 void DecisionCategory::setLateResponseRewardPRC() {
-	//cout << "DEBUG: about to set late resp..." << endl;
+	//std::cout << "DEBUG: about to set late resp..." << std::endl;
 	bool loadedCat = env->getLoadedCategory();
 	int estNumOfRespTotal = statHandler->getLastCorrectRespTotal( loadedCat );
 	if (estNumOfRespTotal < DC_MIN_ACC_OK_LEVEL*NUM_OF_BID_LEVELS)
@@ -200,15 +200,15 @@ void DecisionCategory::setLateResponseRewardPRC() {
 	if (estNumOfRespLate < (DC_MIN_ACC_OK_LEVEL*NUM_OF_BID_LEVELS))
 		estNumOfRespLate = DC_MIN_ACC_OK_LEVEL*NUM_OF_BID_LEVELS; //just to set to something
 	lateResponseRewardPRC = (((estNumOfRespLate*meanReward) + estExtraReward)*100)/(estNumOfRespLate*meanReward);
-	cout << "\n lateResponseReward Calc to : " << lateResponseRewardPRC << endl;
+	std::cout << "\n lateResponseReward Calc to : " << lateResponseRewardPRC << std::endl;
 	//pressSpaceOrQuit();
 	if (lateResponseRewardPRC> DC_MAX_LATE_RESP_PRC) {
 		lateResponseRewardPRC = DC_MAX_LATE_RESP_PRC;
-		cout << "\n WARNING: lateResponseRewPRC is " << lateResponseRewardPRC << " ...ok?\n" << endl;
+		std::cout << "\n WARNING: lateResponseRewPRC is " << lateResponseRewardPRC << " ...ok?\n" << std::endl;
 		//pressSpaceOrQuit();
 	}
 	if (lateResponseRewardPRC < 99) {
-		cout << "ERROR: lateResponseRewardPRC" << endl;
+		std::cout << "ERROR: lateResponseRewardPRC" << std::endl;
 		pressSpaceToQuit();
 	}
 }
@@ -229,29 +229,29 @@ void DecisionCategory::observedAgentIsDrifting(Observable* leavingAgent) {
 void DecisionCategory::turnFocusTo(Observable* seller) {
 	if (syncMan->getCollectionIndex() == -1)
 		return; //the effectors responding now are resp. too early or too late in training session: Ignore them;
-	//cout << "INFO: Decision category turns focus to effector " << seller->getId() << endl;
+	//std::cout << "INFO: Decision category turns focus to effector " << seller->getId() << std::endl;
 	Effector* eff = (Effector*)seller;
 	//int effLevel =  eff->getCatLevel();
 	Message* effAppear = eff->getAppearBusFull();
 	//int effHorisontalPos = eff->getPosition()->getPosX();
 	//int effVerticalPos = eff->getPosition()->getPosY();
 	//bool effectorIsInRewardArea = true; //!(eff->isLocatedInNoRewardArea());
-	//cout << "DEBUG: decCat turnFocus: effLevel=" << effLevel << " cycleColl=" << syncMan->getCycleCollection() << endl;
+	//std::cout << "DEBUG: decCat turnFocus: effLevel=" << effLevel << " cycleColl=" << syncMan->getCycleCollection() << std::endl;
 	bool okMakeBid = false;
 	//do not divide grid
 	///*
 	if (effAppear->isEqualTo(effAppCrit_ideal_wholeGrid, effAppCrit_picki_wholeGrid)) {
-		//cout << "DEBUG: effector app accepted...";
+		//std::cout << "DEBUG: effector app accepted...";
 		//if (effectorIsInRewardArea) {
 		if (eff->bidAgressionLevel >= statHandler->DC_REW_FROM_BID_AGR_LEVEL)
 			okMakeBid = true;
-			//cout << "and bid is made" << endl;
+			//std::cout << "and bid is made" << std::endl;
 		//} else {
-			//cout << "but not placed in rew area, pos: " << (LPCTSTR) eff->getPosition()->toString() << endl;
+			//std::cout << "but not placed in rew area, pos: " << (LPCTSTR) eff->getPosition()->toString() << std::endl;
 		//}
 	} else {
-		//cout << "\nDEBUG: effector app not accepted: " << (LPCTSTR)effAppear->toStringBits() << endl;
-		//cout << "must match: " << (LPCTSTR)effAppCrit_ideal_wholeGrid->toStringBits(effAppCrit_picki_wholeGrid) << endl;
+		//std::cout << "\nDEBUG: effector app not accepted: " << (LPCTSTR)effAppear->toStringBits() << std::endl;
+		//std::cout << "must match: " << (LPCTSTR)effAppCrit_ideal_wholeGrid->toStringBits(effAppCrit_picki_wholeGrid) << std::endl;
 	}
 	//*/
 	//end: do not divide
@@ -280,7 +280,7 @@ void DecisionCategory::turnFocusTo(Observable* seller) {
 		fitnessPaidMax_reached = (statHandler->getThisFitnessPaidTotal() > maxRewardThisSession);
 		numOfOkRespMax_reached = (statHandler->getThisCorrectRespTotal() > DC_MAX_REWARDED);
 		if ((bid>0) && !fitnessPaidMax_reached && !numOfOkRespMax_reached ) {
-			//cout << "DecCat makes bid...(bid =" << bid << ")" << endl;
+			//std::cout << "DecCat makes bid...(bid =" << bid << ")" << std::endl;
 			eff->addToBidders(this); //make bid
 		} //else don't bid
 	}
@@ -290,12 +290,12 @@ void DecisionCategory::turnFocusTo(Observable* seller) {
 	else
 		fitnPaidMax_reached_cat1 = fitnessPaidMax_reached;
 
-	//cout << "debug: finisedhed turn focus to..." << endl;
+	//std::cout << "debug: finisedhed turn focus to..." << std::endl;
 }
 
 int DecisionCategory::auctionWon(Observable* seller, Message* bMess) {
 	Effector* eff = (Effector*)seller;
-	//cout << "Decision category buys [" << bMess->toStringBits() << "] from effector " << seller->getId();
+	//std::cout << "Decision category buys [" << bMess->toStringBits() << "] from effector " << seller->getId();
 	int reward = -1;
 	int collectionIndex = syncMan->getCollectionIndex(); //between 0 and maxCollSpan-1
 	bool effAnswer = bMess->getBoolValue();
@@ -308,7 +308,7 @@ int DecisionCategory::auctionWon(Observable* seller, Message* bMess) {
 		reward = 0;
 		statHandler->addToWrongResp(eff->bidAgressionLevel, collectionIndex);
 	}
-	//cout << " (reward = " << reward << ")" << endl;
+	//std::cout << " (reward = " << reward << ")" << std::endl;
 	//pressSpaceOrQuit();
 	statHandler->addToFitnessPaid( reward, eff->bidAgressionLevel , collectionIndex );
 	bool bufferType = env->getLoadedCategory();

@@ -8,7 +8,7 @@
 #include "Agent.h"
 #include "DecisionCategory.h"
 #include "Fountain.h"
-#include "iostream.h"
+#include <iostream>
 #include "UIntGrid.h"
 #include <conio.h> //for press key
 #include "Konst.h"
@@ -84,7 +84,7 @@ void SyncManager::addAgentToList(Observable* newbornAgent) {
 /*void SyncManager::removeIdFromIdTagList(int deadAgentId) {
 	POSITION pos = idTags_currentAgents->Find( deadAgentId);
 	if (pos==NULL) {
-		cout << "ERROR: removeIdTag, id not in list" << endl;
+		std::cout << "ERROR: removeIdTag, id not in list" << std::endl;
 		pressSpaceToQuit();
 	}
 	idTags_currentAgents->RemoveAt( pos );
@@ -93,7 +93,7 @@ void SyncManager::addAgentToList(Observable* newbornAgent) {
 void SyncManager::removeAgentFromList(Observable* deadAgent) {
 	POSITION pos = list_currentAgents->Find( deadAgent);
 	if (pos==NULL) {
-		cout << "ERROR: removeIdTag, agent not in list" << endl;
+		std::cout << "ERROR: removeIdTag, agent not in list" << std::endl;
 		pressSpaceToQuit();
 	}
 	list_currentAgents->RemoveAt( pos );
@@ -117,7 +117,7 @@ void SyncManager::isProcessorNextCycle(Observable* ag) {
 
 //Remember: add cycle num test
 void SyncManager::isDeadNextCycle(Observable* ag) { 
-	//cout << "Agent: " << ag->toStringId() << " dies in next cycle";
+	//std::cout << "Agent: " << ag->toStringId() << " dies in next cycle";
 	nextDead->AddTail(ag); // nextDead.push_back(ag);
 }
 
@@ -147,21 +147,21 @@ void SyncManager::run() {
 	//currentDrifters = nextDrifters; //nextDrifters are 'loaded' under agent construction
 	//nextDrifters = new CList<Observable*, Observable*>(100);
 	shakeFrozenAgents(100); //set all agents to drifters
-	cout << "num of drifters: " << nextDrifters->GetCount() << endl;
+	std::cout << "num of drifters: " << nextDrifters->GetCount() << std::endl;
 	nextStopSession = sessionNum+1;
-	cout << " num of agents total: " << statHandler->getNumOfAgents() << endl;
+	std::cout << " num of agents total: " << statHandler->getNumOfAgents() << std::endl;
 	pressSpaceOrQuit();
 	while (statHandler->getNumOfAgents() > NUM_OF_FOUNTAINS) {
 		prepareForNextCycle();
 		if (isLoadingFountains1st || isLoadingFountains2nd || isLoadingFountains3rd) 
 			loadFountains( ); //1
 		initiateProcessors(); //2
-		//cout << "syncman: initiates drifters" << endl;
+		//std::cout << "syncman: initiates drifters" << std::endl;
 		initiateDrifters(); //3
 		deleteDeadAgents(); //4
 		updateAllViews();
 	}
-	cout << "All living agents are dead! ..." << endl;
+	std::cout << "All living agents are dead! ..." << std::endl;
 	//statHandler->closeFiles();
 	pressSpaceToQuit();
 
@@ -171,8 +171,8 @@ void SyncManager::prepareForNextCycle() {
 	statHandler->saveCycleData(cycleNum); //very first cycle activity is to save data from the previous cycle
 	//deleteDeadAgents(); //delete agents that are dead in this cycle
 	cycleNum++;
-	//cout << "\n*********************************************" << endl;
-	//cout << "cycle num = " << cycleNum  << endl;
+	//std::cout << "\n*********************************************" << std::endl;
+	//std::cout << "cycle num = " << cycleNum  << std::endl;
 	delete currentDrifters;
 	currentDrifters = nextDrifters;
 	nextDrifters = new CTypedPtrList<CObList, Observable*>(300); //CList<Observable*,Observable*>(100); //fix use constant
@@ -220,7 +220,7 @@ void SyncManager::setHasBeenDrifterFlags() {
 
 void SyncManager::shakeFrozenAgents(int chanceToDrift) {
 	if (chanceToDrift>0)
-		cout << "Shaking frozen agents..." << endl;
+		std::cout << "Shaking frozen agents..." << std::endl;
 	int numOfFrozen = 0; 
 	int numOfShaken = 0;
 	Agent* tempAgent;
@@ -235,7 +235,7 @@ void SyncManager::shakeFrozenAgents(int chanceToDrift) {
 			}
 		}
 	}
-	cout << "INFO: " << numOfFrozen << " agents were 'frozen' in this session, " << numOfShaken << " of them is now drifters " << endl;
+	std::cout << "INFO: " << numOfFrozen << " agents were 'frozen' in this session, " << numOfShaken << " of them is now drifters " << std::endl;
 }
 
 void SyncManager::prepareForNextSession() {
@@ -243,16 +243,16 @@ void SyncManager::prepareForNextSession() {
 	setHasBeenDrifterFlags(); //set all flags to false
 	//test num of agents with taglist:
 	if (list_currentAgents->GetCount() != statHandler->getNumOfAgents()) {
-		cout << "ERROR: idTag_list and numOfAgents mismatch!" << endl;
-		cout << "list_currentAgents size: " << list_currentAgents->GetCount() << endl;
-		cout << "numOfAgents:     " << statHandler->getNumOfAgents() << endl;
+		std::cout << "ERROR: idTag_list and numOfAgents mismatch!" << std::endl;
+		std::cout << "list_currentAgents size: " << list_currentAgents->GetCount() << std::endl;
+		std::cout << "numOfAgents:     " << statHandler->getNumOfAgents() << std::endl;
 		pressSpaceToQuit();
 	} //end test numOfAgents
 	statHandler->saveSessionData();
 	DecisionCategory* decCat= (DecisionCategory*)decCategory; //Not nice style
 	//decCat->giveRemainCatBuffToMatBonusBuff(env->getLoadedCategory());
-	cout << "Trainingsession number " << sessionNum << " has just ended" << endl;
-	//cout << env->getLastMessageString() << endl; //  "\nMessage from env: " << (LPCTSTR)tempMess->toStringBits() << " , answer = " << env->getLastAnswer() << endl;
+	std::cout << "Trainingsession number " << sessionNum << " has just ended" << std::endl;
+	//std::cout << env->getLastMessageString() << std::endl; //  "\nMessage from env: " << (LPCTSTR)tempMess->toStringBits() << " , answer = " << env->getLastAnswer() << std::endl;
 	//pressSpaceOrQuit();
 	sessionNum++;
 	//place saveDNAinfo here?
@@ -275,7 +275,7 @@ void SyncManager::prepareForNextSession() {
 				statHandler->storePopulation(cycleNum, sessionNum, env->getMatingBonusBuffer(), decCat->getFitnessBuffer_env(0), decCat->getFitnessBuffer_env(1), systemIdStamp->getCounter());
 				exit(0);
 			} else {
-				cout << "ERROR: menu choice" << endl;
+				std::cout << "ERROR: menu choice" << std::endl;
 				pressSpaceToQuit();
 			}
 		}
@@ -298,9 +298,9 @@ void SyncManager::prepareForNextSession() {
 }
 
 void SyncManager::loadFountains() {
-	//cout << "DEBUG: loading fountains..."<< endl;
+	//std::cout << "DEBUG: loading fountains..."<< std::endl;
 	if (isLoadingFountains1st + isLoadingFountains2nd + isLoadingFountains3rd > 1) {
-		cout << "ERROR: 1st,2nd or 3rd fountain inflow can not overlap!" << endl;
+		std::cout << "ERROR: 1st,2nd or 3rd fountain inflow can not overlap!" << std::endl;
 		pressSpaceToQuit();
 	}
 	int loadingSlot;
@@ -311,11 +311,11 @@ void SyncManager::loadFountains() {
 	else if (isLoadingFountains3rd)
 		loadingSlot = cycleNum - loadingBeginCycle3rd;
 	else {
-		cout << "ERROR: loadFountains" << endl;
+		std::cout << "ERROR: loadFountains" << std::endl;
 		pressSpaceToQuit();
 	}
 	if (loadingSlot < 0 || loadingSlot > (LOADING_TIME-1)) {
-		cout << "ERROR: loadingSlot error" << endl;
+		std::cout << "ERROR: loadingSlot error" << std::endl;
 		pressSpaceToQuit();
 	}
 	Fountain* currentFountain;
@@ -328,9 +328,9 @@ void SyncManager::loadFountains() {
 }
 
 void SyncManager::loadFountain(int fNum) {
-	//cout << "loading fountain " << fNum << endl;
+	//std::cout << "loading fountain " << fNum << std::endl;
 	Fountain* currFountain = (Fountain*)fountains->GetAt( fountains->FindIndex(fNum)); //(Fountain*)fountains.at(fNum);
-	//cout << "syncman: Fountain " << currFountain->getId() << " 'loaded' (processor next cycle)" << endl;
+	//std::cout << "syncman: Fountain " << currFountain->getId() << " 'loaded' (processor next cycle)" << std::endl;
 	//if (fNum>19 && fNum<25) {//middle fountain group
 	//	Message* ignoredMess = env->getNextMessageFromPipe( fNum );
 	//	delete ignoredMess;
@@ -342,7 +342,7 @@ void SyncManager::initiateProcessors() {
 	Observable* currentAgent;
 	int numOfProcessors = currentProcessors->GetCount();
 	if (numOfProcessors > 0) {
-		//cout << "syncman: Initiates " << numOfProcessors << " processors" << endl;
+		//std::cout << "syncman: Initiates " << numOfProcessors << " processors" << std::endl;
 		//pressSpaceOrQuit();
 	}
 	int i;
@@ -361,7 +361,7 @@ void SyncManager::initiateProcessors() {
 void SyncManager::initiateDrifters() {
 	Observable* currentAgent;
 	int numOfDrifters = currentDrifters->GetCount();
-	//cout << "syncman: Initiates " << numOfDrifters << " drifters" << endl;
+	//std::cout << "syncman: Initiates " << numOfDrifters << " drifters" << std::endl;
 	int i;
 	for (i=0; i<currentDrifters->GetCount(); i++) {
 		currentAgent = currentDrifters->GetAt( currentDrifters->FindIndex(i)); //collect nextDrifters (newborn) and nextObservers
@@ -379,7 +379,7 @@ void SyncManager::deleteDeadAgents() {
 	Observable* deadAgent;
 	int numOfDead = nextDead->GetCount();
 	if (numOfDead > 0) {
-		//cout << "syncman: Deletes " << numOfDead << " dead agents" << endl;
+		//std::cout << "syncman: Deletes " << numOfDead << " dead agents" << std::endl;
 		//pressSpaceOrQuit();
 	}	
 	int i;
@@ -402,7 +402,7 @@ void SyncManager::addFountain(Observable* f) {
 
 void SyncManager::pressSpaceToQuit() {
 	int ch;
-	cout << "press space..." << endl;
+	std::cout << "press space..." << std::endl;
 	while (ch != ' ') {
 		ch = _getch();
 	}
@@ -411,7 +411,7 @@ void SyncManager::pressSpaceToQuit() {
 
 void SyncManager::pressSpaceOrQuit() {
 	int ch;
-	cout << "press space or 'q' to quit..." << endl;
+	std::cout << "press space or 'q' to quit..." << std::endl;
 	while ((ch != ' ') && (ch != 'q')) {
 		ch = _getch();
 	}
@@ -421,14 +421,14 @@ void SyncManager::pressSpaceOrQuit() {
 
 int SyncManager::press12345SaveOrQuit() {
 	int ch = 0;
-	cout << "Choice..." << endl;
-	cout << " '1': run 1 session" << endl;
-	cout << " '2': run 10 sessions" << endl;
-	cout << " '3': run 100 sessions" << endl;
-	cout << " '4': run 1000 sessions" << endl;
-	cout << " 'a': adjust parameters" << endl;
-	cout << " 's': close files and save population" << endl;
-	cout << "  ....or 'Q' to quit" << endl;
+	std::cout << "Choice..." << std::endl;
+	std::cout << " '1': run 1 session" << std::endl;
+	std::cout << " '2': run 10 sessions" << std::endl;
+	std::cout << " '3': run 100 sessions" << std::endl;
+	std::cout << " '4': run 1000 sessions" << std::endl;
+	std::cout << " 'a': adjust parameters" << std::endl;
+	std::cout << " 's': close files and save population" << std::endl;
+	std::cout << "  ....or 'Q' to quit" << std::endl;
 	while ((ch != '1') && (ch != '2') && (ch != '3') && (ch != '4') && (ch != 'a') && (ch != 's') && (ch != 'Q')) {
 		ch = _getch();
 	}
@@ -440,38 +440,38 @@ int SyncManager::press12345SaveOrQuit() {
 void SyncManager::adjustParameters() {
 	int ch = 0;
 	int increment = 0;
-	cout << "\n-----------------------------------------\nAdjustable parameters:" << endl;
-	cout << " '1': MAX_STATE_BUYERS_INP        = " << statHandler->MAX_STATE_BUYERS_INP << endl;
-	cout << " '4': BIDP_BASE_INP               = " << statHandler->BIDP_BASE_INP << endl;
-	cout << " '5': BIDP_STEP_INP               = " << statHandler->BIDP_STEP_INP << " (" << pow(2,BIDLEVELS_LENGTH) << " steps)" << endl;
-	cout << " '6': BIDP_BASE_EFF               = " << statHandler->BIDP_BASE_EFF << endl;
-	cout << " '7': BIDP_STEP_EFF               = " << statHandler->BIDP_STEP_EFF << " (" << pow(2,BIDLEVELS_LENGTH) << " steps)" << endl;
-	cout << " '8': SESSION_LENGTH              = " << statHandler->SESSION_LENGTH << endl;
-	cout << " '9': AGENT_LIFETIME_MAX          = " << statHandler->AGENT_LIFETIME_MAX << " , (avg: " << (int)floor(statHandler->avgAgentAge) << ", %hitMax: " << (int)floor(statHandler->percThatReachMaxAge) << ")" << endl;
-	cout << " 'z': COLL_MIN_PROCTIME           = " << statHandler->COLL_MIN_PROCTIME << endl;
-	cout << " 'x': GRID_ZOOM                   = " << statHandler->GRID_ZOOM << endl;
-	cout << " 'c': C_MATSTART_PRC              = " << statHandler->C_MATSTART_PRC << endl;
-	cout << " 's': DC_REW_FROM_BID_AGR_LEVEL   = " << statHandler->DC_REW_FROM_BID_AGR_LEVEL << endl;
-	cout << " 'd': MAX_INACTIVE_SESS           = " << statHandler->MAX_INACTIVE_SESS << endl;
-	cout << " 'f': MUTATION_RATE               = " << statHandler->MUTATION_RATE << endl;
-	cout << " 'k': HIGH_MUT_AGENTS_PRC         = " << statHandler->HIGH_MUT_AGENTS_PRC << endl;	
-	cout << " 'g': MIN_NUM_OF_AGENTS_IN_GRID   = " << statHandler->MIN_NUM_OF_AGENTS_IN_GRID << endl;
-	cout << " 'j': IDEAL_NUM_OF_AGENTS_IN_GRID = " << statHandler->IDEAL_NUM_OF_AGENTS_IN_GRID << endl;
-	cout << " 'h': GRAVITY_CENTER              = " << statHandler->GRAVITY_CENTER << endl;
-	cout << " 'l': DC_EARLY_RESP_REW_I0_PRC    = " << statHandler->DC_EARLY_RESP_REW_I0_PRC << endl;
-	cout << " 'o': MAX_NUM_OF_OBS_INP          = " << statHandler->MAX_NUM_OF_OBS_INP << endl;
-	cout << " 'p': MAX_NUM_OF_OBS_EFF(each inp)= " << statHandler->MAX_NUM_OF_OBS_EFF << endl;
+	std::cout << "\n-----------------------------------------\nAdjustable parameters:" << std::endl;
+	std::cout << " '1': MAX_STATE_BUYERS_INP        = " << statHandler->MAX_STATE_BUYERS_INP << std::endl;
+	std::cout << " '4': BIDP_BASE_INP               = " << statHandler->BIDP_BASE_INP << std::endl;
+	std::cout << " '5': BIDP_STEP_INP               = " << statHandler->BIDP_STEP_INP << " (" << pow(2,BIDLEVELS_LENGTH) << " steps)" << std::endl;
+	std::cout << " '6': BIDP_BASE_EFF               = " << statHandler->BIDP_BASE_EFF << std::endl;
+	std::cout << " '7': BIDP_STEP_EFF               = " << statHandler->BIDP_STEP_EFF << " (" << pow(2,BIDLEVELS_LENGTH) << " steps)" << std::endl;
+	std::cout << " '8': SESSION_LENGTH              = " << statHandler->SESSION_LENGTH << std::endl;
+	std::cout << " '9': AGENT_LIFETIME_MAX          = " << statHandler->AGENT_LIFETIME_MAX << " , (avg: " << (int)floor(statHandler->avgAgentAge) << ", %hitMax: " << (int)floor(statHandler->percThatReachMaxAge) << ")" << std::endl;
+	std::cout << " 'z': COLL_MIN_PROCTIME           = " << statHandler->COLL_MIN_PROCTIME << std::endl;
+	std::cout << " 'x': GRID_ZOOM                   = " << statHandler->GRID_ZOOM << std::endl;
+	std::cout << " 'c': C_MATSTART_PRC              = " << statHandler->C_MATSTART_PRC << std::endl;
+	std::cout << " 's': DC_REW_FROM_BID_AGR_LEVEL   = " << statHandler->DC_REW_FROM_BID_AGR_LEVEL << std::endl;
+	std::cout << " 'd': MAX_INACTIVE_SESS           = " << statHandler->MAX_INACTIVE_SESS << std::endl;
+	std::cout << " 'f': MUTATION_RATE               = " << statHandler->MUTATION_RATE << std::endl;
+	std::cout << " 'k': HIGH_MUT_AGENTS_PRC         = " << statHandler->HIGH_MUT_AGENTS_PRC << std::endl;	
+	std::cout << " 'g': MIN_NUM_OF_AGENTS_IN_GRID   = " << statHandler->MIN_NUM_OF_AGENTS_IN_GRID << std::endl;
+	std::cout << " 'j': IDEAL_NUM_OF_AGENTS_IN_GRID = " << statHandler->IDEAL_NUM_OF_AGENTS_IN_GRID << std::endl;
+	std::cout << " 'h': GRAVITY_CENTER              = " << statHandler->GRAVITY_CENTER << std::endl;
+	std::cout << " 'l': DC_EARLY_RESP_REW_I0_PRC    = " << statHandler->DC_EARLY_RESP_REW_I0_PRC << std::endl;
+	std::cout << " 'o': MAX_NUM_OF_OBS_INP          = " << statHandler->MAX_NUM_OF_OBS_INP << std::endl;
+	std::cout << " 'p': MAX_NUM_OF_OBS_EFF(each inp)= " << statHandler->MAX_NUM_OF_OBS_EFF << std::endl;
 	
-	cout << " 'e': End adjusting" << endl;
+	std::cout << " 'e': End adjusting" << std::endl;
 
 	while ((ch != '1') && (ch != '4') && (ch != '5') && (ch != '6') && (ch != '7') && (ch != '8') && (ch != '9') && (ch != 'z') && (ch != 'x') && (ch != 'c') && (ch != 's') && (ch != 'd') && (ch != 'f') && (ch != 'g') && (ch != 'h') && (ch != 'j') && (ch != 'k') && (ch != 'l') && (ch != 'p') && (ch != 'o') && (ch != 'e') ) {
 		ch = _getch();
 	}
 	if (ch!='e') {
-		cout << "\nPress '+' or '-' to increase/decrease value of ";
+		std::cout << "\nPress '+' or '-' to increase/decrease value of ";
 		if (ch == '1') {
 			increment = 1;
-			cout << "MAX_STATE_BUYERS_INP" << endl;
+			std::cout << "MAX_STATE_BUYERS_INP" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
@@ -480,7 +480,7 @@ void SyncManager::adjustParameters() {
 			else {
 				statHandler->MAX_STATE_BUYERS_INP -= increment;
 				if (statHandler->MAX_STATE_BUYERS_INP < 0) {
-					cout << "\n***MAX_STATE_BUYERS_INP has reached mimimum! (no change)***" << endl;
+					std::cout << "\n***MAX_STATE_BUYERS_INP has reached mimimum! (no change)***" << std::endl;
 					statHandler->MAX_STATE_BUYERS_INP += increment;
 				}
 			}
@@ -488,20 +488,20 @@ void SyncManager::adjustParameters() {
 		}
 		if (ch == '4') { // adjust BIDP_BASE_INP
 			increment = 5;
-			cout << "BIDP_BASE_INP" << endl;
+			std::cout << "BIDP_BASE_INP" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
 			if (ch=='+') {
 				statHandler->BIDP_BASE_INP += increment;
 				if (statHandler->BIDP_BASE_INP +  statHandler->BIDP_STEP_INP * (pow(2,BIDLEVELS_LENGTH)-1) > 100 ) {
-					cout << "\n***BIDP_BASE_INP has reached maximum! (no change)***" << endl;
+					std::cout << "\n***BIDP_BASE_INP has reached maximum! (no change)***" << std::endl;
 					statHandler->BIDP_BASE_INP -= increment;
 				}
 			} else {
 				statHandler->BIDP_BASE_INP -= increment;
 				if (statHandler->BIDP_BASE_INP < 5) {
-					cout << "\n***BIDP_BASE_INP has reached mimimum! (no change)***" << endl;
+					std::cout << "\n***BIDP_BASE_INP has reached mimimum! (no change)***" << std::endl;
 					statHandler->BIDP_BASE_INP += increment;
 				}
 			}
@@ -509,20 +509,20 @@ void SyncManager::adjustParameters() {
 		}
 		if (ch == '5') { //adjust BIDP_STEP_INP
 			increment = 1;
-			cout << "BIDP_STEP_INP" << endl;
+			std::cout << "BIDP_STEP_INP" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
 			if (ch=='+') {
 				statHandler->BIDP_STEP_INP += increment;
 				if (statHandler->BIDP_STEP_INP * (pow(2,BIDLEVELS_LENGTH)-1) + statHandler->BIDP_BASE_INP > 100 ) {
-					cout << "\n***BIDP_STEP_INP has reached maximum! (no change)***" << endl;
+					std::cout << "\n***BIDP_STEP_INP has reached maximum! (no change)***" << std::endl;
 					statHandler->BIDP_STEP_INP -= increment;
 				}
 			} else {
 				statHandler->BIDP_STEP_INP -= increment;
 				if (statHandler->BIDP_STEP_INP < 0) {
-					cout << "\n***BIDP_STEP_INP has reached minimum! (no change)***" << endl;
+					std::cout << "\n***BIDP_STEP_INP has reached minimum! (no change)***" << std::endl;
 					statHandler->BIDP_STEP_INP += increment;
 				}
 			}
@@ -530,20 +530,20 @@ void SyncManager::adjustParameters() {
 		}
 		if (ch == '6') { // adjust BIDP_BASE_EFF
 			increment = 2;
-			cout << "BIDP_BASE_EFF" << endl;
+			std::cout << "BIDP_BASE_EFF" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
 			if (ch=='+') {
 				statHandler->BIDP_BASE_EFF += increment;
 				if (statHandler->BIDP_BASE_EFF +  statHandler->BIDP_STEP_EFF * (pow(2,BIDLEVELS_LENGTH)-1) > 100 ) {
-					cout << "\n***BIDP_BASE_EFF has reached maximum! (no change)***" << endl;
+					std::cout << "\n***BIDP_BASE_EFF has reached maximum! (no change)***" << std::endl;
 					statHandler->BIDP_BASE_EFF -= increment;
 				}
 			} else {
 				statHandler->BIDP_BASE_EFF -= increment;
 				if (statHandler->BIDP_BASE_EFF < 5) {
-					cout << "\n***BIDP_BASE_EFF has reached mimimum! (no change)***" << endl;
+					std::cout << "\n***BIDP_BASE_EFF has reached mimimum! (no change)***" << std::endl;
 					statHandler->BIDP_BASE_EFF += increment;
 				}
 			}
@@ -551,20 +551,20 @@ void SyncManager::adjustParameters() {
 		}
 		if (ch == '7') { //adjust BIDP_STEP_EFF
 			increment = 1;
-			cout << "BIDP_STEP_EFF" << endl;
+			std::cout << "BIDP_STEP_EFF" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
 			if (ch=='+') {
 				statHandler->BIDP_STEP_EFF += increment;
 				if (statHandler->BIDP_STEP_EFF * (pow(2,BIDLEVELS_LENGTH)-1) + statHandler->BIDP_BASE_EFF > 100 ) {
-					cout << "\n***BIDP_STEP_EFF has reached maximum! (no change)***" << endl;
+					std::cout << "\n***BIDP_STEP_EFF has reached maximum! (no change)***" << std::endl;
 					statHandler->BIDP_STEP_EFF -= increment;
 				}
 			} else {
 				statHandler->BIDP_STEP_EFF -= increment;
 				if (statHandler->BIDP_STEP_EFF < 0) {
-					cout << "\n***BIDP_STEP_EFF has reached minimum! (no change)***" << endl;
+					std::cout << "\n***BIDP_STEP_EFF has reached minimum! (no change)***" << std::endl;
 					statHandler->BIDP_STEP_EFF += increment;
 				}
 			}
@@ -572,7 +572,7 @@ void SyncManager::adjustParameters() {
 		}
 		if (ch == '8') { //adjust SESSION_LENGTH
 			increment = 1;
-			cout << "SESSION_LENGTH" << endl;
+			std::cout << "SESSION_LENGTH" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
@@ -581,7 +581,7 @@ void SyncManager::adjustParameters() {
 			} else {
 				statHandler->SESSION_LENGTH -= increment;
 				if (statHandler->SESSION_LENGTH < (LOADING_TIME+1)) {
-					cout << "\n***SESSION_LENGTH has reached minimum! (no change)***" << endl;
+					std::cout << "\n***SESSION_LENGTH has reached minimum! (no change)***" << std::endl;
 					statHandler->SESSION_LENGTH += increment;
 				}
 			}
@@ -589,21 +589,21 @@ void SyncManager::adjustParameters() {
 		}
 		if (ch == '9') { //adjust AGENT_LIFETIME
 			increment = statHandler->SESSION_LENGTH;
-			cout << "AGENT_LIFETIME_MAX" << endl;
+			std::cout << "AGENT_LIFETIME_MAX" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
 			if (ch=='+') {
 				statHandler->AGENT_LIFETIME_MAX += increment;
 				if (statHandler->AGENT_LIFETIME_MAX > (statHandler->SESSION_LENGTH*20)) {
-					cout << "\n***AGENT_LIFETIME_MAX has reached maximum! (no change)***" << endl;
+					std::cout << "\n***AGENT_LIFETIME_MAX has reached maximum! (no change)***" << std::endl;
 					statHandler->AGENT_LIFETIME_MAX -= increment;
 				}
 
 			} else {
 				statHandler->AGENT_LIFETIME_MAX -= increment;
 				if (statHandler->AGENT_LIFETIME_MAX < 10) {
-					cout << "\n***AGENT_LIFETIME_MAX has reached minimum! (no change)***" << endl;
+					std::cout << "\n***AGENT_LIFETIME_MAX has reached minimum! (no change)***" << std::endl;
 					statHandler->AGENT_LIFETIME_MAX += increment;
 				}
 			}
@@ -612,21 +612,21 @@ void SyncManager::adjustParameters() {
 		
 		if (ch == 'z') { //adjust COLL_MIN_PROCTIME
 			increment = 1;
-			cout << "COLL_MIN_PROCTIME" << endl;
+			std::cout << "COLL_MIN_PROCTIME" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
 			if (ch=='+') {
 				statHandler->COLL_MIN_PROCTIME += increment;
 				if (statHandler->COLL_MIN_PROCTIME > statHandler->SESSION_LENGTH-COLLECTION_TIME ) {
-					cout << "\n***COLL_MIN_PROCTIME has reached maximum! (no change)***" << endl;
+					std::cout << "\n***COLL_MIN_PROCTIME has reached maximum! (no change)***" << std::endl;
 					statHandler->COLL_MIN_PROCTIME -= increment;
 				}
 				statHandler->COLL_MAX_PROCTIME = statHandler->COLL_MIN_PROCTIME + (COLLECTION_TIME-1);
 			} else {
 				statHandler->COLL_MIN_PROCTIME -= increment;
 				if (statHandler->COLL_MIN_PROCTIME < 0) {
-					cout << "\n***COLL_MIN_PROCTIME has reached minimum! (no change)***" << endl;
+					std::cout << "\n***COLL_MIN_PROCTIME has reached minimum! (no change)***" << std::endl;
 					statHandler->COLL_MIN_PROCTIME += increment;
 				}
 				statHandler->COLL_MAX_PROCTIME = statHandler->COLL_MIN_PROCTIME + (COLLECTION_TIME-1);
@@ -635,20 +635,20 @@ void SyncManager::adjustParameters() {
 		}
 		if (ch == 'x') { //adjust GRID_ZOOM
 			increment = 1;
-			cout << "GRID_ZOOM" << endl;
+			std::cout << "GRID_ZOOM" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
 			if (ch=='+') {
 				statHandler->GRID_ZOOM += increment;
 				if (statHandler->GRID_ZOOM > 6 ) {
-					cout << "\n***GRID_ZOOM has reached maximum! (no change)***" << endl;
+					std::cout << "\n***GRID_ZOOM has reached maximum! (no change)***" << std::endl;
 					statHandler->GRID_ZOOM -= increment;
 				}
 			} else {
 				statHandler->GRID_ZOOM -= increment;
 				if (statHandler->GRID_ZOOM < 1) {
-					cout << "\n***GRID_ZOOM has reached minimum! (no change)***" << endl;
+					std::cout << "\n***GRID_ZOOM has reached minimum! (no change)***" << std::endl;
 					statHandler->GRID_ZOOM += increment;
 				}
 			}
@@ -656,20 +656,20 @@ void SyncManager::adjustParameters() {
 		}
 		if (ch == 'c') { //adjust C_MATSTART_PRC
 			increment = 10;
-			cout << "C_MATSTART_PRC" << endl;
+			std::cout << "C_MATSTART_PRC" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
 			if (ch=='+') {
 				statHandler->C_MATSTART_PRC += increment;
 				if (statHandler->C_MATSTART_PRC > 10000 ) {
-					cout << "\n***C_MATSTART_PRC has reached maximum! (no change)***" << endl;
+					std::cout << "\n***C_MATSTART_PRC has reached maximum! (no change)***" << std::endl;
 					statHandler->C_MATSTART_PRC -= increment;
 				}
 			} else {
 				statHandler->C_MATSTART_PRC -= increment;
 				if (statHandler->C_MATSTART_PRC < 101) {
-					cout << "\n***C_MATSTART_PRC has reached minimum! (no change)***" << endl;
+					std::cout << "\n***C_MATSTART_PRC has reached minimum! (no change)***" << std::endl;
 					statHandler->C_MATSTART_PRC += increment;
 				}
 			}
@@ -678,20 +678,20 @@ void SyncManager::adjustParameters() {
 		
 		if (ch == 's') { //adjust DC_REW_FROM_BID_AGR_LEVEL
 			increment = 1;
-			cout << "DC_REW_FROM_BID_AGR_LEVEL" << endl;
+			std::cout << "DC_REW_FROM_BID_AGR_LEVEL" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
 			if (ch=='+') {
 				statHandler->DC_REW_FROM_BID_AGR_LEVEL += increment;
 				if (statHandler->DC_REW_FROM_BID_AGR_LEVEL > (pow(2,BIDLEVELS_LENGTH)-1) ) {
-					cout << "\n***DC_REW_FROM_BID_AGR_LEVEL has reached maximum! (no change)***" << endl;
+					std::cout << "\n***DC_REW_FROM_BID_AGR_LEVEL has reached maximum! (no change)***" << std::endl;
 					statHandler->DC_REW_FROM_BID_AGR_LEVEL -= increment;
 				}
 			} else {
 				statHandler->DC_REW_FROM_BID_AGR_LEVEL -= increment;
 				if (statHandler->DC_REW_FROM_BID_AGR_LEVEL < 0) {
-					cout << "\n***DC_REW_FROM_BID_AGR_LEVEL has reached minimum! (no change)***" << endl;
+					std::cout << "\n***DC_REW_FROM_BID_AGR_LEVEL has reached minimum! (no change)***" << std::endl;
 					statHandler->DC_REW_FROM_BID_AGR_LEVEL += increment;
 				}
 			}
@@ -699,20 +699,20 @@ void SyncManager::adjustParameters() {
 		}
 		if (ch == 'd') { //adjust MAX_INACTIVE_SESS
 			increment = 1;
-			cout << "MAX_INACTIVE_SESS" << endl;
+			std::cout << "MAX_INACTIVE_SESS" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
 			if (ch=='+') {
 				statHandler->MAX_INACTIVE_SESS += increment;
 				if (statHandler->MAX_INACTIVE_SESS > 20 ) {
-					cout << "\n***MAX_INACTIVE_SESS has reached maximum! (no change)***" << endl;
+					std::cout << "\n***MAX_INACTIVE_SESS has reached maximum! (no change)***" << std::endl;
 					statHandler->MAX_INACTIVE_SESS -= increment;
 				}
 			} else {
 				statHandler->MAX_INACTIVE_SESS -= increment;
 				if (statHandler->MAX_INACTIVE_SESS < 0) {
-					cout << "\n***MAX_INACTIVE_SESS has reached minimum! (no change)***" << endl;
+					std::cout << "\n***MAX_INACTIVE_SESS has reached minimum! (no change)***" << std::endl;
 					statHandler->MAX_INACTIVE_SESS += increment;
 				}
 			}
@@ -721,20 +721,20 @@ void SyncManager::adjustParameters() {
 
 		if (ch == 'f') { //adjust MUTATION_RATE
 			increment = 1;
-			cout << "MUTATION_RATE" << endl;
+			std::cout << "MUTATION_RATE" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
 			if (ch=='+') {
 				statHandler->MUTATION_RATE += increment;
 				if (statHandler->MUTATION_RATE > 1000 ) {
-					cout << "\n***MUTATION_RATE has reached maximum! (no change)***" << endl;
+					std::cout << "\n***MUTATION_RATE has reached maximum! (no change)***" << std::endl;
 					statHandler->MUTATION_RATE -= increment;
 				}
 			} else {
 				statHandler->MUTATION_RATE -= increment;
 				if (statHandler->MUTATION_RATE < 0) {
-					cout << "\n***MUTATION_RATE has reached minimum! (no change)***" << endl;
+					std::cout << "\n***MUTATION_RATE has reached minimum! (no change)***" << std::endl;
 					statHandler->MUTATION_RATE += increment;
 				}
 			}
@@ -743,20 +743,20 @@ void SyncManager::adjustParameters() {
 
 		if (ch == 'k') { //adjust HIGH_MUT_AGENTS_PRC
 			increment = 1;
-			cout << "HIGH_MUT_AGENTS_PRC" << endl;
+			std::cout << "HIGH_MUT_AGENTS_PRC" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
 			if (ch=='+') {
 				statHandler->HIGH_MUT_AGENTS_PRC += increment;
 				if (statHandler->HIGH_MUT_AGENTS_PRC > 100 ) {
-					cout << "\n***HIGH_MUT_AGENTS_PRC has reached maximum! (no change)***" << endl;
+					std::cout << "\n***HIGH_MUT_AGENTS_PRC has reached maximum! (no change)***" << std::endl;
 					statHandler->HIGH_MUT_AGENTS_PRC -= increment;
 				}
 			} else {
 				statHandler->HIGH_MUT_AGENTS_PRC -= increment;
 				if (statHandler->HIGH_MUT_AGENTS_PRC < 0) {
-					cout << "\n***HIGH_MUT_AGENTS_PRC has reached minimum! (no change)***" << endl;
+					std::cout << "\n***HIGH_MUT_AGENTS_PRC has reached minimum! (no change)***" << std::endl;
 					statHandler->HIGH_MUT_AGENTS_PRC += increment;
 				}
 			}
@@ -765,20 +765,20 @@ void SyncManager::adjustParameters() {
 		
 		if (ch == 'g') { //adjust MIN_NUM_OF_AGENTS_IN_GRID
 			increment = 100;
-			cout << "MIN_NUM_OF_AGENTS_IN_GRID" << endl;
+			std::cout << "MIN_NUM_OF_AGENTS_IN_GRID" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
 			if (ch=='+') {
 				statHandler->MIN_NUM_OF_AGENTS_IN_GRID += increment;
 				if (statHandler->MIN_NUM_OF_AGENTS_IN_GRID > 10000 ) {
-					cout << "\n***MIN_NUM_OF_AGENTS_IN_GRID has reached maximum! (no change)***" << endl;
+					std::cout << "\n***MIN_NUM_OF_AGENTS_IN_GRID has reached maximum! (no change)***" << std::endl;
 					statHandler->MIN_NUM_OF_AGENTS_IN_GRID -= increment;
 				}
 			} else {
 				statHandler->MIN_NUM_OF_AGENTS_IN_GRID -= increment;
 				if (statHandler->MIN_NUM_OF_AGENTS_IN_GRID < 0) {
-					cout << "\n***MIN_NUM_OF_AGENTS_IN_GRID has reached minimum! (no change)***" << endl;
+					std::cout << "\n***MIN_NUM_OF_AGENTS_IN_GRID has reached minimum! (no change)***" << std::endl;
 					statHandler->MIN_NUM_OF_AGENTS_IN_GRID += increment;
 				}
 			}
@@ -787,20 +787,20 @@ void SyncManager::adjustParameters() {
 
 		if (ch == 'j') { //adjust IDEAL_NUM_OF_AGENTS_IN_GRID
 			increment = 100;
-			cout << "IDEAL_NUM_OF_AGENTS_IN_GRID" << endl;
+			std::cout << "IDEAL_NUM_OF_AGENTS_IN_GRID" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
 			if (ch=='+') {
 				statHandler->IDEAL_NUM_OF_AGENTS_IN_GRID += increment;
 				if (statHandler->IDEAL_NUM_OF_AGENTS_IN_GRID > 10000 ) {
-					cout << "\n***IDEAL_NUM_OF_AGENTS_IN_GRID has reached maximum! (no change)***" << endl;
+					std::cout << "\n***IDEAL_NUM_OF_AGENTS_IN_GRID has reached maximum! (no change)***" << std::endl;
 					statHandler->IDEAL_NUM_OF_AGENTS_IN_GRID -= increment;
 				}
 			} else {
 				statHandler->IDEAL_NUM_OF_AGENTS_IN_GRID -= increment;
 				if (statHandler->IDEAL_NUM_OF_AGENTS_IN_GRID < 0) {
-					cout << "\n***IDEAL_NUM_OF_AGENTS_IN_GRID has reached minimum! (no change)***" << endl;
+					std::cout << "\n***IDEAL_NUM_OF_AGENTS_IN_GRID has reached minimum! (no change)***" << std::endl;
 					statHandler->IDEAL_NUM_OF_AGENTS_IN_GRID += increment;
 				}
 			}
@@ -809,20 +809,20 @@ void SyncManager::adjustParameters() {
 
 		if (ch == 'h') { //adjust GRAVITY_CENTER
 			increment = 5;
-			cout << "GRAVITY_CENTER" << endl;
+			std::cout << "GRAVITY_CENTER" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
 			if (ch=='+') {
 				statHandler->GRAVITY_CENTER += increment;
 				if (statHandler->GRAVITY_CENTER > 100 ) {
-					cout << "\n***GRAVITY_CENTER has reached maximum! (no change)***" << endl;
+					std::cout << "\n***GRAVITY_CENTER has reached maximum! (no change)***" << std::endl;
 					statHandler->GRAVITY_CENTER -= increment;
 				}
 			} else {
 				statHandler->GRAVITY_CENTER -= increment;
 				if (statHandler->GRAVITY_CENTER < 0) {
-					cout << "\n***GRAVITY_CENTER has reached minimum! (no change)***" << endl;
+					std::cout << "\n***GRAVITY_CENTER has reached minimum! (no change)***" << std::endl;
 					statHandler->GRAVITY_CENTER += increment;
 				}
 			}
@@ -831,14 +831,14 @@ void SyncManager::adjustParameters() {
 		
 		if (ch == 'l') { //adjust DC_EARLY_RESP_REW_I0_PRC
 			increment = 5;
-			cout << "DC_EARLY_RESP_REW_I0_PRC" << endl;
+			std::cout << "DC_EARLY_RESP_REW_I0_PRC" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
 			if (ch=='+') {
 				statHandler->DC_EARLY_RESP_REW_I0_PRC += increment;
 				if (statHandler->DC_EARLY_RESP_REW_I0_PRC > 100 ) {
-					cout << "\n***DC_EARLY_RESP_REW_I0_PRC has reached maximum! (no change)***" << endl;
+					std::cout << "\n***DC_EARLY_RESP_REW_I0_PRC has reached maximum! (no change)***" << std::endl;
 					statHandler->DC_EARLY_RESP_REW_I0_PRC -= increment;
 				} else {
 					statHandler->DC_EARLY_RESP_REW_I1_PRC += increment;
@@ -851,7 +851,7 @@ void SyncManager::adjustParameters() {
 			} else {
 				statHandler->DC_EARLY_RESP_REW_I0_PRC -= increment;
 				if (statHandler->DC_EARLY_RESP_REW_I0_PRC < 0) {
-					cout << "\n***DC_EARLY_RESP_REW_I0_PRC has reached minimum! (no change)***" << endl;
+					std::cout << "\n***DC_EARLY_RESP_REW_I0_PRC has reached minimum! (no change)***" << std::endl;
 					statHandler->DC_EARLY_RESP_REW_I0_PRC += increment;
 				} else {
 					statHandler->DC_EARLY_RESP_REW_I1_PRC -= increment;
@@ -863,26 +863,26 @@ void SyncManager::adjustParameters() {
 				}
 
 			}
-			cout << "\n DC_EARLY_RESP_REW_I1_PRC: " << statHandler->DC_EARLY_RESP_REW_I1_PRC << endl;
-			cout << "DC_EARLY_RESP_REW_I2_PRC: " << statHandler->DC_EARLY_RESP_REW_I2_PRC << endl;
+			std::cout << "\n DC_EARLY_RESP_REW_I1_PRC: " << statHandler->DC_EARLY_RESP_REW_I1_PRC << std::endl;
+			std::cout << "DC_EARLY_RESP_REW_I2_PRC: " << statHandler->DC_EARLY_RESP_REW_I2_PRC << std::endl;
 			adjustParameters();
 		}
 		if (ch == 'o') { //adjust MAX_NUM_OF_OBS_INP
 			increment = 1;
-			cout << "MAX_NUM_OF_OBS_INP" << endl;
+			std::cout << "MAX_NUM_OF_OBS_INP" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
 			if (ch=='+') {
 				statHandler->MAX_NUM_OF_OBS_INP += increment;
 				if (statHandler->MAX_NUM_OF_OBS_INP > 100 ) {
-					cout << "\n***MAX_NUM_OF_OBS_INP has reached maximum! (no change)***" << endl;
+					std::cout << "\n***MAX_NUM_OF_OBS_INP has reached maximum! (no change)***" << std::endl;
 					statHandler->MAX_NUM_OF_OBS_INP -= increment;
 				}
 			} else {
 				statHandler->MAX_NUM_OF_OBS_INP -= increment;
 				if (statHandler->MAX_NUM_OF_OBS_INP < 0) {
-					cout << "\n***MAX_NUM_OF_OBS_INP has reached minimum! (no change)***" << endl;
+					std::cout << "\n***MAX_NUM_OF_OBS_INP has reached minimum! (no change)***" << std::endl;
 					statHandler->MAX_NUM_OF_OBS_INP += increment;
 				}
 			}
@@ -890,20 +890,20 @@ void SyncManager::adjustParameters() {
 		}
 		if (ch == 'p') { //adjust MAX_NUM_OF_OBS_EFF
 			increment = 1;
-			cout << "MAX_NUM_OF_OBS_EFF" << endl;
+			std::cout << "MAX_NUM_OF_OBS_EFF" << std::endl;
 			while ((ch!='+') && (ch!='-')) {
 				ch =_getch();
 			}
 			if (ch=='+') {
 				statHandler->MAX_NUM_OF_OBS_EFF += increment;
 				if (statHandler->MAX_NUM_OF_OBS_EFF > 100 ) {
-					cout << "\n***MAX_NUM_OF_OBS_EFF has reached maximum! (no change)***" << endl;
+					std::cout << "\n***MAX_NUM_OF_OBS_EFF has reached maximum! (no change)***" << std::endl;
 					statHandler->MAX_NUM_OF_OBS_EFF -= increment;
 				}
 			} else {
 				statHandler->MAX_NUM_OF_OBS_EFF -= increment;
 				if (statHandler->MAX_NUM_OF_OBS_EFF < 0) {
-					cout << "\n***MAX_NUM_OF_OBS_EFF has reached minimum! (no change)***" << endl;
+					std::cout << "\n***MAX_NUM_OF_OBS_EFF has reached minimum! (no change)***" << std::endl;
 					statHandler->MAX_NUM_OF_OBS_EFF += increment;
 				}
 			}
@@ -915,7 +915,7 @@ void SyncManager::adjustParameters() {
 
 void SyncManager::pressSpaceWait() {
 	int ch;
-	cout << "press space..." << endl;
+	std::cout << "press space..." << std::endl;
 	while (ch != ' ') {
 		ch = _getch();
 	}
@@ -938,7 +938,7 @@ int SyncManager::getRandNumBetwZeroAnd(int maximum) {
 	else //large number: use other method
 		randomNum = ( ((double)rand()) / ((double)RAND_MAX)  ) *maximum;
 	if (randomNum<0) {
-		cout << "ERROR: getRandomNum" << endl;
+		std::cout << "ERROR: getRandomNum" << std::endl;
 		while (true) {}
 	}
 	if (randomNum>maximum)

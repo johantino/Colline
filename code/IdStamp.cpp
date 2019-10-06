@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "Colline.h"
 #include "IdStamp.h"
-#include "iostream.h"
+#include <iostream>
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -34,7 +34,7 @@ int IdStamp::getCounter() {
 
 int IdStamp::stamp() {
 	while (locked) {
-		cout << (LPCTSTR)"IdStamp locked!" << endl; //to test if it ever happens
+		std::cout << (LPCTSTR)"IdStamp locked!" << std::endl; //to test if it ever happens
 	}
 	locked = true;
 	counter++;

@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "Colline.h"
 #include "GridCell.h"
-#include "iostream.h"
+#include <iostream>
 #include <conio.h> //for press key
 
 
@@ -48,7 +48,7 @@ bool GridCell::isOccupied() {
 
 void GridCell::placeOccupier(Observable* occ) {
 	if (isOccupied()) {
-		cout << "ERROR: GridCell, attempt to place two agents in cell!" << endl;
+		std::cout << "ERROR: GridCell, attempt to place two agents in cell!" << std::endl;
 		pressSpaceToQuit();
 	}
 	occupied = true;
@@ -89,7 +89,7 @@ Observable* GridCell::getOccupier() {
 
 void GridCell::pressSpaceToQuit() {
 	int ch;
-	cout << "press space..." << endl;
+	std::cout << "press space..." << std::endl;
 	while (ch != ' ') {
 		ch = _getch();
 	}

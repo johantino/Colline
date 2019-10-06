@@ -7,7 +7,7 @@
 #include "Environment.h"
 #include "Konst.h"
 #include "math.h"
-#include "iostream.h"
+#include <iostream>
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -95,7 +95,7 @@ void Environment::fillPipesCrossOrRandom() {
 	for (i=0; i<NUM_OF_PIPES; i++) {
 		tempM = nextMessInPipes->GetAt( nextMessInPipes->FindIndex(i) );
 		if (tempM->getSize() != 0 ) {
-			cout << "ERROR: environment all pipes should be empty" << endl;
+			std::cout << "ERROR: environment all pipes should be empty" << std::endl;
 			while (true) {}
 		}
 	}
@@ -134,7 +134,7 @@ void Environment::fillPipesCircleOrNotCircle(bool fillWithCategory) {
 	for (i=0; i<NUM_OF_PIPES; i++) {
 		tempM = nextMessInPipes->GetAt( nextMessInPipes->FindIndex(i) );
 		if (tempM->getSize() != 0 ) {
-			cout << "ERROR: environment all pipes should be empty" << endl;
+			std::cout << "ERROR: environment all pipes should be empty" << std::endl;
 			while (true) {}
 		}
 	}
@@ -160,7 +160,7 @@ void Environment::fillPipesCircleOrNotCircle(bool fillWithCategory) {
 		}
 		loadedCategory = false; //category is not-A (risk that random values happen to match 'A' are ignored)
 	}
-	//cout << "DEBUG; loadedcat: " << loadedCategory << endl;
+	//std::cout << "DEBUG; loadedcat: " << loadedCategory << std::endl;
 	toStringLastMessage(); //make string to be shown later
 }
 
@@ -183,7 +183,7 @@ bool Environment::fillPipesCircleOrNotCircle(int sessNum, int perf_cat0, int per
 		chanceForCat0 = 500; //used when almost same performance
 	if (disharmony>0) //handles cat0 better than cat1, so switch chance
 		chanceForCat0 = 1000 - chanceForCat0;
-	cout << "disharmony: " << disharmony << " , chanceCat0: " << chanceForCat0 << endl;
+	std::cout << "disharmony: " << disharmony << " , chanceCat0: " << chanceForCat0 << std::endl;
 	/*if (perf_cat0 >= (MAX_PERF_SCORE*.75) && perf_cat1 < (MAX_PERF_SCORE/2) )
 		chanceForCat0 = 200; //handles cat0 pretty well but not cat1 so increase cat1 training
 	else if (perf_cat1 >= (MAX_PERF_SCORE*.75) && perf_cat0 < (MAX_PERF_SCORE/2) )
@@ -221,7 +221,7 @@ void Environment::fillPipesAOrNotA(int sessNum) {
 	for (i=0; i<NUM_OF_PIPES; i++) {
 		tempM = nextMessInPipes->GetAt( nextMessInPipes->FindIndex(i) );
 		if (tempM->getSize() != 0 ) {
-			cout << "ERROR: environment all pipes should be empty" << endl;
+			std::cout << "ERROR: environment all pipes should be empty" << std::endl;
 			while (true) {}
 		}
 	}
@@ -262,7 +262,7 @@ void Environment::fillPipesAOrNotA(int sessNum) {
 }
 
 void Environment::fillPipesZerosOrOnes(bool fillWithCat) {
-	//cout << "DEBUG: filling pipes..."<< endl;
+	//std::cout << "DEBUG: filling pipes..."<< std::endl;
 	int MESS_SIZE = 6;
 	int MIN_MAJORITY = 5; //the least amount of 0's (1's) for a zero-message (one-message)
 	Message* tempM;
@@ -270,7 +270,7 @@ void Environment::fillPipesZerosOrOnes(bool fillWithCat) {
 	for (int i=0; i<NUM_OF_PIPES; i++) {
 		tempM = nextMessInPipes->GetAt( nextMessInPipes->FindIndex(i) );
 		if (tempM->getSize() != 0 ) {
-			cout << "ERROR: environment all pipes should be empty" << endl;
+			std::cout << "ERROR: environment all pipes should be empty" << std::endl;
 			while (true) {}
 		}
 	}
@@ -330,7 +330,7 @@ bool Environment::fillPipesZerosOrOnes(int sessNum, int perf_cat0, int perf_cat1
 		chanceForCat0 = 500; //used when almost same performance
 	if (disharmony>0) //handles cat0 better than cat1, so switch chance
 		chanceForCat0 = 1000 - chanceForCat0;
-	cout << "disharmony: " << disharmony << " , chanceCat0: " << chanceForCat0 << endl;
+	std::cout << "disharmony: " << disharmony << " , chanceCat0: " << chanceForCat0 << std::endl;
 	while (true) {}
 	/*if (perf_cat0 >= (MAX_PERF_SCORE*.75) && perf_cat1 < (MAX_PERF_SCORE/2) )
 		chanceForCat0 = 200; //handles cat0 pretty well but not cat1 so increase cat1 training
@@ -368,7 +368,7 @@ Message* Environment::getNextMessageFromPipe(int pipeNum) {
 		pos = nextMessInPipes->FindIndex( i );
 		tempMess = nextMessInPipes->GetAt( pos );
 		if (tempMess->getSize() != 0) {
-			cout << "ERROR: pipes must be accessed in order" << endl;
+			std::cout << "ERROR: pipes must be accessed in order" << std::endl;
 			while (true) {}
 		}
 	}*/
@@ -376,7 +376,7 @@ Message* Environment::getNextMessageFromPipe(int pipeNum) {
 	pos = nextMessInPipes->FindIndex( pipeNum );
 	tempMess = nextMessInPipes->GetAt( pos );
 	if (tempMess->getSize() == 0) {
-		cout << "ERROR: environment: pipe empty" << endl;
+		std::cout << "ERROR: environment: pipe empty" << std::endl;
 		while (true) {}
 		//fillPipes();
 	}
@@ -443,7 +443,7 @@ Message* Environment::getAMessage(int rowNum, int aPosition) {
 		else
 			return (new Message(7,5));
 	}
-	cout << "ERROR: env..getAMessage" << endl;
+	std::cout << "ERROR: env..getAMessage" << std::endl;
 	while (true) {}
 	return (new Message(0,0));
 }
@@ -473,7 +473,7 @@ Message* Environment::getCircleMessage(int rowNum, int circlePosition) {
 		else
 			return (new Message(6,5));
 	}
-	cout << "ERROR: env..getCircleMessage" << endl;
+	std::cout << "ERROR: env..getCircleMessage" << std::endl;
 	while (true) {}
 	return (new Message(0,0));
 }
@@ -485,7 +485,7 @@ int Environment::getRandNumBetwZeroAnd(int maximum) {
 	else //large number: use other method
 		randomNum = ( ((double)rand()) / ((double)RAND_MAX)  ) *maximum;
 	if (randomNum<0) {
-		cout << "ERROR: getRandomNum" << endl;
+		std::cout << "ERROR: getRandomNum" << std::endl;
 		while (true) {}
 	}
 	if (randomNum>maximum)

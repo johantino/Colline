@@ -45,7 +45,7 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 	if (!AfxWinInit(::GetModuleHandle(NULL), NULL, ::GetCommandLine(), 0))
 	{
 		// TODO: change error code to suit your needs
-		cerr << _T("Fatal Error: MFC initialization failed") << endl;
+		cerr << _T("Fatal Error: MFC initialization failed") << std::endl;
 		nRetCode = 1;
 	}
 	else
@@ -53,10 +53,10 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 		// TODO: code your application's behavior here.
 		/*CString strHello;
 		strHello.LoadString(IDS_HELLO);
-		cout << (LPCTSTR)strHello << endl;*/
+		std::cout << (LPCTSTR)strHello << std::endl;*/
 		//Message* test = new Message( 1982464, 27);
 		/*Message* test = new Message( pow(2,12)+4, 27);
-		cout << (LPCTSTR)test->toStringBits() << endl;
+		std::cout << (LPCTSTR)test->toStringBits() << std::endl;
 		while (true) {}*/
 		SetPriorityClass(GetCurrentProcess(), IDLE_PRIORITY_CLASS);
 		srand( 12 ); //(unsigned)time( NULL ) );
@@ -66,12 +66,12 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 		CString fn_ses = "3739";
 		CString filename_pop = filename_beg + FN_AGENTPOP + "_" + fn_ses + FN_EXT;
 		CString filename_org = filename_beg + FN_ORGANISMVAR + "_" + fn_ses + FN_EXT;
-		//cout << "pop: " << (LPCTSTR)filename_pop << endl;
-		//cout << "org: " << (LPCTSTR)filename_org << endl;
+		//std::cout << "pop: " << (LPCTSTR)filename_pop << std::endl;
+		//std::cout << "org: " << (LPCTSTR)filename_org << std::endl;
 		//while (true) {}
 		int initCycNum, initSesNum, fitnEnv, initMatBonusBuffer, initFitnBuff0, initFitnBuff1, initSesRew, initDnaSamNum, initIdCounterVal;
 		if (isNewOrganism) {
-			cout << "Initializing new organism..." << endl;
+			std::cout << "Initializing new organism..." << std::endl;
 			initCycNum = 0;
 			initSesNum = -1;
 			fitnEnv = 0; //is set later: equal total agent fitness 
@@ -85,11 +85,11 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 			int restoredCycNum, restoredSesNum, restoredFitnEnv, restoredMatingBuff, restoredFitnBuff0, restoredFitnBuff1, restoredSesRew, restoredDnaSamNum, restoredIdCounterVal;
 			FILE* organismVarFile;
 			if ((organismVarFile = fopen( filename_org, "r")) == NULL) {
-				cout << "ERROR: couldn't open file, file not found" << endl;
-				cout << (LPCTSTR)filename_org << endl;
+				std::cout << "ERROR: couldn't open file, file not found" << std::endl;
+				std::cout << (LPCTSTR)filename_org << std::endl;
 				exit(0); //pressSpaceToQuit();
 			} else
-				cout << "Loading variables..." << endl;
+				std::cout << "Loading variables..." << std::endl;
 			fseek( organismVarFile, 0, SEEK_SET);
 			fscanf(organismVarFile,"%d", &restoredCycNum); 
 			fscanf(organismVarFile,"%d", &restoredSesNum); 
@@ -110,7 +110,7 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 			initSesRew = restoredSesRew;
 			initDnaSamNum = restoredDnaSamNum;
 			initIdCounterVal = restoredIdCounterVal;
-			//cout << "Restored values: " << initCycNum << ", " << initSesNum << ", " << initFitnEnv << ", " << initFitnBuff << ", " << initSesRew << endl;
+			//std::cout << "Restored values: " << initCycNum << ", " << initSesNum << ", " << initFitnEnv << ", " << initFitnBuff << ", " << initSesRew << std::endl;
 		}
 
 
@@ -129,13 +129,13 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 		DecisionCategory* myCat = new DecisionCategory(initFitnBuff0, initFitnBuff1, myEnv, myStatHandler, myStamp, mySync, COLLECTION_TIME);
 		AgentCreator* creator = new AgentCreator(myEnv, myStatHandler, mySync, myGrid, myStamp, myCat);
 		if (isNewOrganism) {
-			cout << "creating fountains..." << endl;
+			std::cout << "creating fountains..." << std::endl;
 			creator->createFountains();
-			cout << "creating collectors..." << endl;
+			std::cout << "creating collectors..." << std::endl;
 			creator->createCollectors();
-			cout << "creating inpoders..." << endl;
+			std::cout << "creating inpoders..." << std::endl;
 			creator->createInpoders();
-			cout << "creating effectors..." << endl;
+			std::cout << "creating effectors..." << std::endl;
 			creator->createEffectors();
 			int initFitnEnv = (myStatHandler->getFitnessColline() *myStatHandler->IDEAL_NUM_OF_AGENTS_IN_GRID)/(INIT_NUM_OF_COLL + INIT_NUM_OF_INP + INIT_NUM_OF_EFF); //balance should be maintained
 			myEnv->setFitness( initFitnEnv ); 
@@ -163,7 +163,7 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 
 		f1->bidders->AddTail(inp2);
 		DEBUG test end*/
-		cout << "closing windows..." << endl;
+		std::cout << "closing windows..." << std::endl;
 		gView->DestroyWindow();
 		agentView->DestroyWindow();
 		trainingView->DestroyWindow();
