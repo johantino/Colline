@@ -410,7 +410,7 @@ void SyncManager::pressSpaceToQuit() {
 }
 
 void SyncManager::pressSpaceOrQuit() {
-	int ch;
+	int ch = 0;
 	std::cout << "press space or 'q' to quit..." << std::endl;
 	while ((ch != ' ') && (ch != 'q')) {
 		ch = _getch();
