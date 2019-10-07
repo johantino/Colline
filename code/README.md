@@ -32,6 +32,19 @@ StdAfx.h, StdAfx.cpp
 Resource.h
     This is the standard header file, which defines new resource IDs.
     Microsoft Visual C++ reads and updates this file.
+/////////////////////////////////////////////////////////////////////////////
+
+Build instructions:
+
+    1. Navigate the terminal to /Colline/Code/
+
+    2. `mkdir build`
+
+    3. `cd build`
+
+    4. `cmake ..`
+
+    5. `make`
 
 /////////////////////////////////////////////////////////////////////////////
 Other notes:
