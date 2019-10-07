@@ -77,7 +77,7 @@ public:
 	unsigned int getMaxLifeTime();
 	int getNumOfOffspring();
 	int getLastProcessedInSession();
-	CList<Observable*, Observable*>* getCurrentNeighbours();
+	std::list<Observable*> getCurrentNeighbours();
 	//virtual Message* getAppearBus();
 	virtual std::string toStringObserveBusApp();
 	void setBidPoF(int percent);
@@ -149,7 +149,7 @@ private:
 	void takeRandomStep();
 	Message* getOffspringPart(int repPosStart, int repPosStop, int partPosStart, int partPosStop, Message* thisDNA, Message* mateDNA);
 	virtual Observable* makeBaby(Environment*,IdStamp*,Grid*, GridCell*, SyncManager*, int fitn, Message* appMat, Message* appBus, Message* agent, Message* type);
-	void setCurrentNeighbours( CList<Observable*, Observable*>* nb);
+	void setCurrentNeighbours( std::list<Observable*> nb);
 	void informNeighbourhoodOfNewcomer(); //informs agents in neighbourhood of this possible new agent to observe. NB! Introduces risk for 'frozen agentpatterns'
 	
 	//------------Attributs:---------------
@@ -160,7 +160,7 @@ private:
 	bool readyToMate;
 	//int numOfObsAgents; //counter that keeps track on # of observed agents
 
-	CList<Observable*, Observable*>* currentNeighbours;
+	std::list<Observable*> currentNeighbours;
 
 	int matingThrStart; //specifies when to start mating, value based on initialfitness, uses C_MATSTART
 	int matingThrStop;  //          -       stop  -     , -                              -    C_MATSTOP

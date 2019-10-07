@@ -216,16 +216,16 @@ void StatisticsHandler::storePopulation(int cycNum, int sesNum, int matingBuffer
 	Fountain* currFountain;
 	char tab = '	';
 	FILE* agentPopFile = fopen((fname_begin + FN_AGENTPOP + "_" + numToString(sesNum) + FN_EXT).c_str(), "w");
-	CList<Observable*, Observable*>* allAgents = agentGrid->getNeighbours( agentGrid->getCellAt( agentGrid->getWidthX()/2, agentGrid->getHightY()/2), agentGrid->getWidthX()/2 + 2, true);
-	if (allAgents->GetCount() != numOfAgents) {
+	auto allAgents = agentGrid->getNeighbours( agentGrid->getCellAt( agentGrid->getWidthX()/2, agentGrid->getHightY()/2), agentGrid->getWidthX()/2 + 2, true);
+	if (allAgents.size() != numOfAgents) {
 		std::cout << "ERROR: storePop, numOfagents error" << std::endl;
-		std::cout << "vec: " << allAgents->GetCount() << std::endl;
+		std::cout << "vec: " << allAgents.size() << std::endl;
 		std::cout << "stat: " << numOfAgents << std::endl;
 		pressSpaceToQuit();
 	}
 	fprintf(agentPopFile, "%d\n", numOfAgents);
-	for (int i=0; i<numOfAgents; i++) {
-		currObs = allAgents->GetAt( allAgents->FindIndex(i) );
+
+	for (auto currObs : allAgents) {
 		fprintf(agentPopFile, "%d%c", currObs->getType(), tab);
 		if (currObs->getType() == TYPE_FOUNTAIN) {
 			currFountain = (Fountain*)currObs;
@@ -262,7 +262,7 @@ void StatisticsHandler::storePopulation(int cycNum, int sesNum, int matingBuffer
 	}
 
 	fclose(agentPopFile);
-	delete allAgents;
+
 	FILE* organismVarFile = fopen((fname_begin + FN_ORGANISMVAR + "_" + numToString(sesNum) + FN_EXT).c_str(), "w");
 	fprintf(organismVarFile, "%d\n", cycNum );
 	fprintf(organismVarFile, "%d\n", sesNum );

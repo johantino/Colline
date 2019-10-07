@@ -122,7 +122,7 @@ Agent::Agent(Environment* e,
 		pressSpaceToQuit();
 	}
 	//------- initialize various values: -------
-	currentNeighbours = new CList<Observable*, Observable*>(10);
+	currentNeighbours = std::list<Observable*>(10);
 	//bidders = new CList<Observable*, Observable*>(10);  	
 //	numOfObsAgents = 0;
 	numOfOffspring = 0; //use restored
@@ -146,7 +146,7 @@ Agent::~Agent()
 	delete appearMat;
 	delete appIdealMat;
 	//delete appPickiMat;
-	delete currentNeighbours;
+
 	//delete bidders;	
 	/*agentPosition->freeCell();
 	env->receiveFitness( fitness );
@@ -160,7 +160,7 @@ unsigned int Agent::getMaxLifeTime() {
 	return maxLifeTime;
 }
 
-CList<Observable*, Observable*>* Agent::getCurrentNeighbours() {
+std::list<Observable*> Agent::getCurrentNeighbours() {
 	if (syncMan->getCycleNum() != lastNeighboursUpdateCycle) {
 		std::cout << "ERROR: neighbours not updated" << std::endl;
 		pressSpaceToQuit();
@@ -172,9 +172,8 @@ int Agent::getLastProcessedInSession() {
 	return lastProcessedInSess;
 }
 
-void Agent::setCurrentNeighbours( CList<Observable*, Observable*>* nb) {
+void Agent::setCurrentNeighbours( std::list<Observable*> nb) {
 	lastNeighboursUpdateCycle = syncMan->getCycleNum();
-	delete currentNeighbours;
 	currentNeighbours = nb;
 }
 
@@ -1105,8 +1104,9 @@ std::list<Agent*> Agent::getMatingSubjects() {
 	//find similar type and status=drifter:
 	Observable* tempObservable;
 	int thisType = getType();
-	for (i=0; i<currentNeighbours->GetCount(); i++) {
-		tempObservable = currentNeighbours->GetAt( currentNeighbours->FindIndex(i));
+	for (auto tempObservable : currentNeighbours) {
+	//for (i=0; i<currentNeighbours->GetCount(); i++) {
+		//tempObservable = currentNeighbours->GetAt( currentNeighbours->FindIndex(i));
 		if (tempObservable->getType() == thisType) {
 			if (tempObservable->getStatusAndActive() == ST_DRIFTER)
 				agents.AddTail((Agent*)tempObservable);

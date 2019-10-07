@@ -223,7 +223,7 @@ bool Effector::makeBusinessConnections() {
 		std::cout << "error: effector has not been observing anyone (was drifter)" << std::endl;
 		pressSpaceToQuit();
 	}//end test
-	if (getCurrentNeighbours()->GetCount() == 0)
+	if (getCurrentNeighbours().empty())
 		return false; //no neighbours
 	CList<Observable*,Observable*>* legalBus = removeNonLegalBusiness(); //Removes drifters from neigbourhood list
 	//std::cout << "num of legal bus subj: " << legalBus.size() << std::endl;
@@ -352,12 +352,10 @@ bool Effector::checkForNewObserveConnection(Agent* newObserverInNB){
 }
 
 CList<Observable*,Observable*>* Effector::removeNonLegalBusiness() {
-	CList<Observable*,Observable*>* currNB = getCurrentNeighbours();
+	auto currNB = getCurrentNeighbours();
 	CList<Observable*,Observable*>* legalBusiness = new CList<Observable*,Observable*>;
-	Observable* subj;
-	int nbSize = currNB->GetCount();
-	for (int i=0; i<nbSize; i++) {
-		subj = currNB->GetAt( currNB->FindIndex(i));
+
+	for(auto subj : currNB) {
 		if (!subj->isFountain()) { //Remove fountains
 			if (subj->getStatusAndActive() == ST_OBSERVER) 
 				legalBusiness->AddTail((Agent*)subj);

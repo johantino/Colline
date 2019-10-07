@@ -13,6 +13,7 @@
 #include <afxtempl.h>
 #include "GridRow.h"
 #include "GridCell.h"
+#include <list>
 //#include "Effector.h"
 //#include "Agent.h"
 
@@ -25,7 +26,7 @@ public:
 	void setCellAt(int posX, int posY, GridCell*);
 	//void putBabyAgentAt(GridCell* freePosition);
 	GridCell* getCellAt(int posX, int posY); //upper left corner is (0,0)
-	CList<Observable*, Observable*>* getNeighbours(GridCell* center, int vicinity, bool returnCenterAgent);
+	std::list<Observable*> getNeighbours(GridCell* center, int vicinity, bool returnCenterAgent);
 	CList<Observable*, Observable*>* getObservers(GridCell* center, int vicinity, bool returnCenterAgent);
 	int getNumOfNeighbours(GridCell* center, int vicinity, bool countCenterAgent);
 	CList<Observable*, Observable*>* getCollectors(GridCell* center, int vicinity, bool returnCenterAgent); //used for DNA sampling
