@@ -9,3 +9,16 @@ Looking forward to following the progress!
 
 Johan Tino Frederiksen
 (founder of this project & programmer of the original code)
+
+
+## Build Instructions
+
+    1. Navigate the terminal to /Colline/code/
+
+    2. `mkdir build`
+
+    3. `cd build`
+
+    4. `cmake ..`
+
+    5. `make`
