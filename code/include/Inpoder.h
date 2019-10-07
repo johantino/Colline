@@ -35,8 +35,8 @@ public:
 	void process(); //process and announce auction (called by syncMan)
 	void turnFocusTo(Observable*);
 	int auctionWon(Observable* seller, Message* boughtMessage); //returns the fitness paid
-	CString toStringObserveBusApp();
-	CString toStringTypeSpec();
+	std::string toStringObserveBusApp();
+	std::string toStringTypeSpec();
 	Message* getTypeDNA();
 	Message* getAppBusIdeal();
 	Message* getAppBusPicki();

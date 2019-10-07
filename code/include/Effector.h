@@ -40,8 +40,8 @@ public:
 	//effector processing is to compare the output/state from a certain group of agents with the output/state from another certain group
 	int auctionWon(Observable* seller, Message* boughtMessage); //returns the fitness paid
 	int getCatLevel();
-	CString toStringObserveBusApp();
-	CString toStringTypeSpec();
+	std::string toStringObserveBusApp();
+	std::string toStringTypeSpec();
 	Message* getTypeDNA();
 	int getProcType();
 	Message* getAppIdealBus1();
@@ -68,7 +68,7 @@ protected:
 		
 
 private:
-	CString toStringProcType();
+	std::string toStringProcType();
 	Observable* makeBaby(Environment*,IdStamp*,Grid*, GridCell*, SyncManager*, int fitn, Message* appMat, Message* appBus, Message* agent, Message* type);
 	CList<Observable*,Observable*>* removeNonLegalBusiness(); //removes non-observers and fountains from list
 	//vector<Agent*> agentsInput1; //effectors need to keep track on which agents correspond to which input

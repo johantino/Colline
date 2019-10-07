@@ -101,8 +101,8 @@ void Collector::TESTsetBoughtMessage(Message* m) {
 }
 
 
-CString Collector::toStringObserveBusApp() {
-	CString info;
+std::string Collector::toStringObserveBusApp() {
+	std::string info;
 	info = "\n| Observes: ";
 	info += appIdealBus->toStringBits(appPickiBus);
 	if (observesForProcessed)
@@ -112,8 +112,8 @@ CString Collector::toStringObserveBusApp() {
 	return info;
 }
 
-CString Collector::toStringTypeSpec() {
-	CString info;
+std::string Collector::toStringTypeSpec() {
+	std::string info;
 	char strMax[6];
 	_itoa(collectMax, strMax, 10);
 	char strThr[6];

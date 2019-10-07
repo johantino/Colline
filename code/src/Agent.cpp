@@ -200,7 +200,7 @@ int Agent::getInitialFitness() {
 	agentStatus = status;
 }*/
 
-CString Agent::toStringObserveBusApp() {
+std::string Agent::toStringObserveBusApp() {
 	return "\n Error agent bus app \n";
 }
 
@@ -276,8 +276,8 @@ void Agent::setFitness(int value) {
 	statHandler->adjustFitnessColline(change, getType());
 }
 
-CString Agent::toStringAge() {
-	CString info;
+std::string Agent::toStringAge() {
+	std::string info;
 	char strAge[6];
 	_itoa(age, strAge, 10);
 	char strMax[6];
@@ -289,8 +289,8 @@ CString Agent::toStringAge() {
 	return info;
 }	
 
-CString Agent::toStringAgentSpec() {
-	CString info;
+std::string Agent::toStringAgentSpec() {
+	std::string info;
 	char strFit[6];
 	_itoa(fitness, strFit, 10);
 	char strVicm[2];

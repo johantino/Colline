@@ -36,8 +36,8 @@ public:
 	void turnFocusTo(Observable*);
 	//void produceOffspring(Agent* mate);
 	int auctionWon(Observable* seller, Message* boughtMessage); //returns the fitness paid
-	CString toStringObserveBusApp();
-	CString toStringTypeSpec();
+	std::string toStringObserveBusApp();
+	std::string toStringTypeSpec();
 	Message* getTypeDNA();
 	Message* getAppBusIdeal();
 	Message* getAppBusPicki();

@@ -50,26 +50,26 @@ StatisticsHandler::StatisticsHandler(bool isNewOrganism, int restoredSesReward, 
 	int useThisNumOfOks;
 	//check whether new organism or restoring previously
 	if (isNewOrganism) {
-		file_fitnColline = fopen(fname_begin + FN_FITNCOL, "w" );
-		file_fitnBuff = fopen(fname_begin + FN_FITNBUFF,"w");
-		file_fitnEnv = fopen(fname_begin + FN_FITNENV,"w");
-		file_maters = fopen(fname_begin + FN_MATERS,"w");
-		file_agents = fopen(fname_begin + FN_AGENTS,"w");
-		file_bits_eaten = fopen(fname_begin + FN_BITSEATEN,"w");
-		file_correct_resp = fopen(fname_begin + FN_RESPCORRECT,"w");
-		file_wrong_resp = fopen(fname_begin + FN_RESPWRONG,"w");
-		file_category = fopen(fname_begin + FN_CATEGORY, "w");
+		file_fitnColline = fopen((fname_begin + FN_FITNCOL).c_str(), "w" );
+		file_fitnBuff = fopen((fname_begin + FN_FITNBUFF).c_str(),"w");
+		file_fitnEnv = fopen((fname_begin + FN_FITNENV).c_str(),"w");
+		file_maters = fopen((fname_begin + FN_MATERS).c_str(),"w");
+		file_agents = fopen((fname_begin + FN_AGENTS).c_str(),"w");
+		file_bits_eaten = fopen((fname_begin + FN_BITSEATEN).c_str(),"w");
+		file_correct_resp = fopen((fname_begin + FN_RESPCORRECT).c_str(),"w");
+		file_wrong_resp = fopen((fname_begin + FN_RESPWRONG).c_str(),"w");
+		file_category = fopen((fname_begin + FN_CATEGORY).c_str(), "w");
 		useThisNumOfOks = 0;
 	} else { //append to previously stored data
-		file_fitnColline = fopen(fname_begin + FN_FITNCOL, "a+" );
-		file_fitnBuff = fopen(fname_begin + FN_FITNBUFF,"a+");
-		file_fitnEnv = fopen(fname_begin + FN_FITNENV,"a+");
-		file_maters = fopen(fname_begin + FN_MATERS,"a+");
-		file_agents = fopen(fname_begin + FN_AGENTS,"a+");
-		file_bits_eaten = fopen(fname_begin + FN_BITSEATEN,"a+");
-		file_correct_resp = fopen(fname_begin + FN_RESPCORRECT,"a+");
-		file_wrong_resp = fopen(fname_begin + FN_RESPWRONG,"a+");
-		file_category = fopen(fname_begin + FN_CATEGORY, "a+");
+		file_fitnColline = fopen((fname_begin + FN_FITNCOL).c_str(), "a+" );
+		file_fitnBuff = fopen((fname_begin + FN_FITNBUFF).c_str(),"a+");
+		file_fitnEnv = fopen((fname_begin + FN_FITNENV).c_str(),"a+");
+		file_maters = fopen((fname_begin + FN_MATERS).c_str(),"a+");
+		file_agents = fopen((fname_begin + FN_AGENTS).c_str(),"a+");
+		file_bits_eaten = fopen((fname_begin + FN_BITSEATEN).c_str(),"a+");
+		file_correct_resp = fopen((fname_begin + FN_RESPCORRECT).c_str(),"a+");
+		file_wrong_resp = fopen((fname_begin + FN_RESPWRONG).c_str(),"a+");
+		file_category = fopen((fname_begin + FN_CATEGORY).c_str(), "a+");
 		useThisNumOfOks = DC_NUM_OF_OKS_RESTORING;
 	}
 
@@ -215,7 +215,7 @@ void StatisticsHandler::storePopulation(int cycNum, int sesNum, int matingBuffer
 	Agent* currAgent;
 	Fountain* currFountain;
 	char tab = '	';
-	FILE* agentPopFile = fopen(fname_begin + FN_AGENTPOP + "_" + numToString(sesNum) + FN_EXT, "w");
+	FILE* agentPopFile = fopen((fname_begin + FN_AGENTPOP + "_" + numToString(sesNum) + FN_EXT).c_str(), "w");
 	CList<Observable*, Observable*>* allAgents = agentGrid->getNeighbours( agentGrid->getCellAt( agentGrid->getWidthX()/2, agentGrid->getHightY()/2), agentGrid->getWidthX()/2 + 2, true);
 	if (allAgents->GetCount() != numOfAgents) {
 		std::cout << "ERROR: storePop, numOfagents error" << std::endl;
@@ -263,7 +263,7 @@ void StatisticsHandler::storePopulation(int cycNum, int sesNum, int matingBuffer
 
 	fclose(agentPopFile);
 	delete allAgents;
-	FILE* organismVarFile = fopen(fname_begin + FN_ORGANISMVAR + "_" + numToString(sesNum) + FN_EXT, "w");
+	FILE* organismVarFile = fopen((fname_begin + FN_ORGANISMVAR + "_" + numToString(sesNum) + FN_EXT).c_str(), "w");
 	fprintf(organismVarFile, "%d\n", cycNum );
 	fprintf(organismVarFile, "%d\n", sesNum );
 	fprintf(organismVarFile, "%d\n", fitnessEnvironment);
@@ -323,7 +323,7 @@ void StatisticsHandler::storePopulation(int cycNum, int sesNum, int matingBuffer
 }*/
 
 void StatisticsHandler::writeConstants() {
-	file_constants = fopen(fname_begin + FN_CONSTANTS + numToString(dnaSampleNum) + ".m", "w");
+	file_constants = fopen((fname_begin + FN_CONSTANTS + numToString(dnaSampleNum) + ".m").c_str(), "w");
 	fprintf(file_constants, "%s", "GRIDSIZE = ");
 	fprintf(file_constants, "%d\n", GRIDSIZE);
 	fprintf(file_constants, "%s", "IDEAL_NUM_OF_AGENTS_IN_GRID = ");
@@ -660,7 +660,7 @@ void StatisticsHandler::saveDNAinfo_coll(CList<Observable*, Observable*>* sample
 	Collector* colPointer;
 	char header[] = "%apMat	apBusSm	dna_a	dna_i	fitn	apIdM	bidP	maxAge	age	rtm	#off	apIdB	apPiB";
 	char tab = '	';
-	FILE* file_col = fopen(fname_begin + FN_DNACOLL + "_"  + numToString(dnaSampleNum) + FN_EXT, "w" );
+	FILE* file_col = fopen((fname_begin + FN_DNACOLL + "_"  + numToString(dnaSampleNum) + FN_EXT).c_str(), "w" );
 	fprintf(file_col, "%s\n", header);
 	for (int i=0; i<sample->GetCount(); i++) {
 		currAgent = sample->GetAt( sample->FindIndex(i) );
@@ -682,7 +682,7 @@ void StatisticsHandler::saveDNAinfo_inp(CList<Observable*, Observable*>* sample)
 	Inpoder* inpPointer;
 	char header[] = "%apMat	apBusSm	dna_a	dna_i	fitn	apIdM	bidP	maxAge	age	rtm	#off	apIdB	apPiB	smFo	food";
 	char tab = '	';
-	FILE* file_inp = fopen(fname_begin + FN_DNAINP + "_"  + numToString(dnaSampleNum) + FN_EXT, "w" );
+	FILE* file_inp = fopen((fname_begin + FN_DNAINP + "_"  + numToString(dnaSampleNum) + FN_EXT).c_str(), "w" );
 	fprintf(file_inp, "%s\n", header);
 	for (int i=0; i<sample->GetCount(); i++) {
 		currAgent = sample->GetAt( sample->FindIndex(i) );
@@ -703,7 +703,7 @@ void StatisticsHandler::saveDNAinfo_eff(CList<Observable*, Observable*>* sample)
 	Effector* effPointer;
 	char header[] = "%apMat	aoBusSm	dna_a	dna_i	fitn	apIdM	bidP	maxAge	age	rtm	#off	apIdB1	apPiB1	apIdB2	apPiB2	ToP	#Obs1	#Obs2";
 	char tab = '	';
-	FILE* file_eff = fopen(fname_begin + FN_DNAEFF + "_"  + numToString(dnaSampleNum) + FN_EXT, "w" );
+	FILE* file_eff = fopen((fname_begin + FN_DNAEFF + "_"  + numToString(dnaSampleNum) + FN_EXT).c_str(), "w" );
 	fprintf(file_eff, "%s\n", header);
 	for (int i=0; i<sample->GetCount(); i++) {
 		currAgent = sample->GetAt( sample->FindIndex(i) );
@@ -1128,10 +1128,10 @@ void StatisticsHandler::pressSpaceToQuit() {
 	exit(0);
 }
 
-CString StatisticsHandler::numToString(int number) {
+std::string StatisticsHandler::numToString(int number) {
 	char str[5];
 	_itoa(number, str, 10);
-	CString info = str;
+	std::string info = str;
 	return info;
 }
 

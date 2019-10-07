@@ -79,7 +79,7 @@ public:
 	int getLastProcessedInSession();
 	CList<Observable*, Observable*>* getCurrentNeighbours();
 	//virtual Message* getAppearBus();
-	virtual CString toStringObserveBusApp();
+	virtual std::string toStringObserveBusApp();
 	void setBidPoF(int percent);
 	void setStatusForNextDrifter();
 	void setStatusForNextObserver();
@@ -92,7 +92,7 @@ public:
 	//bool isLocatedInNoMatingArea(); //returns true if agent position is within 'no-mating' area
 	int pickRandomPosition(int numOfPositions); //proteceted
 	//CString toString();
-	CString toStringAgentSpec();
+	std::string toStringAgentSpec();
 	void setHasBeenActiveInSession(bool value) {hasBeenActiveInSession = value;}
 	bool getHasBeenActiveInSession(){return hasBeenActiveInSession;}
 	int getRandNumBetwZeroAnd(int maximum);
@@ -141,7 +141,7 @@ private:
 	//vector<Observable*> sortBidders();
 	void increaseProducedOffspring();
 	//bool neighbourhoodTooOvercrowdedForMating(); //returns true if nb is too occupied for mating to occur
-	CString toStringAge();
+	std::string toStringAge();
 	CList<Agent*, Agent*>* getMatingSubjects(); //returns the agents that are ready-to-mate and match app. criteria (mutually)	
 	//virtual vector<Agent*> removeNonSimilarAgents(vector<Observable*> nb);
 	Observable* findHighestBidder();

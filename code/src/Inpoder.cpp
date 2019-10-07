@@ -100,16 +100,16 @@ Message* Inpoder::getTypeDNA() {
 	return inpoderDNA;
 }
 
-CString Inpoder::toStringObserveBusApp() {
-	CString info;
+std::string Inpoder::toStringObserveBusApp() {
+	std::string info;
 	info = "\n| Obs. agents with app: ";
 	info += appIdealBus->toStringBits(appPickiBus);
 	info += "\n";
 	return info;
 }
 
-CString Inpoder::toStringTypeSpec() {
-	CString info;
+std::string Inpoder::toStringTypeSpec() {
+	std::string info;
 	char strVic[2];
 	_itoa(getVicinityBus(), strVic, 10);
 	info = toStringObserveBusApp();

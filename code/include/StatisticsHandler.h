@@ -189,7 +189,7 @@ public:
 
 private:
 
-	CString numToString(int number);
+	std::string numToString(int number);
 	int getAverage(int fValue, int agents);
 	void pressSpaceToQuit();
 	void pressSpaceOrQuit();
@@ -205,7 +205,7 @@ private:
 	Grid* agentGrid;
 	int dnaSampleNum;
 	//int max_fitn_rew_sess; //the maximum fitness that Colline can receive in one session (to prevent unstability)
-	CString fname_begin;
+	std::string fname_begin;
 	
 	//int sessionNum;
 	//WndCollineText* agentView;

@@ -390,12 +390,12 @@ bool Environment::getLoadedCategory() {
 	return loadedCategory;
 }
 
-CString Environment::getLastMessageString() {
+std::string Environment::getLastMessageString() {
 	return lastMessageString;
 }
 
 void Environment::toStringLastMessage() {
-	CString info;
+	std::string info;
 	Message* mess;
 	info = "\n Messages from pipes (ordered): ";
 	for (int pNum=0; pNum<NUM_OF_PIPES; pNum++) {

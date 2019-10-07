@@ -31,7 +31,7 @@ public:
 	void addToBidders(Observable* bidder);
 	void receiveMessage(Message* newMess); //from environment
 	int getStatusAndActive();
-	CString toString();
+	std::string toString();
 	void process();
 	void drift();
 	int getLoadingSlot();

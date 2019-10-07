@@ -74,16 +74,16 @@ UIntGrid::~UIntGrid()
 
 }
 
-CString UIntGrid::toString() {
-	CString info;
+std::string UIntGrid::toString() {
+	std::string info;
 	for (int r=0; r<hight; r++) {
 		info += toStringRow(r);
 	}	
 	return info;
 }
 
-CString UIntGrid::toStringRow(int row) {
-	CString info;
+std::string UIntGrid::toStringRow(int row) {
+	std::string info;
 	char strVal[6];	
 	int val;
 	int index;
@@ -100,7 +100,7 @@ CString UIntGrid::toStringRow(int row) {
 		info += "|";
 	}
 	info += "\n";
-	int len = info.GetLength();
+	int len = info.size();
 	for (int i=0; i<len; i++) {
 		info += "-";
 	}
@@ -147,15 +147,15 @@ int UIntGrid::getTotalSum() {
 	return totalSum;
 }
 
-CString UIntGrid::toStringColumnSum(int column) {
+std::string UIntGrid::toStringColumnSum(int column) {
 	char str[5];
 	int sum = getColumnSum(column);
 	_itoa( sum, str, 10);
-	CString info = str;
+	std::string info = str;
 	return info;
 }
 
-CString UIntGrid::toStringColumnSum1000(int column) {
+std::string UIntGrid::toStringColumnSum1000(int column) {
 	char str[5];
 	int sum = getColumnSum(column);
 	int remain = fmod(sum,1000);
@@ -163,20 +163,20 @@ CString UIntGrid::toStringColumnSum1000(int column) {
 	if (remain>=500)
 		sum += 1;
 	_itoa( sum, str, 10);
-	CString info = str;
+	std::string info = str;
 	return info;
 }
 
 
-CString UIntGrid::toStringRowSum(int row) {
+std::string UIntGrid::toStringRowSum(int row) {
 	char str[5];
 	int sum = getRowSum(row);
 	_itoa( sum, str, 10);
-	CString info = str;
+	std::string info = str;
 	return info;
 }
 
-CString UIntGrid::toStringRowSum1000(int row) {
+std::string UIntGrid::toStringRowSum1000(int row) {
 	char str[5];
 	int sum = getRowSum(row);
 	int remain = fmod(sum,1000);
@@ -184,19 +184,19 @@ CString UIntGrid::toStringRowSum1000(int row) {
 	if (remain>=500)
 		sum += 1;
 	_itoa( sum, str, 10);
-	CString info = str;
+	std::string info = str;
 	return info;
 }
 
-CString UIntGrid::toStringTotalSum() {
+std::string UIntGrid::toStringTotalSum() {
 	char str[5];
 	int sum = getTotalSum();
 	_itoa( sum, str, 10);
-	CString info = str;
+	std::string info = str;
 	return info;
 }
 
-CString UIntGrid::toStringTotalSum1000() {
+std::string UIntGrid::toStringTotalSum1000() {
 	char str[5];
 	int sum = getTotalSum();
 	int remain = fmod(sum,1000);
@@ -204,16 +204,16 @@ CString UIntGrid::toStringTotalSum1000() {
 	if (remain>=500)
 		sum += 1;
 	_itoa( sum, str, 10);
-	CString info = str;
+	std::string info = str;
 	return info;
 }
 
 
-CString UIntGrid::toStringValue(int row, int column) {
+std::string UIntGrid::toStringValue(int row, int column) {
 	char str[5];
 	int value = readValue(row,column);
 	_itoa( value, str, 10);
-	CString info = str;
+	std::string info = str;
 	return info;
 }
 

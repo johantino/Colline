@@ -119,8 +119,8 @@ Message* Effector::getTypeDNA() {
 	return effectorDNA;
 }
 
-CString Effector::toStringObserveBusApp() {
-	CString info;
+std::string Effector::toStringObserveBusApp() {
+	std::string info;
 	info = "\n| Observes (Input 1): ";
 	info += appIdealBus1->toStringBits(appPickiBus1);
 	info += "\n| Observes (Input 2): ";
@@ -130,8 +130,8 @@ CString Effector::toStringObserveBusApp() {
 	return info;
 }
 
-CString Effector::toStringProcType() {
-	CString info;
+std::string Effector::toStringProcType() {
+	std::string info;
 	if (typeOfProc == PROC_AND)
 		info = "AND";
 	else if (typeOfProc == PROC_OR)
@@ -153,8 +153,8 @@ CString Effector::toStringProcType() {
 	return info;
 }
 
-CString Effector::toStringTypeSpec() {
-	CString info;
+std::string Effector::toStringTypeSpec() {
+	std::string info;
 	char strLevel[2];
 	_itoa(bidAgressionLevel, strLevel, 10);
 	char strVic[2];
@@ -751,7 +751,7 @@ int Effector::auctionWon(Observable* seller, Message* boughtMess) {
 		if (boughtMessageBoth->getSize() != 0) {
 			if (boughtMessageInp1->getSize() != 0) { //boughtMessInp1 is by def. used when bMessBoth is taken (could just as well be inp2)
 				std::cout << "ERROR: effector " << getId() << " auctionWon input category already 'booked'!! (inp1)" << std::endl;
-				std::cout << "message: " << (LPCTSTR)boughtMessageInp1->toString() << std::endl;
+				std::cout << "message: " << boughtMessageInp1->toString() << std::endl;
 				pressSpaceToQuit();
 			} else {
 				//std::cout << " (INP1)" << std::endl;
