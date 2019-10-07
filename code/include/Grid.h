@@ -27,11 +27,11 @@ public:
 	//void putBabyAgentAt(GridCell* freePosition);
 	GridCell* getCellAt(int posX, int posY); //upper left corner is (0,0)
 	std::list<Observable*> getNeighbours(GridCell* center, int vicinity, bool returnCenterAgent);
-	CList<Observable*, Observable*>* getObservers(GridCell* center, int vicinity, bool returnCenterAgent);
+	std::list<Observable*> getObservers(GridCell* center, int vicinity, bool returnCenterAgent);
 	int getNumOfNeighbours(GridCell* center, int vicinity, bool countCenterAgent);
-	CList<Observable*, Observable*>* getCollectors(GridCell* center, int vicinity, bool returnCenterAgent); //used for DNA sampling
-	CList<Observable*, Observable*>* getInpoders(GridCell* center, int vicinity, bool returnCenterAgent); //used for DNA sampling
-	CList<Observable*, Observable*>* getEffectors(GridCell* center, int vicinity, bool returnCenterAgent); //used for DNA sampling
+	std::list<Observable*> getCollectors(GridCell* center, int vicinity, bool returnCenterAgent); //used for DNA sampling
+	std::list<Observable*> getInpoders(GridCell* center, int vicinity, bool returnCenterAgent); //used for DNA sampling
+	std::list<Observable*> getEffectors(GridCell* center, int vicinity, bool returnCenterAgent); //used for DNA sampling
 	CList<GridCell*, GridCell*>* getFreeCells(GridCell* center, int vicinity);
 	int getWidthX();
 	int getHightY();

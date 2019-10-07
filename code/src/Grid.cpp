@@ -93,26 +93,26 @@ int Grid::getHightY() {
 }
 
 //like getNeighbours, but limits return to collectors
-CList<Observable*, Observable*>* Grid::getCollectors(GridCell* center, int vicinity, bool returnCenterAgent) {
-	CList<Observable*, Observable*>* nbCollectors = new CList<Observable*, Observable*>(20);
+std::list<Observable*> Grid::getCollectors(GridCell* center, int vicinity, bool returnCenterAgent) {
+	auto nbCollectors = std::list<Observable*>(20);
 	auto neighbours = getNeighbours(center, vicinity, returnCenterAgent);
 
 	for (auto agent : neighbours) {
 		if (agent->isCollector())
-			nbCollectors->AddTail( agent );
+			nbCollectors.emplace_back( agent );
 	}
 
 	return nbCollectors;
 }
 
 //like getNeighbours, but limits return to inpoders
-CList<Observable*, Observable*>* Grid::getInpoders(GridCell* center, int vicinity, bool returnCenterAgent) {
-	CList<Observable*, Observable*>* nbInpoders = new CList<Observable*, Observable*>(20);
+std::list<Observable*> Grid::getInpoders(GridCell* center, int vicinity, bool returnCenterAgent) {
+	auto nbInpoders = std::list<Observable*>(20);
 	auto neighbours = getNeighbours(center, vicinity, returnCenterAgent);
 	
 	for (auto agent : neighbours) {
 		if (agent->isInpoder())
-			nbInpoders->AddTail( agent );
+			nbInpoders.emplace_back( agent );
 	}
 
 	return nbInpoders;
@@ -120,13 +120,13 @@ CList<Observable*, Observable*>* Grid::getInpoders(GridCell* center, int vicinit
 
 
 //like getNeighbours, but limits return to effectors
-CList<Observable*, Observable*>* Grid::getEffectors(GridCell* center, int vicinity, bool returnCenterAgent) {
-	CList<Observable*, Observable*>* nbEffectors = new CList<Observable*, Observable*>(20);
+std::list<Observable*> Grid::getEffectors(GridCell* center, int vicinity, bool returnCenterAgent) {
+	auto nbEffectors = std::list<Observable*>(20);
 	auto neighbours = getNeighbours(center, vicinity, returnCenterAgent);
 
 	for(auto agent : neighbours) {
 		if (agent->isEffector())
-			nbEffectors->AddTail( agent );
+			nbEffectors.emplace_back( agent );
 	}
 
 	return nbEffectors;
@@ -165,8 +165,8 @@ std::list<Observable*> Grid::getNeighbours(GridCell* center, int vicinity, bool 
 
 
 //returns observers in neighbourhood, minus fountains
-CList<Observable*, Observable*>* Grid::getObservers(GridCell* center, int vicinity, bool returnCenterAgent) {
-	CList<Observable*, Observable*>* observersInNB = new CList<Observable*, Observable*>(10);
+std::list<Observable*> Grid::getObservers(GridCell* center, int vicinity, bool returnCenterAgent) {
+	auto observersInNB = std::list<Observable*>(10);
 	int minX, minY, maxX, maxY;
 	GridCell* tempCell;
 	Observable* tempAgent;
@@ -191,7 +191,7 @@ CList<Observable*, Observable*>* Grid::getObservers(GridCell* center, int vicini
 				if (tempCell->isOccupied()) {
 					tempAgent = tempCell->getOccupier();
 					if ((tempAgent->getStatusAndActive() == ST_OBSERVER) && (tempAgent->getType() != TYPE_FOUNTAIN))
-						observersInNB->AddTail(tempAgent);
+						observersInNB.emplace_back(tempAgent);
 				}
 					
 			}

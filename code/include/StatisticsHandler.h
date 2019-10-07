@@ -196,10 +196,10 @@ private:
 	bool getCollineAnswer();
 	void writeConstants();
 	void saveDNAinfo_common(FILE* f, Observable* agent);
-	void saveDNAinfo_coll(CList<Observable*, Observable*>* sample);
-	void saveDNAinfo_inp(CList<Observable*, Observable*>* sample);
-	void saveDNAinfo_eff(CList<Observable*, Observable*>* sample);
-	CList<Observable*, Observable*>* pickSample(CList<Observable*, Observable*>* fullList, int sampleSize);
+	void saveDNAinfo_coll(std::list<Observable*> sample);
+	void saveDNAinfo_inp(std::list<Observable*> sample);
+	void saveDNAinfo_eff(std::list<Observable*> sample);
+	std::list<Observable*> pickSample(std::list<Observable*> fullList, int sampleSize);
 
 
 	Grid* agentGrid;

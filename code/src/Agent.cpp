@@ -469,13 +469,12 @@ void Agent::informNeighbourhoodOfNewcomer() {
 			std::cout << "agent " << getStatus() << " status before inform: " << std::endl;
 			std::cout << toString() << std::endl;
 		}*/
-		CList<Observable*, Observable*>* currObsInNb = collineGrid->getObservers(agentPosition, vicinityBus, false);
+		auto currObsInNb = collineGrid->getObservers(agentPosition, vicinityBus, false);
 		Agent* subj;
 		int numOfNewConn = 0;
-		int listSize = currObsInNb->GetCount();
-		for (int i=0; i<listSize; i++) {
-			subj = (Agent*)currObsInNb->GetAt(currObsInNb->FindIndex(i));
-			if (subj->checkForNewObserveConnection(this))
+		for (auto subj : currObsInNb) {
+			// TODO fix ugly and unchecked cast
+			if (((Agent*)subj)->checkForNewObserveConnection(this))
 				numOfNewConn++;
 		}
 		/*if ((getId() == 317) || (getId()==1696) ) {

@@ -562,16 +562,16 @@ void StatisticsHandler::writeConstants() {
 	fclose(file_constants);
 }
 
-CList<Observable*, Observable*>* StatisticsHandler::pickSample(CList<Observable*, Observable*>* fullList, int sampleSize) {
-	if (sampleSize > fullList->GetCount()) {
+std::list<Observable*> StatisticsHandler::pickSample(std::list<Observable*> fullList, int sampleSize) {
+	if (sampleSize > fullList.size()) {
 		std::cout << "ERROR: pickSample..." << std::endl;
 		pressSpaceToQuit();
 	}
-	CList<Observable*, Observable*>* sample = new CList<Observable*, Observable*>(10);
+	auto sample = std::list<Observable*>(10);
 	
 	auto randIndexList = std::vector<unsigned int>(sampleSize);
 
-	int bigListSize = fullList->GetCount();
+	int bigListSize = fullList.size();
 	int loopCheck = 0;
 	int i;
 	bool isTaken;
@@ -611,30 +611,28 @@ CList<Observable*, Observable*>* StatisticsHandler::pickSample(CList<Observable*
 		bigIndex = randIndexList.at(i);
 		//std::cout << "now adding index " << bigIndex << std::endl;
 		//pressSpaceOrQuit();
-		sample->AddTail( fullList->GetAt( fullList->FindIndex( bigIndex ) ) );
+		sample.emplace_back(*std::next(fullList.begin(), bigIndex));
 	}
-	delete fullList;
+
 	return sample;
 }
 
 void StatisticsHandler::saveDNAinfo() {
 	//remember collectors!
 	//save inpoder data:
-	CList<Observable*, Observable*>* allCollectors = agentGrid->getCollectors( agentGrid->getCellAt( agentGrid->getWidthX()/2, agentGrid->getHightY()/2), agentGrid->getWidthX()/2 + 1, true);
-	CList<Observable*, Observable*>* sampleCollectors = pickSample(allCollectors, (allCollectors->GetCount() * SAMPLE_PERCENT_AGENTS)/100);
-	if (sampleCollectors->GetCount() > 0)
+	auto allCollectors = agentGrid->getCollectors( agentGrid->getCellAt( agentGrid->getWidthX()/2, agentGrid->getHightY()/2), agentGrid->getWidthX()/2 + 1, true);
+	auto sampleCollectors = pickSample(allCollectors, (allCollectors.size() * SAMPLE_PERCENT_AGENTS)/100);
+	if (sampleCollectors.size() > 0)
 		saveDNAinfo_coll(sampleCollectors);
-	else
-		delete sampleCollectors;
 	
 	//save inpoder data:
-	CList<Observable*, Observable*>* allInpoders = agentGrid->getInpoders( agentGrid->getCellAt( agentGrid->getWidthX()/2, agentGrid->getHightY()/2), agentGrid->getWidthX()/2 + 1, true);
-	CList<Observable*, Observable*>* sampleInpoders = pickSample(allInpoders, (allInpoders->GetCount() * SAMPLE_PERCENT_AGENTS)/100);
+	auto allInpoders = agentGrid->getInpoders( agentGrid->getCellAt( agentGrid->getWidthX()/2, agentGrid->getHightY()/2), agentGrid->getWidthX()/2 + 1, true);
+	auto sampleInpoders = pickSample(allInpoders, (allInpoders.size() * SAMPLE_PERCENT_AGENTS)/100);
 	saveDNAinfo_inp(sampleInpoders);
 	
 	//save effector data:
-	CList<Observable*, Observable*>* allEffectors = agentGrid->getEffectors( agentGrid->getCellAt( agentGrid->getWidthX()/2, agentGrid->getHightY()/2), agentGrid->getWidthX()/2 + 1, true);
-	CList<Observable*, Observable*>* sampleEffectors = pickSample(allEffectors, (allEffectors->GetCount() * SAMPLE_PERCENT_AGENTS)/100);
+	auto allEffectors = agentGrid->getEffectors( agentGrid->getCellAt( agentGrid->getWidthX()/2, agentGrid->getHightY()/2), agentGrid->getWidthX()/2 + 1, true);
+	auto sampleEffectors = pickSample(allEffectors, (allEffectors.size() * SAMPLE_PERCENT_AGENTS)/100);
 	saveDNAinfo_eff(sampleEffectors);
 	dnaSampleNum++;
 }
@@ -656,15 +654,14 @@ void StatisticsHandler::saveDNAinfo_common(FILE* f, Observable* currAgent) {
 	fprintf(f, "%d%c", (int)agent->isReadyToMate(), tab );
 	fprintf(f, "%d%c", agent->getNumOfOffspring(), tab );
 }
-void StatisticsHandler::saveDNAinfo_coll(CList<Observable*, Observable*>* sample) {
+void StatisticsHandler::saveDNAinfo_coll(std::list<Observable*> sample) {
 	Observable* currAgent;
 	Collector* colPointer;
 	char header[] = "%apMat	apBusSm	dna_a	dna_i	fitn	apIdM	bidP	maxAge	age	rtm	#off	apIdB	apPiB";
 	char tab = '	';
 	FILE* file_col = fopen((fname_begin + FN_DNACOLL + "_"  + numToString(dnaSampleNum) + FN_EXT).c_str(), "w" );
 	fprintf(file_col, "%s\n", header);
-	for (int i=0; i<sample->GetCount(); i++) {
-		currAgent = sample->GetAt( sample->FindIndex(i) );
+	for (const auto &currAgent : sample) {
 		colPointer = (Collector*)currAgent;
 		saveDNAinfo_common(file_col, currAgent);
 		fprintf(file_col, "%d%c", colPointer->getAppBusIdeal()->getValue(), tab );
@@ -674,10 +671,9 @@ void StatisticsHandler::saveDNAinfo_coll(CList<Observable*, Observable*>* sample
 		fprintf(file_col, "%d\n", colPointer->getCollMax()  );
 	}
 	fclose(file_col);
-	delete sample;
 }
 
-void StatisticsHandler::saveDNAinfo_inp(CList<Observable*, Observable*>* sample) {
+void StatisticsHandler::saveDNAinfo_inp(std::list<Observable*> sample) {
 	// (common) | appIdealBus | appPickiBus | smallFood | food
 	Observable* currAgent;
 	Inpoder* inpPointer;
@@ -685,8 +681,7 @@ void StatisticsHandler::saveDNAinfo_inp(CList<Observable*, Observable*>* sample)
 	char tab = '	';
 	FILE* file_inp = fopen((fname_begin + FN_DNAINP + "_"  + numToString(dnaSampleNum) + FN_EXT).c_str(), "w" );
 	fprintf(file_inp, "%s\n", header);
-	for (int i=0; i<sample->GetCount(); i++) {
-		currAgent = sample->GetAt( sample->FindIndex(i) );
+	for (const auto &currAgent : sample) {
 		inpPointer = (Inpoder*)currAgent;
 		saveDNAinfo_common(file_inp, currAgent);
 		fprintf(file_inp, "%d%c", inpPointer->getAppBusIdeal()->getValue(), tab );
@@ -695,10 +690,9 @@ void StatisticsHandler::saveDNAinfo_inp(CList<Observable*, Observable*>* sample)
 		fprintf(file_inp, "%d\n", inpPointer->getFood()->getValue() );
 	}
 	fclose(file_inp);
-	delete sample;
 }
 
-void StatisticsHandler::saveDNAinfo_eff(CList<Observable*, Observable*>* sample) {
+void StatisticsHandler::saveDNAinfo_eff(std::list<Observable*> sample) {
 	// (common) | appIdealBus1 | appPickiBus1 | appIdealBus2 | appPickiBus2 | typeOfProc | numOfObs1 | numOfObs2
 	Observable* currAgent;
 	Effector* effPointer;
@@ -706,8 +700,8 @@ void StatisticsHandler::saveDNAinfo_eff(CList<Observable*, Observable*>* sample)
 	char tab = '	';
 	FILE* file_eff = fopen((fname_begin + FN_DNAEFF + "_"  + numToString(dnaSampleNum) + FN_EXT).c_str(), "w" );
 	fprintf(file_eff, "%s\n", header);
-	for (int i=0; i<sample->GetCount(); i++) {
-		currAgent = sample->GetAt( sample->FindIndex(i) );
+
+	for (const auto &currAgent : sample) {
 		effPointer = (Effector*)currAgent;
 		saveDNAinfo_common(file_eff, currAgent);
 		fprintf(file_eff, "%d%c", effPointer->getAppIdealBus1()->getValue(), tab);
@@ -719,7 +713,6 @@ void StatisticsHandler::saveDNAinfo_eff(CList<Observable*, Observable*>* sample)
 		fprintf(file_eff, "%d\n", effPointer->getNumOfObsAgents2());
 	}
 	fclose(file_eff);
-	delete sample;
 }
 
 int StatisticsHandler::getLastCorrectRespOnLevel(int row) {
