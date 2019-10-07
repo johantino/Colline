@@ -10,6 +10,61 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Agent.h" />
+    <ClInclude Include="include\AgentCreator.h" />
+    <ClInclude Include="include\Colline.h" />
+    <ClInclude Include="include\dCollector.h" />
+    <ClInclude Include="include\DecisionCategory.h" />
+    <ClInclude Include="include\Effector.h" />
+    <ClInclude Include="include\Environment.h" />
+    <ClInclude Include="include\Fountain.h" />
+    <ClInclude Include="include\Grid.h" />
+    <ClInclude Include="include\GridCell.h" />
+    <ClInclude Include="include\GridRow.h" />
+    <ClInclude Include="include\IdStamp.h" />
+    <ClInclude Include="include\Inpoder.h" />
+    <ClInclude Include="include\Konst.h" />
+    <ClInclude Include="include\Message.h" />
+    <ClInclude Include="include\Observable.h" />
+    <ClInclude Include="include\StatisticsHandler.h" />
+    <ClInclude Include="include\StdAfx.h" />
+    <ClInclude Include="include\SyncManager.h" />
+    <ClInclude Include="include\UIntGrid.h" />
+    <ClInclude Include="include\WndColline.h" />
+    <ClInclude Include="include\WndCollineText.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Agent.cpp" />
+    <ClCompile Include="src\AgentCreator.cpp" />
+    <ClCompile Include="src\Colline.cpp" />
+    <ClCompile Include="src\dCollector.cpp" />
+    <ClCompile Include="src\DecisionCategory.cpp" />
+    <ClCompile Include="src\Effector.cpp" />
+    <ClCompile Include="src\Environment.cpp" />
+    <ClCompile Include="src\Fountain.cpp" />
+    <ClCompile Include="src\Grid.cpp" />
+    <ClCompile Include="src\GridCell.cpp" />
+    <ClCompile Include="src\GridRow.cpp" />
+    <ClCompile Include="src\IdStamp.cpp" />
+    <ClCompile Include="src\Inpoder.cpp" />
+    <ClCompile Include="src\Message.cpp" />
+    <ClCompile Include="src\Observable.cpp" />
+    <ClCompile Include="src\StatisticsHandler.cpp" />
+    <ClCompile Include="src\StdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\SyncManager.cpp" />
+    <ClCompile Include="src\UIntGrid.cpp" />
+    <ClCompile Include="src\WndColline.cpp" />
+    <ClCompile Include="src\WndCollineText.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Colline.rc" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <SccProjectName />
     <SccLocalPath />
@@ -75,6 +130,7 @@
       <ObjectFileName>.\Debug\</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <AdditionalIncludeDirectories>.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Midl>
       <TypeLibraryName>.\Debug\Colline.tlb</TypeLibraryName>
@@ -111,6 +167,7 @@
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <ObjectFileName>.\Release\</ObjectFileName>
       <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+      <AdditionalIncludeDirectories>.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Midl>
       <TypeLibraryName>.\Release\Colline.tlb</TypeLibraryName>
@@ -130,66 +187,6 @@
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Agent.cpp" />
-    <ClCompile Include="AgentCreator.cpp" />
-    <ClCompile Include="Colline.cpp" />
-    <ClCompile Include="dCollector.cpp" />
-    <ClCompile Include="DecisionCategory.cpp" />
-    <ClCompile Include="Effector.cpp" />
-    <ClCompile Include="Environment.cpp" />
-    <ClCompile Include="Fountain.cpp" />
-    <ClCompile Include="Grid.cpp" />
-    <ClCompile Include="GridCell.cpp" />
-    <ClCompile Include="GridRow.cpp" />
-    <ClCompile Include="IdStamp.cpp" />
-    <ClCompile Include="Inpoder.cpp" />
-    <ClCompile Include="Message.cpp" />
-    <ClCompile Include="Observable.cpp" />
-    <ClCompile Include="StatisticsHandler.cpp" />
-    <ClCompile Include="StdAfx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
-    </ClCompile>
-    <ClCompile Include="SyncManager.cpp" />
-    <ClCompile Include="UIntGrid.cpp" />
-    <ClCompile Include="WndColline.cpp" />
-    <ClCompile Include="WndCollineText.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Colline.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Agent.h" />
-    <ClInclude Include="AgentCreator.h" />
-    <ClInclude Include="Colline.h" />
-    <ClInclude Include="dCollector.h" />
-    <ClInclude Include="DecisionCategory.h" />
-    <ClInclude Include="Effector.h" />
-    <ClInclude Include="Environment.h" />
-    <ClInclude Include="Fountain.h" />
-    <ClInclude Include="Grid.h" />
-    <ClInclude Include="GridCell.h" />
-    <ClInclude Include="GridRow.h" />
-    <ClInclude Include="IdStamp.h" />
-    <ClInclude Include="Inpoder.h" />
-    <ClInclude Include="Message.h" />
-    <ClInclude Include="Observable.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="StatisticsHandler.h" />
-    <ClInclude Include="StdAfx.h" />
-    <ClInclude Include="SyncManager.h" />
-    <ClInclude Include="UIntGrid.h" />
-    <ClInclude Include="WndColline.h" />
-    <ClInclude Include="WndCollineText.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="icon1.ico" />
-    <Image Include="idr_csta.ico" />
-    <Image Include="idr_trai.ico" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
