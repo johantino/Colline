@@ -21,7 +21,7 @@
 #include "GridCell.h"
 //#include <bitset>
 //using std::bitset;
-
+#include <list>
 
 //namespace jf_w3_agent {
 
@@ -142,7 +142,7 @@ private:
 	void increaseProducedOffspring();
 	//bool neighbourhoodTooOvercrowdedForMating(); //returns true if nb is too occupied for mating to occur
 	std::string toStringAge();
-	CList<Agent*, Agent*>* getMatingSubjects(); //returns the agents that are ready-to-mate and match app. criteria (mutually)	
+	std::list<Agent*> getMatingSubjects(); //returns the agents that are ready-to-mate and match app. criteria (mutually)	
 	//virtual vector<Agent*> removeNonSimilarAgents(vector<Observable*> nb);
 	Observable* findHighestBidder();
 	virtual bool makeBusinessConnections(); //returns true if enough matches found

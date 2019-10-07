@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "Colline.h"
 #include <afxwin.h> //for wnd and bitmap
-#include <afxcoll.h> //used for CUINTArray
 //#include <conio.h> //for press key
 #include "WndColline.h"
 #include "WndCollineText.h"

@@ -16,7 +16,6 @@
 #include "StatisticsHandler.h"
 #include "Observable.h"
 #include "Environment.h"
-//#include <afxcoll.h> //used for CUINTArray
 
 class DecisionCategory : public Observable  
 {

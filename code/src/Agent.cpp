@@ -657,8 +657,8 @@ void Agent::drift() {
 	if (readyToMate) {
 		setCurrentNeighbours( collineGrid->getNeighbours(agentPosition, vicinityMat, false) );
 		//allNeighbours = collineGrid->getNeighbours(agentPosition, vicinityMat);
-		CList<Agent*, Agent*>* matingSubjects = getMatingSubjects();
-		if (matingSubjects->GetCount() == 0 ) { //|| neighbourhoodTooOvercrowdedForMating()) {
+		auto matingSubjects = getMatingSubjects();
+		if (matingSubjects.empty() ) { //|| neighbourhoodTooOvercrowdedForMating()) {
 			takeRandomStep();
 			/*int numOfSteps=1;
 			while (isLocatedInNoMatingArea() && numOfSteps<7) { //take up to 7 steps to try to get out of reward area
@@ -669,7 +669,7 @@ void Agent::drift() {
 			return;
 		}
 		else {
-			Agent* mate = matingSubjects->GetAt( matingSubjects->FindIndex( 0 )); //pickRandomPosition(matingSubjects->GetCount())));
+			Agent* mate = matingSubjects.front(); //pickRandomPosition(matingSubjects->GetCount())));
 			//std::cout << "Parent1: " << toString() << std::endl;
 			//std::cout << "Parent2: " << mate->toString() << std::endl;
 			bool isRoomForOffspring = true;
@@ -695,7 +695,7 @@ void Agent::drift() {
 			//mate->setStatusForNextDrifter();// do.
 			return;
 		}
-		delete matingSubjects; //consider method 'updateMatingSubj' like for neighbours
+		//delete matingSubjects; //consider method 'updateMatingSubj' like for neighbours
 	} else {
 		//std::cout << "INFO: " << toStringType() << getId() << " drift, about to get neighbors....";
 		//CList<Observable*, Observable*>* allNeighbours = collineGrid->getNeighbours(agentPosition, getVicinityBus() );
@@ -1088,7 +1088,7 @@ void Agent::takeRandomStep() {
 }
 
 
-CList<Agent*, Agent*>*  Agent::getMatingSubjects() {
+std::list<Agent*> Agent::getMatingSubjects() {
 	int i;
 	//TEST search nb for this agent
 	/*int thisId = getId();
@@ -1098,7 +1098,7 @@ CList<Agent*, Agent*>*  Agent::getMatingSubjects() {
 		}
 	}*/
 	CTypedPtrList<CObList, Agent*>  agents; //CList<Agent*, Agent*>* agents = new CList<Agent*, Agent*>(5);
-	CList<Agent*, Agent*>* matingSubjects = new CList<Agent*, Agent*>;
+	auto matingSubjects = std::list<Agent*>();
 	Message* candAppearMat;
 	Message* candAppIdealMat;
 	//Message* candAppPickiMat;
@@ -1125,9 +1125,9 @@ CList<Agent*, Agent*>*  Agent::getMatingSubjects() {
 				if ( candAppIdealMat->getValue() == appearMat->getValue()) {						//if (candAppIdealMat->isEqualTo(appearMat, candAppPickiMat) )  //this appearance accepted by candidate
 					if (candidate->getFitness() > maxCandidateFitness) {
 						maxCandidateFitness = candidate->getFitness();
-						matingSubjects->AddHead( candidate ); //Healthiest agent is at first position
+						matingSubjects.emplace_front( candidate ); //Healthiest agent is at first position
 					} else
-						matingSubjects->AddTail( candidate );
+						matingSubjects.emplace_back( candidate );
 				}
 			}
 		}
