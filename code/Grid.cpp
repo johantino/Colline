@@ -6,7 +6,7 @@
 #include "Colline.h"
 #include "Grid.h"
 #include "Konst.h"
-#include "iostream.h"
+#include <iostream>
 #include <conio.h> //for press key
 
 #ifdef _DEBUG
@@ -25,7 +25,7 @@ Grid::Grid(int gridHight, int rowWidth)
 	widthX = rowWidth;
 	hightY = gridHight;
 	if (widthX != hightY) {
-		cout << "ERROR: current imp doesnt support non-square grid" << endl;
+		std::cout << "ERROR: current imp doesnt support non-square grid" << std::endl;
 		pressSpaceToQuit();
 	}
 	GridRow* tempRow;
@@ -43,7 +43,7 @@ Grid::Grid(int gridHight, int rowWidth)
 
 Grid::~Grid()
 {
-	/*cout << "info: deleting all agents in grid..." << endl;
+	/*std::cout << "info: deleting all agents in grid..." << std::endl;
 	CList<Observable*, Observable*>* allAgents = getNeighbours(getCellAt(widthX/2 - 1, hightY/2 - 1), widthX/2 - 1);
 	int numOfAg = allAgents->GetCount();
 	Observable* curr;
@@ -74,7 +74,7 @@ void Grid::setCellAt(int posX, int posY, GridCell* cell) {
 
 void Grid::checkPos(int posY) {
 	if (posY >= hightY) {
-		cout << "ERROR: row index error!" << endl;
+		std::cout << "ERROR: row index error!" << std::endl;
 		pressSpaceToQuit();
 	}
 }
@@ -160,7 +160,7 @@ CList<Observable*, Observable*>* Grid::getNeighbours(GridCell* center, int vicin
 		for (int y=minY; y<=maxY; y++) {
 			if (x!=centerX || y!=centerY || returnCenterAgent) { //if retCenterAgent is false: don't return agent in center (the one calling); only when both x and y are center, skip
 				tempCell = getCellAt(x,y);
-				//cout << "testing cell at: " << tempCell->toString() << endl;
+				//std::cout << "testing cell at: " << tempCell->toString() << std::endl;
 				if (tempCell->isOccupied())
 						neighbours->AddTail(tempCell->getOccupier()); //neighbours.push_back(tempCell->getOccupier());
 			}
@@ -203,7 +203,7 @@ CList<Observable*, Observable*>* Grid::getObservers(GridCell* center, int vicini
 			}
 		}
 	}
-	//cout << "info: num of obs in nb: " << observersInNB->GetCount() << " , vicinity=" << vicinity << endl;
+	//std::cout << "info: num of obs in nb: " << observersInNB->GetCount() << " , vicinity=" << vicinity << std::endl;
 	return observersInNB;
 }
 
@@ -230,7 +230,7 @@ int Grid::getNumOfNeighbours(GridCell* center, int vicinity, bool countCenterAge
 		for (int y=minY; y<=maxY; y++) {
 			if (x!=centerX || y!=centerY || countCenterAgent) { //if retCenterAgent is false: don't return agent in center (the one calling); only when both x and y are center, skip
 				tempCell = getCellAt(x,y);
-				//cout << "testing cell at: " << tempCell->toString() << endl;
+				//std::cout << "testing cell at: " << tempCell->toString() << std::endl;
 				if (tempCell->isOccupied())
 						numOfNeighbours++;
 			}
@@ -260,9 +260,9 @@ CList<GridCell*, GridCell*>* Grid::getFreeCells(GridCell* center, int vicinity) 
 		maxX = widthX - 1;
 	if (maxY > (hightY - 1))
 		maxY = hightY - 1;
-	//cout << "getFreeCells: minX = " << minX << ",  minY = " << minY << endl;
-	//cout << "maxX = " << maxX << ",  maxY = " << maxY << endl;
-	//cout << "centerX = " << centerX << ",   centerY=" << centerY << endl;
+	//std::cout << "getFreeCells: minX = " << minX << ",  minY = " << minY << std::endl;
+	//std::cout << "maxX = " << maxX << ",  maxY = " << maxY << std::endl;
+	//std::cout << "centerX = " << centerX << ",   centerY=" << centerY << std::endl;
 	for (int x=minX; x<=maxX; x++) {
 		for (int y=minY; y<=maxY; y++) {
 			if (x!=centerX || y!=centerY) { //only when both x and y are center, skip
@@ -277,7 +277,7 @@ CList<GridCell*, GridCell*>* Grid::getFreeCells(GridCell* center, int vicinity) 
 
 void Grid::pressSpaceToQuit() {
 	int ch;
-	cout << "press space..." << endl;
+	std::cout << "press space..." << std::endl;
 	while (ch != ' ') {
 		ch = _getch();
 	}

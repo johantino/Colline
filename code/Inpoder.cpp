@@ -6,7 +6,7 @@
 #include "stdafx.h"
 #include "Colline.h"
 #include "Inpoder.h"
-#include "iostream.h"
+#include <iostream>
 #include "Konst.h"
 
 #ifdef _DEBUG
@@ -39,7 +39,7 @@ Inpoder::Inpoder(Environment* e,
 	//--------- DNA determined attributs ---------
 	int msbPos = 0; //DNA position counter
 	if (inpoderPart->getSize() != N_DNA_INP) {
-		cout << "ERROR: DNA bit length error inpoder" << endl;
+		std::cout << "ERROR: DNA bit length error inpoder" << std::endl;
 		pressSpaceToQuit();
 	}
 	inpoderDNA = inpoderPart;
@@ -54,7 +54,7 @@ Inpoder::Inpoder(Environment* e,
 	}
 	//----------test DNA counter:-----------------
 	if (msbPos != N_DNA_INP) {
-		cout << "ERROR: DNA bit count in inpoder \n" << endl;
+		std::cout << "ERROR: DNA bit count in inpoder \n" << std::endl;
 		pressSpaceToQuit();
 	}
 	//----set various attributs--------
@@ -69,7 +69,7 @@ Inpoder::Inpoder(Environment* e,
 
 Inpoder::~Inpoder()
 {
-	//cout << "debug: deletes allocated mem for inpoder" << endl;
+	//std::cout << "debug: deletes allocated mem for inpoder" << std::endl;
 	delete inpoderDNA;
 	delete food;
 	delete appIdealBus;
@@ -144,7 +144,7 @@ Observable* Inpoder::makeBaby(Environment* e,IdStamp* cStamp, Grid* collineGrid,
 }
 
 int Inpoder::auctionWon(Observable* seller, Message* boughtMess) {
-	//cout << "Inpoder " << getId() << " buys [" << boughtMess->toStringBits() << "] from " << seller->toStringType() << seller->getId() << endl;
+	//std::cout << "Inpoder " << getId() << " buys [" << boughtMess->toStringBits() << "] from " << seller->toStringType() << seller->getId() << std::endl;
 	boughtMessage = boughtMess;
 	setStatusForNextProcessor();
 	int fitnToPay = getBid();
@@ -172,28 +172,28 @@ CList<Observable*,Observable*>* Inpoder::removeNonLegalBusiness() {
 
 
 void Inpoder::turnFocusTo(Observable* seller) {
-	//cout << "inpoder turns focus to type " << seller->getType() << endl;
+	//std::cout << "inpoder turns focus to type " << seller->getType() << std::endl;
 	if ((getStatusAndActive() == ST_FINISHED_THIS_CYCLE) || getStatus() == ST_PROCESSOR)
 		return; //dont bid if finished this cycle or if processor
 	if (!updateAge())
 		return; //agent dies
-	//cout << "inpoder make bid" << endl;
+	//std::cout << "inpoder make bid" << std::endl;
 	makeBidUpdate(seller);
 }
 
 
 bool Inpoder::makeBusinessConnections() {
 	if (numOfObsAgents != 0) {
-		cout << "ERROR: in inpoder makebus" << endl;
-		cout <<"numOfObs: " << numOfObsAgents << endl;
-		cout << "id=" <<getId() << endl;
-		cout << toString() << endl;
+		std::cout << "ERROR: in inpoder makebus" << std::endl;
+		std::cout <<"numOfObs: " << numOfObsAgents << std::endl;
+		std::cout << "id=" <<getId() << std::endl;
+		std::cout << toString() << std::endl;
 		pressSpaceToQuit();
 	}
 	if (getCurrentNeighbours()->GetCount() == 0)
 		return false; //no neighbours
 	CList<Observable*,Observable*>* legalBus = removeNonLegalBusiness(); //Removes non-observers from list...FIX use same pointer
-	//cout << "(Inpoder) num of legal bus in nb: " << legalBus.size() << endl;
+	//std::cout << "(Inpoder) num of legal bus in nb: " << legalBus.size() << std::endl;
 	if (legalBus->GetCount() == 0) {
 		delete legalBus;
 		return false; //no business in neighbourhood
@@ -205,8 +205,8 @@ bool Inpoder::makeBusinessConnections() {
 	}
 	//Business in neighbourhood
 	/*if (getId() == 317) {
-		cout << "Inpoder 317 makes bus conn., status: " << endl;
-		cout << toString() << endl;
+		std::cout << "Inpoder 317 makes bus conn., status: " << std::endl;
+		std::cout << toString() << std::endl;
 	}*/
 	int numOfBusConn = matchApp->GetCount();
 	if (numOfBusConn > statHandler->MAX_NUM_OF_OBS_INP) {
@@ -218,8 +218,8 @@ bool Inpoder::makeBusinessConnections() {
 		observe(matchApp->GetAt( matchApp->FindIndex(i)));
 	}
 	/*if (getId() == 317) {
-		cout << "Inpoder 317 finished making " << numOfBusConn << " bus conn., status: " << endl;
-		cout << toString() << endl;
+		std::cout << "Inpoder 317 finished making " << numOfBusConn << " bus conn., status: " << std::endl;
+		std::cout << toString() << std::endl;
 	}*/
 	delete matchApp;
 	return true;
@@ -227,7 +227,7 @@ bool Inpoder::makeBusinessConnections() {
 
 bool Inpoder::checkForNewObserveConnection(Agent* newObserverInNB) {
 	if (agentIsObserved(newObserverInNB)) {
-		cout << "error: 811 checkfornewobsconn... newAgent has just been drifter!" << endl;
+		std::cout << "error: 811 checkfornewobsconn... newAgent has just been drifter!" << std::endl;
 		pressSpaceToQuit();
 	}
 	bool newInNBObserved = false;
@@ -258,7 +258,7 @@ CList<Observable*,Observable*>* Inpoder::findOkBusAppear(CList<Observable*,Obser
 	for (int i=0; i<numOfSubj; i++) {
 		tempObservable = subj->GetAt(subj->FindIndex(i));
 		//if (getId()==317)
-		//	cout << "DEBUG: (findOkBusApp) now checking app of agent " << tempObservable->getId() << endl;
+		//	std::cout << "DEBUG: (findOkBusApp) now checking app of agent " << tempObservable->getId() << std::endl;
 		if (isOkBusApp(tempObservable))
 			okAppear->AddTail(tempObservable);
 	}
@@ -285,14 +285,14 @@ void Inpoder::observe(Observable* obj) {
 
 void Inpoder::observedAgentIsDrifting(Observable* subj) {
 	if ((getStatus() == ST_DRIFTER) || (getStatus() == ST_DEAD)) {
-		cout << "info: inpoder " << getId() << " were drifting or dead, " << getStatus() << ", when notified of drifting seller " << subj->getId() << " (ok?)" << endl;
+		std::cout << "info: inpoder " << getId() << " were drifting or dead, " << getStatus() << ", when notified of drifting seller " << subj->getId() << " (ok?)" << std::endl;
 		pressSpaceToQuit();
 		return;
 	}
 	numOfObsAgents--;
 	removeFromAgentsObserved(subj);
 	if (numOfObsAgents != getNumOfPotentialSellers()) {
-		cout << "ERROR: collector, observedAgent... numOfObsAgents error" << endl;
+		std::cout << "ERROR: collector, observedAgent... numOfObsAgents error" << std::endl;
 		pressSpaceToQuit();
 	}
 	if ((numOfObsAgents == 0) && getStatus() != ST_PROCESSOR) // (if status is processor: dontmove)
@@ -303,11 +303,11 @@ void Inpoder::observedAgentIsDrifting(Observable* subj) {
 //TEST: test ok (1)
 void Inpoder::process() {
 	if (getStatus()!=ST_PROCESSOR) {
-		cout << "ERROR: inpoder, process 634" << endl;
+		std::cout << "ERROR: inpoder, process 634" << std::endl;
 		pressSpaceOrQuit();
 	}
 	lastProcessedInSess = syncMan->getSessionNum();
-	//cout << "Inpoder " << getId() << " process..." << endl;
+	//std::cout << "Inpoder " << getId() << " process..." << std::endl;
 	Message* procMess;
 	Message* unprocMess;
 	bool pState;
@@ -316,9 +316,9 @@ void Inpoder::process() {
 		pState = false;
 		procMess = boughtMessage; //note: do not delete boughtMessage (same object as the 'procMess' points to)
 		unprocMess = new Message(0,0);
-		//cout << "food not found..." << endl;
-		//cout << "proc mess: " << (LPCTSTR)procMess->toStringBits() << endl;
-		//cout << "unproc mess: " << (LPCTSTR)unprocMess->toStringBits() << endl;
+		//std::cout << "food not found..." << std::endl;
+		//std::cout << "proc mess: " << (LPCTSTR)procMess->toStringBits() << std::endl;
+		//std::cout << "unproc mess: " << (LPCTSTR)unprocMess->toStringBits() << std::endl;
 	}
 	else {//food found
 		pState = true;
@@ -326,16 +326,16 @@ void Inpoder::process() {
 		unprocMess = boughtMessage->readRightMost(boughtMessage->getSize() - startPos - food->getSize());
 		//syncMan->addToNumOfProcessedBits( food->getSize() );
 		statHandler->addToNumOfEatenBits( food->getSize() );
-		//cout << "food found..." << endl;
-		//cout << "proc mess: " << (LPCTSTR)procMess->toStringBits() << endl;
-		//cout << "unproc mess: " << (LPCTSTR)unprocMess->toStringBits() << endl;
+		//std::cout << "food found..." << std::endl;
+		//std::cout << "proc mess: " << (LPCTSTR)procMess->toStringBits() << std::endl;
+		//std::cout << "unproc mess: " << (LPCTSTR)unprocMess->toStringBits() << std::endl;
 		delete boughtMessage; //free memory
 	}
 	//Announce auction and sell:
 	//- sell pState
-	//cout << "debug: aboutto notify for state" << endl;
+	//std::cout << "debug: aboutto notify for state" << std::endl;
 	Observable::notifyObserversState(); //collect bids for pState (in bidders vector)
-	//cout << "INFO: Inpoder " << getId() << " bids gathered..." << endl;
+	//std::cout << "INFO: Inpoder " << getId() << " bids gathered..." << std::endl;
 	int numOfBuyers = sellState(pState); //sell and clear bidders
 	statHandler->updateAvgStateBuyers_inp(numOfBuyers);
 	statHandler->addToNumOfProducedBits(numOfBuyers); //each buyer buys one bit
@@ -346,10 +346,10 @@ void Inpoder::process() {
 	if ( sizeP > 0) {
 		Observable::notifyObserversProc();
 		if (!Agent::sellMessage(procMess)) {
-			//cout << "processed message not sold...";
+			//std::cout << "processed message not sold...";
 			statHandler->addToNumOfDiscPBits( procMess->getSize() );
 			delete procMess;
-			//cout << "(delete ok)" << endl;
+			//std::cout << "(delete ok)" << std::endl;
 		}
 	}
 	else
@@ -358,10 +358,10 @@ void Inpoder::process() {
 	if ( sizeU > 0) {
 		Observable::notifyObserversUnproc();
 		if (!sellMessage(unprocMess)) {
-			//cout << "unprocessed message not sold...";
+			//std::cout << "unprocessed message not sold...";
 			statHandler->addToNumOfDiscUBits( unprocMess->getSize() );
 			delete unprocMess;
-			///cout << "(delete ok)" << endl;
+			///std::cout << "(delete ok)" << std::endl;
 		}
 	}
 	else
@@ -374,8 +374,8 @@ void Inpoder::process() {
 		//numOfObsAgents=0;
 		setStatusForNextDrifter();
 	}
-	//cout << "INFO: Inpoder " << getId() << " processing finished...data:" << endl;
-	//cout << (LPCTSTR)toString() << endl;
+	//std::cout << "INFO: Inpoder " << getId() << " processing finished...data:" << std::endl;
+	//std::cout << (LPCTSTR)toString() << std::endl;
 }
 
 int Inpoder::clearNumOfObservedAgents() {

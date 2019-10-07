@@ -6,7 +6,7 @@
 #include "Konst.h"
 #include "Colline.h"
 #include "WndCollineText.h"
-#include "iostream.h"
+#include <iostream>
 #include "math.h"
 //#include "StatisticsHandler.h"
 #include <conio.h> //for press key
@@ -39,7 +39,7 @@ WndCollineText::~WndCollineText()
 
 void WndCollineText::updateInfoAgents(int cycNum/*CStringArray* info*/) {
 	/*if (info->GetSize() != 34) {
-		cout << "WndCollineText error" << endl;
+		std::cout << "WndCollineText error" << std::endl;
 		pressSpaceOrQuit();
 	}*/	
 	CPaintDC dc(this);
@@ -448,7 +448,7 @@ void WndCollineText::updateInfoTraining( int sesNum/*CStringArray* info, UIntGri
 
 void WndCollineText::pressSpaceOrQuit() {
 	int ch;
-	cout << "press space or 'q' to quit..." << endl;
+	std::cout << "press space or 'q' to quit..." << std::endl;
 	while ((ch != ' ') && (ch != 'q')) {
 		ch = _getch();
 	}

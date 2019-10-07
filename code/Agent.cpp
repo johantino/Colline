@@ -6,7 +6,7 @@
 #include "stdafx.h"
 #include "Colline.h"
 #include "Agent.h"
-#include "iostream.h"
+#include <iostream>
 #include "Konst.h"
 
 
@@ -56,7 +56,7 @@ Agent::Agent(Environment* e,
 	bornInCycle = syncMan->getCycleNum() - age;
 	initialFitness = initFitn;
 	if (age == 0 && initialFitness != currFitn) {
-		cout << "ERROR: newborn agents must have fitness=initialFitness" << endl;
+		std::cout << "ERROR: newborn agents must have fitness=initialFitness" << std::endl;
 		pressSpaceToQuit();
 	}
 	fitness = 0;
@@ -64,7 +64,7 @@ Agent::Agent(Environment* e,
 	readyToMate = matStatus;
 	int msbPos = 0;
 	if (agentPart->getSize() != N_DNA_AG) {
-		cout << "ERROR: DNA bit length error agent" << endl;
+		std::cout << "ERROR: DNA bit length error agent" << std::endl;
 		pressSpaceToQuit();
 	}
 	//------------- set DNA values:----------------
@@ -79,7 +79,7 @@ Agent::Agent(Environment* e,
 	else if (getType()==TYPE_EFFECTOR) {
 		vicinityBus = b_vicBus+VIC_ADD_EFF; //5 or 6
 	} else {
-		cout <<"ERROR: agent constr vicinityBus" << endl;
+		std::cout <<"ERROR: agent constr vicinityBus" << std::endl;
 		pressSpaceToQuit();
 	}
 	//unsigned int b_maxLT = agentDNA->readValue(msbPos,1);	msbPos += 1;
@@ -102,7 +102,7 @@ Agent::Agent(Environment* e,
 	//------------- end DNA values ---------------------
 
 	if (msbPos != N_DNA_AG) {
-		cout << "ERROR: DNA bit count in Agent \n" << endl;
+		std::cout << "ERROR: DNA bit count in Agent \n" << std::endl;
 		pressSpaceToQuit();
 	}
 
@@ -118,7 +118,7 @@ Agent::Agent(Environment* e,
 	else if (getType()==TYPE_EFFECTOR)
 		minBusinessFitness = initFitn * MIN_BUS_FITN_EFF_PRC/100;
 	else {
-		cout << "ERROR: agent const minbusfitn" << endl;
+		std::cout << "ERROR: agent const minbusfitn" << std::endl;
 		pressSpaceToQuit();
 	}
 	//------- initialize various values: -------
@@ -141,7 +141,7 @@ Agent::Agent(Environment* e,
 
 Agent::~Agent()
 {
-	//cout << "info: deletes allocated mem for agent" << endl;
+	//std::cout << "info: deletes allocated mem for agent" << std::endl;
 	delete agentDNA;
 	delete appearMat;
 	delete appIdealMat;
@@ -153,7 +153,7 @@ Agent::~Agent()
 	statHandler->adjustFitnessEnvironment( fitness );
 	setFitness(0);*/
 	//syncMan->adjustFitnessColline(-fitness, getType() );
-	//cout << "(ok) delete for agent" << endl;
+	//std::cout << "(ok) delete for agent" << std::endl;
 }
 
 unsigned int Agent::getMaxLifeTime() {
@@ -162,7 +162,7 @@ unsigned int Agent::getMaxLifeTime() {
 
 CList<Observable*, Observable*>* Agent::getCurrentNeighbours() {
 	if (syncMan->getCycleNum() != lastNeighboursUpdateCycle) {
-		cout << "ERROR: neighbours not updated" << endl;
+		std::cout << "ERROR: neighbours not updated" << std::endl;
 		pressSpaceToQuit();
 	}
 	return currentNeighbours;
@@ -205,18 +205,18 @@ CString Agent::toStringObserveBusApp() {
 }
 
 void Agent::makeBidUpdate(Observable* seller) {
-	//cout <<"debug: bid is made" << endl;
+	//std::cout <<"debug: bid is made" << std::endl;
 	bid = (fitness*bidPoF)/100;
 	if (bid < MIN_BID)
 		bid = MIN_BID;
 	if (bid > fitness) {
-		//cout << "WARNING: bid percent is more than 100% (set to 100%), adjust parameters?" << endl;
+		//std::cout << "WARNING: bid percent is more than 100% (set to 100%), adjust parameters?" << std::endl;
 		bid = fitness;
 	}
 	//lastBidUpdateInCycle = syncMan->getCycleNum();
-	//cout << "checking type" << endl;
+	//std::cout << "checking type" << std::endl;
 	//int type = getType();
-	//cout << "type found: " << type << endl;
+	//std::cout << "type found: " << type << std::endl;
 	if (getType() == TYPE_EFFECTOR) {
 		if (bid*2 > fitness)
 			setStatusForNextDead();
@@ -228,7 +228,7 @@ void Agent::makeBidUpdate(Observable* seller) {
 		else
 			seller->addToBidders(this);
 	}
-	//cout << "end checking type" << endl;
+	//std::cout << "end checking type" << std::endl;
 }
 
 //Note consider 'bid-stick': remove when bidding, replace when auction result exist
@@ -236,18 +236,18 @@ void Agent::makeBidUpdate(Observable* seller) {
 //this method is only used by effectors when buying second input (bid not updated)
 void Agent::makeBidNoUpdate(Observable* seller) {
 	if (getType() != TYPE_EFFECTOR) {
-		cout << "ERROR: makebidnoupdate" << endl;
+		std::cout << "ERROR: makebidnoupdate" << std::endl;
 		pressSpaceToQuit();
 	}
 	/*if (lastBidUpdateInCycle != syncMan->getCycleNum()) {
-		cout << "info: makeBidNoUpdate, " << endl;
-		cout << "lastBidUpdateInCycle = " << lastBidUpdateInCycle << endl;
-		cout << "This cycle: " << syncMan->getCycleNum() << endl;
-		cout << "lastStatusUpdate: " << lastStatusUpdateInCycle << endl;
+		std::cout << "info: makeBidNoUpdate, " << std::endl;
+		std::cout << "lastBidUpdateInCycle = " << lastBidUpdateInCycle << std::endl;
+		std::cout << "This cycle: " << syncMan->getCycleNum() << std::endl;
+		std::cout << "lastStatusUpdate: " << lastStatusUpdateInCycle << std::endl;
 		pressSpaceOrQuit();
 	}*/
-	//cout << "DEBUG: effector makes second bid" << endl;
-	//cout << toString() << endl;
+	//std::cout << "DEBUG: effector makes second bid" << std::endl;
+	//std::cout << toString() << std::endl;
 	//pressSpaceOrQuit();
 	seller->addToBidders(this);
 }
@@ -262,7 +262,7 @@ void Agent::makeBidNoUpdate(Observable* seller) {
 	else if (getStatus() == ST_DRIFTER)
 		info = "DRIFTER";
 	else
-		cout << "ERROR: toStringStatus" ;
+		std::cout << "ERROR: toStringStatus" ;
 	if (getStatusAndActive() == ST_FINISHED_THIS_CYCLE)
 		info += " (not active)";
 	else 
@@ -365,7 +365,7 @@ void Agent::observe(Observable* obj) {
 	//        addToObserversUnproc();
 	//Not interested in: Collectors
 
-	cout << "ERROR.Agent: Observe must be overloaded in derived classes!" << endl;
+	std::cout << "ERROR.Agent: Observe must be overloaded in derived classes!" << std::endl;
 	pressSpaceToQuit();
 }
 
@@ -380,12 +380,12 @@ bool Agent::updateAge() {
 
 //collectors and inpoders use this method, effectors use derived method
 void Agent::turnFocusTo(Observable* seller) {
-	cout << "ERROR: turnFocus to must be overloaded in derived classes!" << endl;
+	std::cout << "ERROR: turnFocus to must be overloaded in derived classes!" << std::endl;
 	pressSpaceToQuit();
 }
 
 int Agent::auctionWon(Observable* seller, Message* bMess) {
-	cout << "ERROR: auctionwon must be overloaded in derived classes!" << endl;
+	std::cout << "ERROR: auctionwon must be overloaded in derived classes!" << std::endl;
 	pressSpaceToQuit();
 	return 0;
 }
@@ -448,7 +448,7 @@ void Agent::addToBidders(Observable* bidder) {
 	if (!inserted) //add to end
 		bidders.AddTail(bidder);
 	if (bidders.GetCount() != numOfBidders+1) {
-		cout << "ERROR: addToBidders...";
+		std::cout << "ERROR: addToBidders...";
 		pressSpaceToQuit();
 	}
 	//bidders.AddTail(bidder);
@@ -456,7 +456,7 @@ void Agent::addToBidders(Observable* bidder) {
 }
 
 bool Agent::hasOneStateMessage() {
-	cout << "ERROR: agent hasOne state mess.." << endl;
+	std::cout << "ERROR: agent hasOne state mess.." << std::endl;
 	pressSpaceToQuit();
 	return false;
 }
@@ -466,9 +466,9 @@ bool Agent::hasOneStateMessage() {
 void Agent::informNeighbourhoodOfNewcomer() {
 	if (NEW_OBSERVERS_NOTIFY) {
 		/*if ((getId() == 317) || (getId()==1696) ) {
-			cout << "agent " << getId() << ", type " << getType() << ", informs neigbbours of pot new business" << endl;
-			cout << "agent " << getStatus() << " status before inform: " << endl;
-			cout << toString() << endl;
+			std::cout << "agent " << getId() << ", type " << getType() << ", informs neigbbours of pot new business" << std::endl;
+			std::cout << "agent " << getStatus() << " status before inform: " << std::endl;
+			std::cout << toString() << std::endl;
 		}*/
 		CList<Observable*, Observable*>* currObsInNb = collineGrid->getObservers(agentPosition, vicinityBus, false);
 		Agent* subj;
@@ -480,31 +480,31 @@ void Agent::informNeighbourhoodOfNewcomer() {
 				numOfNewConn++;
 		}
 		/*if ((getId() == 317) || (getId()==1696) ) {
-			cout << "agent " << getStatus() << " status after inform: " << endl;
-			cout << toString() << endl;
+			std::cout << "agent " << getStatus() << " status after inform: " << std::endl;
+			std::cout << toString() << std::endl;
 		}*/
 		
 	}
 }
 
 bool Agent::checkForNewObserveConnection(Agent* newObserverInNb) {
-	cout << "ERROR: checkForNewObs.. must be defined in derived classes" << "\n";
+	std::cout << "ERROR: checkForNewObs.. must be defined in derived classes" << "\n";
 	return false;
 }
 
 void Agent::setStatusForNextObserver() {
 	/*if (getId() == 213) {
-		cout << "debug: 213 ids observer in next cycle" << endl;
+		std::cout << "debug: 213 ids observer in next cycle" << std::endl;
 		pressSpaceOrQuit();
 	}*/
 	if (lastStatusUpdateInCycle == syncMan->getCycleNum()) {
-		cout << "ERROR: status already updated in this cycle, loop problem? [observer]" << endl;
+		std::cout << "ERROR: status already updated in this cycle, loop problem? [observer]" << std::endl;
 		pressSpaceToQuit();
 	}
 	if (getStatus() == ST_DRIFTER)
 		statHandler->adjustDrifters(-1, getType());
 	else {
-		cout << "ERROR: set to observer" << endl;
+		std::cout << "ERROR: set to observer" << std::endl;
 		pressSpaceToQuit();
 	}
 	statHandler->adjustObservers( 1, getType() );
@@ -517,15 +517,15 @@ void Agent::setStatusForNextObserver() {
 //note: test later that no problems occur for processors at session-shifts (agents gets dead-locked/ observes each other)
 void Agent::setStatusForNextProcessor() {
 	/*if (getId() == 213) {
-		cout << "debug: 213 is proc in next cycle" << endl;
+		std::cout << "debug: 213 is proc in next cycle" << std::endl;
 		pressSpaceOrQuit();
 	}*/
 	if (lastStatusUpdateInCycle == syncMan->getCycleNum()) {
-		cout << "ERROR: status already updated in this cycle, loop problem? [processor]" << endl;
+		std::cout << "ERROR: status already updated in this cycle, loop problem? [processor]" << std::endl;
 		pressSpaceToQuit();
 	}
 	if (getStatus() != ST_OBSERVER) {
-		cout << "ERROR: agent, type " << getType() <<", id=" << getId() << ", set status processor: prev status must be observer, was in fact " << getStatus() << endl;
+		std::cout << "ERROR: agent, type " << getType() <<", id=" << getId() << ", set status processor: prev status must be observer, was in fact " << getStatus() << std::endl;
 		pressSpaceToQuit();
 	}
 	statHandler->adjustObservers(-1, getType() );
@@ -540,15 +540,15 @@ void Agent::setStatusForNextProcessor() {
 void Agent::setStatusForNextDrifter() {
 
 	/*if (getId() == 213) {
-		cout << "debug: 213 is drifter in next cycle" << endl;
+		std::cout << "debug: 213 is drifter in next cycle" << std::endl;
 		pressSpaceOrQuit();
 	}*/
 	if (lastStatusUpdateInCycle == syncMan->getCycleNum()) {
-		cout << "ERROR: status already updated in this cycle, loop problem? [drifter]" << endl;
+		std::cout << "ERROR: status already updated in this cycle, loop problem? [drifter]" << std::endl;
 		pressSpaceToQuit();
 	}
 	lastStatusUpdateInCycle = syncMan->getCycleNum();
-	//cout << "DEBUG: agent " << getId() << " are drifter next cycle" << endl;
+	//std::cout << "DEBUG: agent " << getId() << " are drifter next cycle" << std::endl;
 	//syncMan->removeIdFromHasNotBeenDrifterList(getId()); //this should be a temporary test
 	if (getStatus() == ST_OBSERVER)
 		statHandler->adjustObservers(-1,getType());
@@ -557,7 +557,7 @@ void Agent::setStatusForNextDrifter() {
 	else if (getStatus() == ST_PROCESSOR)
 		statHandler->adjustProcessors(-1, getType() );
 	else {
-		cout << "ERROR: set to drifter" << endl;
+		std::cout << "ERROR: set to drifter" << std::endl;
 		pressSpaceToQuit();
 	}
 	if (getStatus() == ST_OBSERVER || getStatus() == ST_PROCESSOR) { //if not obs: bus conn is already empty
@@ -572,11 +572,11 @@ void Agent::setStatusForNextDrifter() {
 
 void Agent::setStatusForNextDead() {
 	//syncMan->removeIdFromHasNotBeenDrifterList(getId()); //this should be a temporary test
-	//cout << toStringType() << getId() << " dies..." << endl;
-	//cout << toString() << endl;
+	//std::cout << toStringType() << getId() << " dies..." << std::endl;
+	//std::cout << toString() << std::endl;
 		
 	if (getStatus() == ST_DEAD) {
-		cout << "ERROR: setStatusFor....agent already dead! " << endl;
+		std::cout << "ERROR: setStatusFor....agent already dead! " << std::endl;
 		pressSpaceToQuit();
 	}
 	statHandler->updateStatAgentDies(this);
@@ -593,7 +593,7 @@ void Agent::setStatusForNextDead() {
 }
 
 void Agent::observedAgentIsDrifting(Observable* observedObs) {
-	cout << "ERROR.Agent: observerAgentIsDrifting must be overloaded in derived classes!" << endl;
+	std::cout << "ERROR.Agent: observerAgentIsDrifting must be overloaded in derived classes!" << std::endl;
 	/*Agent* observedAgent = (Agent*)observedObs;
 	numOfObsAgents--;
 	if (numOfObsAgents == 0) {
@@ -609,7 +609,7 @@ bool Agent::isReadyToMate() {
 void Agent::testIfReadyToMate() {
 	if (readyToMate) { //Agent is drifter and readyToMate, test if stop
 		if (getStatus() != ST_DRIFTER) {
-			cout << "ERROR.agent: MATER: testifreadytomate, agent should be drifter!" << endl;
+			std::cout << "ERROR.agent: MATER: testifreadytomate, agent should be drifter!" << std::endl;
 			pressSpaceToQuit();
 		}
 		if ((fitness <= matingThrStop) || (numOfOffspring>=MAX_NUM_OFFSPRING)) {
@@ -618,7 +618,7 @@ void Agent::testIfReadyToMate() {
 		}
 	} else { //is not-ready-to-mate, test fitness
 		if (getStatus() != ST_PROCESSOR) {
-			cout << "ERROR.agent: NON-mater: testifreadytomate, agent type " << getType() << " should be processor!" << endl;
+			std::cout << "ERROR.agent: NON-mater: testifreadytomate, agent type " << getType() << " should be processor!" << std::endl;
 			pressSpaceToQuit();
 		}
 		if (fitness >= matingThrStart) {
@@ -632,19 +632,19 @@ void Agent::testIfReadyToMate() {
 
 //Note: processing and selling must be atomic events to prevent that an agent wins two auctions
 void Agent::process() {
-	cout << "ERROR: process must be overloaded in derived classes!" << endl;
+	std::cout << "ERROR: process must be overloaded in derived classes!" << std::endl;
 	pressSpaceToQuit();
 
 }
 
 void Agent::drift() {
 	if (getNumOfPotentialSellers() != 0 || getNumOfPotentialBuyers() != 0) {
-		cout << "ERROR: agent drift(); agent are observing other agents or are observed by others" << endl;
+		std::cout << "ERROR: agent drift(); agent are observing other agents or are observed by others" << std::endl;
 		pressSpaceToQuit();
 	}
 	if (getStatusAndActive() == ST_FINISHED_THIS_CYCLE) {
 		return; //happens when agents mate (parent 'picked up' for mating is also drifter)
-		//cout << "ERROR: agent drift...this shouldn't happen!" << endl;
+		//std::cout << "ERROR: agent drift...this shouldn't happen!" << std::endl;
 		//pressSpaceToQuit();
 	}
 	if (!updateAge())
@@ -670,12 +670,12 @@ void Agent::drift() {
 		}
 		else {
 			Agent* mate = matingSubjects->GetAt( matingSubjects->FindIndex( 0 )); //pickRandomPosition(matingSubjects->GetCount())));
-			//cout << "Parent1: " << toString() << endl;
-			//cout << "Parent2: " << mate->toString() << endl;
+			//std::cout << "Parent1: " << toString() << std::endl;
+			//std::cout << "Parent2: " << mate->toString() << std::endl;
 			bool isRoomForOffspring = true;
 			while (isReadyToMate() && mate->isReadyToMate() && isRoomForOffspring) {
 				if (fitness > mate->getFitness()) {
-					//cout << "info: " << getId() << " chosen as parent 1 (healthiest)" << endl;
+					//std::cout << "info: " << getId() << " chosen as parent 1 (healthiest)" << std::endl;
 					isRoomForOffspring = produceOffspring(mate);
 				} else
 					isRoomForOffspring = mate->produceOffspring(this);
@@ -697,16 +697,16 @@ void Agent::drift() {
 		}
 		delete matingSubjects; //consider method 'updateMatingSubj' like for neighbours
 	} else {
-		//cout << "INFO: " << toStringType() << getId() << " drift, about to get neighbors....";
+		//std::cout << "INFO: " << toStringType() << getId() << " drift, about to get neighbors....";
 		//CList<Observable*, Observable*>* allNeighbours = collineGrid->getNeighbours(agentPosition, getVicinityBus() );
 		setCurrentNeighbours( collineGrid->getNeighbours(agentPosition, getVicinityBus(), false) );
 		if ( makeBusinessConnections()) { //scan neighbourhood for business connections
-			//cout << "INFO: " << toStringType() << getId() << " observes...." << endl;
+			//std::cout << "INFO: " << toStringType() << getId() << " observes...." << std::endl;
 			setStatusForNextObserver();
 			return;
 		}
 		else { //not enough matches
-			//cout << "INFO: agent takes random step" << endl;
+			//std::cout << "INFO: agent takes random step" << std::endl;
 			takeRandomStep();
 			setStatusForNextDrifter(); //keep drifter status
 			return;
@@ -749,7 +749,7 @@ bool Agent::isLocatedInRewardAreaSouth() {
 	int numOfPosTotal = (C_MAT_OVERCROWD_SCANRAD*2+1)*(C_MAT_OVERCROWD_SCANRAD*2+1);
 	int percentageFilled = (numOfnb*100)/numOfPosTotal;
 	if (percentageFilled>C_MAT_OVERCROWD_PRC) {
-		//cout << "INFO: neighbourhood too filled for mating" << endl;
+		//std::cout << "INFO: neighbourhood too filled for mating" << std::endl;
 		return true;
 	}else
 		return false;
@@ -774,20 +774,20 @@ Message* Agent::getAgentDNA() {
 }
 
 Message* Agent::getTypeDNA() {
-	cout << "ERROR: getTypeDNA must be overloaded in derived classes!" << endl;
+	std::cout << "ERROR: getTypeDNA must be overloaded in derived classes!" << std::endl;
 	pressSpaceToQuit();
 	return (new Message(0,0));
 }
 
 int Agent::getNumOfTypeDNAbits() {
-	cout << "ERROR: getNumOfTypeDNA must be overloaded in derived classes!" << endl;
+	std::cout << "ERROR: getNumOfTypeDNA must be overloaded in derived classes!" << std::endl;
 	pressSpaceToQuit();
 	return -1;
 }
 
 //return value true: offspring produced, false: no offspring produced (no room for new agents)
 bool Agent::produceOffspring(Agent* mate) {
-	//cout << "Producing offspring...";
+	//std::cout << "Producing offspring...";
 	int randomCut1, randomCut2;
 	Message* offspringAppBusSmall;
 	Message* offspringAppMat;
@@ -839,7 +839,7 @@ bool Agent::produceOffspring(Agent* mate) {
 	offspringDNA_AG = getOffspringPart(randomCut1, randomCut2 - 1, startPosAG, stopPosAG, thisDNA_AG, mateDNA_AG);
 	offspringDNA_TYPE = getOffspringPart(randomCut1, randomCut2 - 1, startPosTYPE, stopPosTYPE, thisDNA_TYPE, mateDNA_TYPE);
 
-	//cout << "After mutation: " << endl;
+	//std::cout << "After mutation: " << std::endl;
 	int numMut;
 	int addMutation = 0;
 	int dice = env->getRandNumBetwZeroAnd(99);
@@ -851,13 +851,13 @@ bool Agent::produceOffspring(Agent* mate) {
 	numMut += offspringAppBusSmall->flipBits(statHandler->MUTATION_RATE/*_BUS_APP_PM*/ + addMutation);
 	numMut += offspringDNA_AG->flipBits(statHandler->MUTATION_RATE/*_DNA_AG_PM*/ + addMutation);
 	numMut += offspringDNA_TYPE->flipBits(statHandler->MUTATION_RATE/*_DNA_TYPE_PM*/ + addMutation);
-	//cout << "Ofspring DNA obs : " << (LPCTSTR)offspringDNA_OBS->toStringBits() << endl;
-	//cout << "Ofspring DNA ag  : " << (LPCTSTR)offspringDNA_AG->toStringBits() << endl;
-	//cout << "Ofspring DNA type: " << (LPCTSTR)offspringDNA_TYPE->toStringBits() << endl;
-	//cout << "INFO: number of bits mutated in offspring: " << numMut << " (" << addMutation << ")" << endl;
+	//std::cout << "Ofspring DNA obs : " << (LPCTSTR)offspringDNA_OBS->toStringBits() << std::endl;
+	//std::cout << "Ofspring DNA ag  : " << (LPCTSTR)offspringDNA_AG->toStringBits() << std::endl;
+	//std::cout << "Ofspring DNA type: " << (LPCTSTR)offspringDNA_TYPE->toStringBits() << std::endl;
+	//std::cout << "INFO: number of bits mutated in offspring: " << numMut << " (" << addMutation << ")" << std::endl;
 	CList<GridCell*, GridCell*>* freeCells = collineGrid->getFreeCells(agentPosition, vicinityMat);
 	if (freeCells->GetCount() == 0) { //FIX move this test up before calc of offspringDNA
-		//cout << "WARNING: Grid over-crowded, no room for new agents! (agent try to move)" << endl;
+		//std::cout << "WARNING: Grid over-crowded, no room for new agents! (agent try to move)" << std::endl;
 		/*env->receiveFitness( getOffspringFitness() );
 		statHandler->adjustFitnessEnvironment( getOffspringFitness() );
 		env->receiveFitness( mate->getOffspringFitness() );
@@ -869,7 +869,7 @@ bool Agent::produceOffspring(Agent* mate) {
 		int offspringFitness = 0;
 		offspringFitness += getOffspringFitness(); //(subtract fitness from parent)
 		offspringFitness += mate->getOffspringFitness();
-		//cout << " (offspring fitness: " << offspringFitness << ")" << endl;
+		//std::cout << " (offspring fitness: " << offspringFitness << ")" << std::endl;
 		GridCell* babyPosition = freeCells->GetAt( freeCells->FindIndex( pickRandomPosition(freeCells->GetCount()) ));
 		baby = makeBaby(env,collineStamp, collineGrid, babyPosition, syncMan, offspringFitness, offspringAppMat, offspringAppBusSmall, offspringDNA_AG, offspringDNA_TYPE);
 		increaseProducedOffspring();
@@ -885,7 +885,7 @@ void Agent::increaseProducedOffspring() {
 }
 
 Observable* Agent::makeBaby(Environment* e, IdStamp* cStamp, Grid* collineGrid, GridCell* babyPosition, SyncManager* syncMan, int offspringFitness, Message* offspringAppMat, Message* offspringAppBusSmall, Message* offspringDNA_AG, Message* offspringDNA_TYPE) {
-	cout << " ERROR: agent, makebaby" << endl;
+	std::cout << " ERROR: agent, makebaby" << std::endl;
 	pressSpaceToQuit();
 	return new Observable();
 }
@@ -905,7 +905,7 @@ Message* Agent::getOffspringPart(int repPosStart, int repPosStop, int partPosSta
 			repPosStop_local = partPosStop;
 		repPosStart_local -= partPosStart; //pos must be adjusted for the 'offset'
 		repPosStop_local -= partPosStart; // do.
-		//cout << "local replacing from: " << repPosStart_local << ", to: " << repPosStop_local << endl;
+		//std::cout << "local replacing from: " << repPosStart_local << ", to: " << repPosStop_local << std::endl;
 		offspringPart = thisDNA->replacePart(repPosStart_local, repPosStop_local, mateDNA);
 	} else
 		offspringPart = thisDNA->clone();
@@ -913,7 +913,7 @@ Message* Agent::getOffspringPart(int repPosStart, int repPosStop, int partPosSta
 }
 
 bool Agent::makeBusinessConnections() {
-	cout << "ERROR: makeBusinesscon must be overloaded in derived classes!" << endl;
+	std::cout << "ERROR: makeBusinesscon must be overloaded in derived classes!" << std::endl;
 	pressSpaceToQuit();
 	return false;
 }
@@ -936,7 +936,7 @@ int Agent::getOffspringFitness() {
 	else if (dice<C_ACC_CHANCE_VERY_LOW)
 		percentage = C_PRC_TO_OFF_VERY_LOW;
 	else {
-		cout << "ERROR: getOff fitness" << endl;
+		std::cout << "ERROR: getOff fitness" << std::endl;
 		pressSpaceOrQuit();
 	}
 	if (fitness > ((C_AGENT_HEALTHY_PRC*initialFitness)/100))
@@ -959,7 +959,7 @@ int Agent::getOffspringFitness() {
 	if (syncMan->getSessionNum() < statHandler->MAX_INACTIVE_SESS)
 		overcrowdPercentage = 0; //do not adjust with overcrowdpercentage in the start-up phase
 	percentage += overcrowdPercentage; //note: negative when small pop
-	//cout << "DEBUG: percentage to off: " << percentage << endl;
+	//std::cout << "DEBUG: percentage to off: " << percentage << std::endl;
 	int amountToOff = (initialFitness*percentage)/100;
 	int exceedingFitness = fitness-(initialFitness*C_FITN_ABOVE_GIVES_BONUS)/100;
 	if (exceedingFitness<0)
@@ -970,7 +970,7 @@ int Agent::getOffspringFitness() {
 		amountToOff = fitness; //max all fitness
 	else if ( amountToOff < ((initialFitness*C_PRC_TO_OFF_VERY_LOW)/100) )
 		amountToOff = initialFitness*C_PRC_TO_OFF_VERY_LOW/100; //min lowest percentage
-	//cout << "DEBUG: amountToOff " << amountToOff << endl;
+	//std::cout << "DEBUG: amountToOff " << amountToOff << std::endl;
 	//pressSpaceOrQuit();
 
 	setFitness( fitness - amountToOff ); //fitness -= amountToOff;
@@ -989,7 +989,7 @@ int Agent::getOffspringFitness() {
 }
 
 /*Message* Agent::getAppearBus() {
-	cout << "ERROR: getAppearBus must be overloaded in derived classes!" << endl;
+	std::cout << "ERROR: getAppearBus must be overloaded in derived classes!" << std::endl;
 	pressSpaceToQuit();
 	return (new Message());
 }*/
@@ -1006,7 +1006,7 @@ Message* Agent::getAppIdealMat() {
 int Agent::pickRandomPosition(int numOfPositions) {
 
 	if (numOfPositions == 0) {
-		cout << "ERROR: pickRandom can't pick from zero!" << endl;
+		std::cout << "ERROR: pickRandom can't pick from zero!" << std::endl;
 		pressSpaceToQuit();
 	}
 	if (numOfPositions == 1)
@@ -1075,7 +1075,7 @@ void Agent::takeRandomStep() {
 	GridCell* oldPos = agentPosition;
 	CList<GridCell*, GridCell*>* freeCells = collineGrid->getFreeCells(agentPosition, step_size);
 	if (freeCells->GetCount() == 0) {
-		cout << "WARNING: No free cells, no step taken!" << endl;
+		std::cout << "WARNING: No free cells, no step taken!" << std::endl;
 		agentPosition->placeOccupier(this);
 	}
 	else {
@@ -1094,7 +1094,7 @@ CList<Agent*, Agent*>*  Agent::getMatingSubjects() {
 	/*int thisId = getId();
 	for (i=0; i<nb.size(); i++) {
 		if (nb.at(i)->getId() == thisId) {
-			cout << "ERROR: getMatingSubj this is in nb!" << endl;
+			std::cout << "ERROR: getMatingSubj this is in nb!" << std::endl;
 		}
 	}*/
 	CTypedPtrList<CObList, Agent*>  agents; //CList<Agent*, Agent*>* agents = new CList<Agent*, Agent*>(5);
@@ -1142,7 +1142,7 @@ Observable* Agent::findHighestBidder() { //the bidder can be an agent or a decis
 	Observable* tempBidder;
 	int numOfBids = bidders.GetCount(); // bidders.size();
 	if (numOfBids == 0) {
-		cout << "ERROR: findhighestbidder assumes bidders!" << endl;
+		std::cout << "ERROR: findhighestbidder assumes bidders!" << std::endl;
 		pressSpaceToQuit();
 	}
 	Observable* maxBidder = bidders.GetAt( bidders.FindIndex(0) );
@@ -1166,7 +1166,7 @@ Observable* Agent::findHighestBidder() { //the bidder can be an agent or a decis
 
 bool Agent::sellMessage(Message* mess) {
 	if (bidders.GetCount() == 0) {
-		//cout << "no bidders...." << endl;
+		//std::cout << "no bidders...." << std::endl;
 		return false;
 	}
 	else {
@@ -1175,7 +1175,7 @@ bool Agent::sellMessage(Message* mess) {
 		int payment = buyer->auctionWon(this, mess);
 		setFitness( fitness + payment);
 		//if (getType()==TYPE_EFFECTOR)
-		//	cout << "DEBUG: effector message sold to: " << buyer->getType() << " , bid: " << payment << endl;	
+		//	std::cout << "DEBUG: effector message sold to: " << buyer->getType() << " , bid: " << payment << std::endl;	
 		if (buyer->getType() == TYPE_CATEGORY && DC_ONLY_READS_MESSAGE) {//if message is sold to trainer, second highest bidder can buy (optional)
 			bidders.RemoveAt( bidders.FindIndex(0));
 			if (!sellMessage( potentialCopyToSell )) //sell to second highest bidder, if any
@@ -1190,10 +1190,10 @@ bool Agent::sellMessage(Message* mess) {
 
 //returns number of buyers
 int Agent::sellState(bool state) {
-	//cout << "selling state info.." << endl;
+	//std::cout << "selling state info.." << std::endl;
 	Message* stateMess;
 	int numOfBuyers = bidders.GetCount();
-	//cout << "num of buyers: " << numOfBuyers << endl;
+	//std::cout << "num of buyers: " << numOfBuyers << std::endl;
 	if (getType()==TYPE_INPODER) {
 		if (numOfBuyers > statHandler->MAX_STATE_BUYERS_INP)
 			numOfBuyers = statHandler->MAX_STATE_BUYERS_INP;
@@ -1201,18 +1201,18 @@ int Agent::sellState(bool state) {
 		if (numOfBuyers > MAX_STATE_BUYERS_COL)
 			numOfBuyers = MAX_STATE_BUYERS_COL;
 	} else {
-		cout << "ERROR: sellstate" << endl;
+		std::cout << "ERROR: sellstate" << std::endl;
 		pressSpaceToQuit();
 	}
 	int payment;
-	//cout << "INFO: (sellstate) numOfBuyers: " << numOfBuyers << endl;
+	//std::cout << "INFO: (sellstate) numOfBuyers: " << numOfBuyers << std::endl;
 	for (int i=0; i<numOfBuyers; i++) {
 		stateMess = new Message(state,1); 
 		payment = bidders.GetAt( bidders.FindIndex(i) )->auctionWon(this, stateMess);
 		setFitness(fitness + payment); //fitness += payment;
 	}
 	bidders.RemoveAll();
-	//cout << "INFO: (sellstate) finished" << endl;
+	//std::cout << "INFO: (sellstate) finished" << std::endl;
 	return numOfBuyers;
 }
 
@@ -1233,30 +1233,30 @@ CList<Observable*, Observable*>* Agent::shuffleAgentList(CList<Observable*, Obse
 	//CList<Observable*, Observable*>* shuffledList = new CList<Observable*, Observable*>;
 	int listSize = listToBeShuffled->GetCount();
 	/*if (listSize<26) {
-		cout << "before shuffling: " << endl;
+		std::cout << "before shuffling: " << std::endl;
 		for (i=0; i<listSize; i++) {
 			temp = listToBeShuffled->GetAt( listToBeShuffled->FindIndex(i) );
-			cout << (LPCTSTR)temp->toStringId() << endl;
+			std::cout << (LPCTSTR)temp->toStringId() << std::endl;
 		}
 	}*/
-	//cout << "size of list: " << listSize << endl;
+	//std::cout << "size of list: " << listSize << std::endl;
 	for (i=0; i<listSize; i++) {
 		//accumPosition = listToBeShuffled->FindIndex(i);
 		temp = listToBeShuffled->GetAt( listToBeShuffled->FindIndex(i) );
 		swapWithIndex = (rand()*(listSize-1))/RAND_MAX;
 		//swapWithPosition = listToBeShuffled->FindIndex( swapWithIndex );
 		temp2 = listToBeShuffled->GetAt( listToBeShuffled->FindIndex( swapWithIndex ) );
-		//cout << "swaps " << i << " with " << swapWithIndex << endl;	
+		//std::cout << "swaps " << i << " with " << swapWithIndex << std::endl;	
 		listToBeShuffled->RemoveAt( listToBeShuffled->FindIndex(i) ); //remove temp from orig position
-		//cout << "inserts temp" << endl;
+		//std::cout << "inserts temp" << std::endl;
 		if (swapWithIndex==(listSize-1))
 			listToBeShuffled->AddTail(temp);
 		else
 			listToBeShuffled->InsertAfter( listToBeShuffled->FindIndex(swapWithIndex) , temp); //insert at new position
-		//cout << "removes temp2" << endl;
+		//std::cout << "removes temp2" << std::endl;
 		temp2_pos = listToBeShuffled->Find(temp2); //use find because indexes above may be invalid
 		listToBeShuffled->RemoveAt( temp2_pos ); //remove temp2 from orig position
-		//cout << "inserts temp2" << endl;
+		//std::cout << "inserts temp2" << std::endl;
 		if (i==(listSize-1))
 			listToBeShuffled->AddTail(temp2);
 		else
@@ -1264,14 +1264,14 @@ CList<Observable*, Observable*>* Agent::shuffleAgentList(CList<Observable*, Obse
 	}
 	//test that shuffle is ok:
 	if (listToBeShuffled->GetCount() != listSize) {
-		cout << "ERROR: shuffle list" << endl;
+		std::cout << "ERROR: shuffle list" << std::endl;
 		pressSpaceToQuit();
 	}
 	/*if (listSize<26) {
-		cout << "after shuffling: " << endl;
+		std::cout << "after shuffling: " << std::endl;
 		for (i=0; i<listSize; i++) {
 			temp = listToBeShuffled->GetAt( listToBeShuffled->FindIndex(i) );
-			cout << (LPCTSTR)temp->toStringId() << endl;
+			std::cout << (LPCTSTR)temp->toStringId() << std::endl;
 		}
 		pressSpaceOrQuit();
 	} //delete later, fix
@@ -1286,7 +1286,7 @@ int Agent::getRandNumBetwZeroAnd(int maximum) {
 	else //large number: use other method
 		randomNum = ( ((double)rand()) / ((double)RAND_MAX)  ) *maximum;
 	if (randomNum<0) {
-		cout << "ERROR: getRandomNum" << endl;
+		std::cout << "ERROR: getRandomNum" << std::endl;
 		pressSpaceToQuit();
 	}
 	if (randomNum>maximum)
