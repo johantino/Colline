@@ -1,1 +1,6 @@
 build
+.vs
+Debug
+Release
+out
+*.user

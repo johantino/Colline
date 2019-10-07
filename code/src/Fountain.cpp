@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "Colline.h"
 #include "Fountain.h"
-#include "iostream.h"
+#include <iostream>
 #include "Konst.h"
 
 
@@ -95,13 +95,13 @@ void Fountain::addToBidders(Observable* obsBidder) {
 		}
 		i++;
 	}
-	//cout << "after while in addTobidders...addTail now..." << endl;
+	//std::cout << "after while in addTobidders...addTail now..." << std::endl;
 	//pressSpaceOrQuit();
 	if (!inserted) //add to end
 		bidders.AddTail(obsBidder);
-	//cout << "ok" << endl;
+	//std::cout << "ok" << std::endl;
 	if (bidders.GetCount() != numOfBidders+1) {
-		cout << "ERROR: addTobidders...";
+		std::cout << "ERROR: addTobidders...";
 		pressSpaceToQuit();
 	}
 	
@@ -123,9 +123,9 @@ int Fountain::getStatusAndActive() {
 }
 
 void Fountain::receiveMessage(Message* newMess) { //corresponds to auctionwon for agents
-	//cout << "Fountain " << getId() << " receives " << newMess->toStringBits() << endl;
+	//std::cout << "Fountain " << getId() << " receives " << newMess->toStringBits() << std::endl;
 	if (messFromEnv->getSize() != 0) {
-		cout << "ERROR: fountain, receivemess: already has message!" << endl;
+		std::cout << "ERROR: fountain, receivemess: already has message!" << std::endl;
 		pressSpaceToQuit();
 	}
 	messFromEnv = newMess;
@@ -135,16 +135,16 @@ void Fountain::receiveMessage(Message* newMess) { //corresponds to auctionwon fo
 }
 
 void Fountain::process() {
-	//cout << "info: Fountain " << getId() << "'process'..." << endl;
+	//std::cout << "info: Fountain " << getId() << "'process'..." << std::endl;
 	if (messFromEnv->getSize() == 0) {
-		cout << "ERROR, fountain process" << endl;
+		std::cout << "ERROR, fountain process" << std::endl;
 		pressSpaceToQuit();
 	}
 	//Sell state (state is always true for fountains, but using effectors helps stabilizing the structure)
 	/*Observable::notifyObserversState(); //collect bids (in bidders vector)
 	Message* stateMess = new Message(true, 1);
 	if (sellMessage(stateMess)) {
-		cout << "ERROR: fountain proces";
+		std::cout << "ERROR: fountain proces";
 		pressSpaceToQuit();
 		syncMan->addToNumOfProducedBits( 1 );
 	} else {
@@ -152,9 +152,9 @@ void Fountain::process() {
 	}*/
 
 	//sell message from environment
-	//cout << "fountain notifies obs" << endl;
+	//std::cout << "fountain notifies obs" << std::endl;
 	Observable::notifyObserversProc(); //collect bids from collectors/ inpoders
-	//cout << "info: Fountain " << getId() << " all bids collected" << endl;
+	//std::cout << "info: Fountain " << getId() << " all bids collected" << std::endl;
 	statHandler->addToNumBitsFromEnv( messFromEnv->getSize() );
 	if (sellMessage(messFromEnv)) {
 		messFromEnv = EMPTYMESS; //let pointer point to empty message
@@ -163,7 +163,7 @@ void Fountain::process() {
 		delete messFromEnv; //waste message
 		messFromEnv = EMPTYMESS;
 	}
-	//cout << "Debug: fountain set status to drifter" << endl;
+	//std::cout << "Debug: fountain set status to drifter" << std::endl;
 	setStatusForNextDrifter(); 
 	//syncMan->numOfObserversAdd();
 }
@@ -174,13 +174,13 @@ void Fountain::drift() {
 
 bool Fountain::sellMessage(Message* mess) {
 	if (bidders.GetCount() == 0) {
-		//cout << "info: (fountain) no bidders...." << endl;
+		//std::cout << "info: (fountain) no bidders...." << std::endl;
 		return false;
 	}
 	else {
-		//cout << "debug: fountain sells message" << endl;
+		//std::cout << "debug: fountain sells message" << std::endl;
 		Agent* buyer = findHighestBidder();
-		//cout << "debug: highest bidder found" << endl;
+		//std::cout << "debug: highest bidder found" << std::endl;
 		int payment = buyer->auctionWon(this, mess);
 		env->receiveFitness( payment );
 		statHandler->adjustFitnessEnvironment( payment );
@@ -192,14 +192,14 @@ bool Fountain::sellMessage(Message* mess) {
 //Only the highest bidding effector gets to buy message
 /*bool Fountain::sellState(bool state) {
 	int payment;
-	//cout << "INFO: (sellstate) numOfBuyers: " << numOfBuyers << endl;
+	//std::cout << "INFO: (sellstate) numOfBuyers: " << numOfBuyers << std::endl;
 	for (int i=0; i<numOfBuyers; i++) {
 		stateMess = new Message(state,1); 
 		payment = bidders.at(i)->auctionWon(this, stateMess);
 		env->receiveFitness( payment );
 	}
 	bidders.clear();
-	//cout << "INFO: (sellstate) finished" << endl;
+	//std::cout << "INFO: (sellstate) finished" << std::endl;
 	return numOfBuyers;
 }*/
 
@@ -207,7 +207,7 @@ bool Fountain::sellMessage(Message* mess) {
 Agent* Fountain::findHighestBidder() {
 	int numOfBids = bidders.GetCount(); // bidders.size();
 	if (numOfBids == 0) {
-		cout << "ERROR: findhighestbidder assumes bidders!" << endl;
+		std::cout << "ERROR: findhighestbidder assumes bidders!" << std::endl;
 		pressSpaceToQuit();
 	}
 	Agent* maxBidder = (Agent*)bidders.GetAt( bidders.FindIndex(0) );
@@ -217,7 +217,7 @@ Agent* Fountain::findHighestBidder() {
 	for (int i=1; i<numOfBids; i++) {
 		tempBidder = (Agent*)bidders.GetAt( bidders.FindIndex(i) );
 		if (tempBidder->getBid() > maxBid) {
-			cout << "ERROR: findHighestBider fountain" << endl;
+			std::cout << "ERROR: findHighestBider fountain" << std::endl;
 			pressSpaceToQuit();
 		}
 	}*/
@@ -225,7 +225,7 @@ Agent* Fountain::findHighestBidder() {
 	return maxBidder;
 	/*int numOfBids = bidders.size();
 	if (numOfBids == 0) {
-		cout << "ERROR: findhighestbidder assumes bidders!" << endl;
+		std::cout << "ERROR: findhighestbidder assumes bidders!" << std::endl;
 		pressSpaceToQuit();
 	}
 	Agent* maxBidder = bidders.at(0);
@@ -242,7 +242,7 @@ Agent* Fountain::findHighestBidder() {
 //Note: consider sharing status methods with agents (move to observable)
 void Fountain::setStatusForNextProcessor() {
 	if (getStatus() != ST_OBSERVER) {
-		cout << "ERROR: fountain, set status processor: prev status must be observer" << endl;
+		std::cout << "ERROR: fountain, set status processor: prev status must be observer" << std::endl;
 		pressSpaceToQuit();
 	}
 	statHandler->adjustObservers(-1, getType() );
@@ -259,7 +259,7 @@ void Fountain::setStatusForNextObserver() {
 	if (getStatus() == ST_DRIFTER)
 		statHandler->adjustDrifters(-1, getType());
 	else {
-		cout << "ERROR: set to observer" << endl;
+		std::cout << "ERROR: set to observer" << std::endl;
 		pressSpaceToQuit();
 	}
 	statHandler->adjustObservers( 1, getType() );
@@ -273,7 +273,7 @@ void Fountain::setStatusForNextObserver() {
 void Fountain::setStatusForNextDrifter() {
 	//syncMan->removeIdFromHasNotBeenDrifterList(getId()); //should be temporary test
 	if (getStatus() != ST_PROCESSOR) {
-		cout << "ERROR: Fountain status shift to drifter" << endl;
+		std::cout << "ERROR: Fountain status shift to drifter" << std::endl;
 		pressSpaceToQuit();//syncMan->numOfObserversSub();
 	} else
 		statHandler->adjustProcessors(-1, getType() );

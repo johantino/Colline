@@ -6,7 +6,7 @@
 #include "Colline.h"
 #include "AgentCreator.h"
 #include "Konst.h"
-#include "iostream.h"
+#include <iostream>
 #include <conio.h> //for press key
 #include "Fountain.h"
 #include "dCollector.h"
@@ -49,27 +49,27 @@ void AgentCreator::restorePopulation( CString fname_agentpop ) {
 	bool matStatBool;
 	FILE* agentPopFile;
 	if ((agentPopFile = fopen(fname_agentpop, "r")) == NULL) {
-		cout << "ERROR: couldn't open restore population, file not found" << endl;
-		cout << (LPCTSTR)fname_agentpop << endl;
+		std::cout << "ERROR: couldn't open restore population, file not found" << std::endl;
+		std::cout << (LPCTSTR)fname_agentpop << std::endl;
 		pressSpaceToQuit();
 	} else
-		cout << "Restoring population..." << endl;
+		std::cout << "Restoring population..." << std::endl;
 	fseek( agentPopFile, 0, SEEK_SET);
 	fscanf(agentPopFile,"%d", &numOfEntries); //first value in file gives num of agents
-	cout << "num of entries: " << numOfEntries << endl;
+	std::cout << "num of entries: " << numOfEntries << std::endl;
 	
 	for (int i=0; i<numOfEntries; i++) {
 		fscanf(agentPopFile,"%d", &type);
-		//cout << type  << " ";
+		//std::cout << type  << " ";
 		if (type == TYPE_FOUNTAIN) {
 			fscanf(agentPopFile,"%d", &appBusSmall_val);
 			fscanf(agentPopFile,"%d", &posX);
 			fscanf(agentPopFile,"%d", &posY);
 			fscanf(agentPopFile,"%d", &loadingSlot);
 			appBusSmall = new Message(appBusSmall_val, APPEAR_SIZE_BUS_SMALL);
-			//cout << posX << " ";
-			//cout << posY << " ";
-			//cout << loadingSlot << " " << endl;
+			//std::cout << posX << " ";
+			//std::cout << posY << " ";
+			//std::cout << loadingSlot << " " << std::endl;
 			new Fountain(env, statHandler, stamp, agentGrid, agentGrid->getCellAt(posX,posY), syncMan, appBusSmall, loadingSlot);
 			//delete obsPart;
 			//read fountain values
@@ -89,7 +89,7 @@ void AgentCreator::restorePopulation( CString fname_agentpop ) {
 			else if (matStat == 1)
 				matStatBool = true;
 			else {
-				cout << "Error: rest pop. mating state" << endl;
+				std::cout << "Error: rest pop. mating state" << std::endl;
 				pressSpaceToQuit();
 			}
 			fscanf(agentPopFile,"%d", &lastPrSess);
@@ -97,13 +97,13 @@ void AgentCreator::restorePopulation( CString fname_agentpop ) {
 			appBusSmall = new Message(appBusSmall_val, APPEAR_SIZE_BUS_SMALL);
 			dnaAgPart = new Message(dna_ag_val, N_DNA_AG);
 			//Message* dnaTypePart;
-			/*cout << dna_obs_val << " ";
-			cout << dna_ag_val << " ";
-			cout << dna_type_val << " ";
-			cout << initFitn << " ";
-			cout << currFitn << " ";
-			cout << posX << " ";
-			cout << posY << endl;*/
+			/*std::cout << dna_obs_val << " ";
+			std::cout << dna_ag_val << " ";
+			std::cout << dna_type_val << " ";
+			std::cout << initFitn << " ";
+			std::cout << currFitn << " ";
+			std::cout << posX << " ";
+			std::cout << posY << std::endl;*/
 			if (type == TYPE_COLLECTOR) {
 				dnaTypePart = new Message(dna_type_val, N_DNA_COLL);
 				new Collector(env, statHandler, stamp, agentGrid, agentGrid->getCellAt(posX,posY), syncMan, initFitn, currFitn, age, matStatBool, lastPrSess, appMat, appBusSmall, dnaAgPart, dnaTypePart);
@@ -118,7 +118,7 @@ void AgentCreator::restorePopulation( CString fname_agentpop ) {
 			//delete dnaAgPart;
 			//delete dnaTypePart;
 		} else {
-			cout << "ERROR: reading file in rest.pop." << endl;
+			std::cout << "ERROR: reading file in rest.pop." << std::endl;
 			pressSpaceToQuit();
 		}
 	}
@@ -266,7 +266,7 @@ void AgentCreator::createFountains() {
 					founApp_LL_val = 2;
 					founApp_LR_val = 3;
 				} else {
-					cout << "ERROR: agentCreator rotate fountain groups" << endl;
+					std::cout << "ERROR: agentCreator rotate fountain groups" << std::endl;
 					pressSpaceToQuit();
 				} //end point to center (purpose: agents can learn to propragate (grow) towards center)
 				founApp_add = 11;
@@ -305,7 +305,7 @@ void AgentCreator::createFountains() {
 					founApp_LL_val = 4;
 					founApp_LR_val = 1;
 				} else {
-					cout << "ERROR: agentCreator rotate fountain groups" << endl;
+					std::cout << "ERROR: agentCreator rotate fountain groups" << std::endl;
 					pressSpaceToQuit();
 				} //end point to center (purpose: agents can learn to propragate (grow) towards center)
 
@@ -347,7 +347,8 @@ void AgentCreator::createCollectors() {
 	freeCells = agentGrid->getFreeCells( center, scanRadius);
 	position = freeCells->GetAt( freeCells->FindIndex( getRandNumBetwZeroAnd( freeCells->GetCount()-1 ) ));
 	Collector* coll;
-	for (int num=0; num<INIT_NUM_OF_COLL; num++) {
+	int num = 0;
+	for (; num < INIT_NUM_OF_COLL; num++) {
 		//freeCells = myGrid->getFreeCells( myGrid->getCellAt(35,35), 30);
 		valAppMat = getRandNumBetwZeroAnd( pow(2,APPEAR_SIZE_MAT)-1 ); 
 		valAppBus = getRandNumBetwZeroAnd( pow(2,APPEAR_SIZE_BUS_SMALL)-1 );
@@ -367,7 +368,7 @@ void AgentCreator::createCollectors() {
 		mlChange -= statHandler->AGENT_LIFETIME_MAX/4;
 		coll->TESTscatterMaxLifeTime( mlChange );
 	}
-	cout << num << " collectors created..." << endl;
+	std::cout << num << " collectors created..." << std::endl;
 	delete freeCells;
 }
 
@@ -390,7 +391,8 @@ void AgentCreator::createInpoders() {
 	freeCells = agentGrid->getFreeCells( center, scanRadius );
 	position = freeCells->GetAt( freeCells->FindIndex( getRandNumBetwZeroAnd( freeCells->GetCount()-1) ));
 	Inpoder* inp;
-	for (int num=0; num<INIT_NUM_OF_INP; num++) {
+	int num = 0;
+	for (; num < INIT_NUM_OF_INP; num++) {
 		//freeCells = myGrid->getFreeCells( myGrid->getCellAt(35,35), 30);
 		valAppMat = getRandNumBetwZeroAnd( pow(2,APPEAR_SIZE_MAT)-1 );
 		valAppBus = getRandNumBetwZeroAnd( pow(2,APPEAR_SIZE_BUS_SMALL)-1);
@@ -410,7 +412,7 @@ void AgentCreator::createInpoders() {
 		mlChange -= statHandler->AGENT_LIFETIME_MAX/4;
 		inp->TESTscatterMaxLifeTime( mlChange );
 	}
-	cout << num << " inpoders created..." << endl;
+	std::cout << num << " inpoders created..." << std::endl;
 	delete freeCells;
 }
 
@@ -434,7 +436,8 @@ void AgentCreator::createEffectors() {
 	freeCells = agentGrid->getFreeCells( center , scanRadius);
 	position = freeCells->GetAt( freeCells->FindIndex( getRandNumBetwZeroAnd( freeCells->GetCount()-1) ));
 	Effector* eff;
-	for (int num=0; num<INIT_NUM_OF_EFF; num++) {
+	int num = 0;
+	for (; num<INIT_NUM_OF_EFF; num++) {
 		//freeCells = myGrid->getFreeCells( myGrid->getCellAt(35,35), 30);
 		valAppMat = getRandNumBetwZeroAnd( pow(2,APPEAR_SIZE_MAT)-1 );
 		valAppBus = getRandNumBetwZeroAnd( pow(2,APPEAR_SIZE_BUS_SMALL)-1 );
@@ -445,28 +448,28 @@ void AgentCreator::createEffectors() {
 		appBusSmall = new Message(valAppBus, APPEAR_SIZE_BUS_SMALL);
 		DNA_ag = new Message(valAg, N_DNA_AG);
 		DNA_type_e = new Message(valType, N_DNA_EFF);
-		//cout << DNA_type_e->toStringBits() << endl;
+		//std::cout << DNA_type_e->toStringBits() << std::endl;
 		//pressSpaceOrQuit();
 		while (position->isOccupied() && loopCheck<10000) {
 			position = freeCells->GetAt( freeCells->FindIndex( getRandNumBetwZeroAnd( freeCells->GetCount()-1) ));
 			loopCheck++;
 		}			
 		eff = new Effector(env, statHandler, stamp, agentGrid, position, syncMan, initFitness, initFitness, 0, false, syncMan->getSessionNum(), appMat, appBusSmall, DNA_ag, DNA_type_e, decCat);
-		/*cout << eff->toString() << endl;
-		cout << "ideal bus2: " << eff->getAppIdealBus2()->toStringBits() << endl;
-		cout << "picky bus2: " << eff->getAppPickiBus2()->toStringBits() << endl;
+		/*std::cout << eff->toString() << std::endl;
+		std::cout << "ideal bus2: " << eff->getAppIdealBus2()->toStringBits() << std::endl;
+		std::cout << "picky bus2: " << eff->getAppPickiBus2()->toStringBits() << std::endl;
 		pressSpaceOrQuit();*/
 		mlChange = getRandNumBetwZeroAnd( statHandler->AGENT_LIFETIME_MAX/2 );
 		mlChange -= statHandler->AGENT_LIFETIME_MAX/4;
 		eff->TESTscatterMaxLifeTime( mlChange );
 	}
-	cout << num << " effectors created..." << endl;
+	std::cout << num << " effectors created..." << std::endl;
 	delete freeCells;
 }
 
 void AgentCreator::pressSpaceToQuit() {
 	int ch;
-	cout << "press space..." << endl;
+	std::cout << "press space..." << std::endl;
 	while (ch != ' ') {
 		ch = _getch();
 	}
@@ -475,7 +478,7 @@ void AgentCreator::pressSpaceToQuit() {
 
 void AgentCreator::pressSpaceOrQuit() {
 	int ch;
-	cout << "press space or 'q' to quit..." << endl;
+	std::cout << "press space or 'q' to quit..." << std::endl;
 	while ((ch != ' ') && (ch != 'q')) {
 		ch = _getch();
 	}
@@ -491,7 +494,7 @@ int AgentCreator::getRandNumBetwZeroAnd(int maximum) {
 	else //large number: use other method
 		randomNum = ( ((double)rand()) / ((double)RAND_MAX)  ) *maximum;
 	if (randomNum<0) {
-		cout << "ERROR: getRandomNum" << endl;
+		std::cout << "ERROR: getRandomNum" << std::endl;
 		pressSpaceToQuit();
 	}
 	if (randomNum>maximum)

@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "Colline.h"
 #include "GridRow.h"
-#include "iostream.h"
+#include <iostream>
 #include <conio.h> //for press key
 
 #ifdef _DEBUG
@@ -43,7 +43,7 @@ GridCell* GridRow::getCellAt(int pos) {
 
 void GridRow::checkPos(int pos) {
 	if (pos >= size) {
-		cout << "ERROR: row index error!" << endl;
+		std::cout << "ERROR: row index error!" << std::endl;
 		pressSpaceToQuit();
 	}
 }
@@ -51,7 +51,7 @@ void GridRow::checkPos(int pos) {
 
 void GridRow::pressSpaceToQuit() {
 	int ch;
-	cout << "press space..." << endl;
+	std::cout << "press space..." << std::endl;
 	while (ch != ' ') {
 		ch = _getch();
 	}

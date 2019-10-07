@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "Colline.h"
 #include "StatisticsHandler.h"
-#include "iostream.h"
+#include <iostream>
 #include <conio.h> //for press key
 #include "Konst.h"
 #include "Agent.h" //for updateGridView
@@ -218,9 +218,9 @@ void StatisticsHandler::storePopulation(int cycNum, int sesNum, int matingBuffer
 	FILE* agentPopFile = fopen(fname_begin + FN_AGENTPOP + "_" + numToString(sesNum) + FN_EXT, "w");
 	CList<Observable*, Observable*>* allAgents = agentGrid->getNeighbours( agentGrid->getCellAt( agentGrid->getWidthX()/2, agentGrid->getHightY()/2), agentGrid->getWidthX()/2 + 2, true);
 	if (allAgents->GetCount() != numOfAgents) {
-		cout << "ERROR: storePop, numOfagents error" << endl;
-		cout << "vec: " << allAgents->GetCount() << endl;
-		cout << "stat: " << numOfAgents << endl;
+		std::cout << "ERROR: storePop, numOfagents error" << std::endl;
+		std::cout << "vec: " << allAgents->GetCount() << std::endl;
+		std::cout << "stat: " << numOfAgents << std::endl;
 		pressSpaceToQuit();
 	}
 	fprintf(agentPopFile, "%d\n", numOfAgents);
@@ -231,8 +231,8 @@ void StatisticsHandler::storePopulation(int cycNum, int sesNum, int matingBuffer
 			currFountain = (Fountain*)currObs;
 			int fountainAppVal = currFountain->getAppearBusSmall()->getValue();
 			if (fountainAppVal >= pow(2, APPEAR_SIZE_BUS_SMALL)) {
-				cout << "error: store Pop. fountain app value" << endl;
-				cout << "value: " << fountainAppVal << endl;
+				std::cout << "error: store Pop. fountain app value" << std::endl;
+				std::cout << "value: " << fountainAppVal << std::endl;
 				pressSpaceToQuit();
 			} //fix, delete this test later
 			fprintf(agentPopFile, "%d%c", fountainAppVal, tab);
@@ -253,7 +253,7 @@ void StatisticsHandler::storePopulation(int cycNum, int sesNum, int matingBuffer
 			fprintf(agentPopFile, "%d%c", currAgent->getAge(), tab);
 			int matStat = currAgent->isReadyToMate();
 			if (matStat != 0 && matStat != 1) {
-				cout << "errror: matstat storePopulation" << endl;
+				std::cout << "errror: matstat storePopulation" << std::endl;
 				pressSpaceToQuit();
 			} //delete this test later
 			fprintf(agentPopFile, "%d%c", matStat, tab);
@@ -281,23 +281,23 @@ void StatisticsHandler::storePopulation(int cycNum, int sesNum, int matingBuffer
 	int initFitn, currFitn;
 	FILE* agentPopFile;
 	if ((agentPopFile = fopen(fname_begin + FN_AGENTPOP, "r")) == NULL) {
-		cout << "ERROR: couldn't open restore population, file not found" << endl;
+		std::cout << "ERROR: couldn't open restore population, file not found" << std::endl;
 		pressSpaceToQuit();
 	} else
-		cout << "Restoring population..." << endl;
+		std::cout << "Restoring population..." << std::endl;
 	fseek( agentPopFile, 0, SEEK_SET);
 	fscanf(agentPopFile,"%d", &numOfEntries); //first value in file gives num of agents
 	for (int i=0; i<numOfEntries; i++) {
 		fscanf(agentPopFile,"%d", &type);
-		cout << type  << " ";
+		std::cout << type  << " ";
 		if (type == TYPE_FOUNTAIN) {
 			fscanf(agentPopFile,"%d", &posX);
 			fscanf(agentPopFile,"%d", &posY);
 			fscanf(agentPopFile,"%d", &loadingSlot);
 			
-			cout << posX << " ";
-			cout << posY << " ";
-			cout << loadingSlot << " " << endl;
+			std::cout << posX << " ";
+			std::cout << posY << " ";
+			std::cout << loadingSlot << " " << std::endl;
 			//read fountain values
 		} else if (type == TYPE_COLLECTOR || type == TYPE_INPODER || type == TYPE_EFFECTOR) {
 			fscanf(agentPopFile,"%d", &dna_obs_val);
@@ -307,15 +307,15 @@ void StatisticsHandler::storePopulation(int cycNum, int sesNum, int matingBuffer
 			fscanf(agentPopFile,"%d", &currFitn);
 			fscanf(agentPopFile,"%d", &posX);
 			fscanf(agentPopFile,"%d", &posY);
-			cout << dna_obs_val << " ";
-			cout << dna_ag_val << " ";
-			cout << dna_type_val << " ";
-			cout << initFitn << " ";
-			cout << currFitn << " ";
-			cout << posX << " ";
-			cout << posY << endl;
+			std::cout << dna_obs_val << " ";
+			std::cout << dna_ag_val << " ";
+			std::cout << dna_type_val << " ";
+			std::cout << initFitn << " ";
+			std::cout << currFitn << " ";
+			std::cout << posX << " ";
+			std::cout << posY << std::endl;
 		} else {
-			cout << "ERROR: reading file in rest.pop." << endl;
+			std::cout << "ERROR: reading file in rest.pop." << std::endl;
 			pressSpaceToQuit();
 		}
 	}
@@ -564,7 +564,7 @@ void StatisticsHandler::writeConstants() {
 
 CList<Observable*, Observable*>* StatisticsHandler::pickSample(CList<Observable*, Observable*>* fullList, int sampleSize) {
 	if (sampleSize > fullList->GetCount()) {
-		cout << "ERROR: pickSample..." << endl;
+		std::cout << "ERROR: pickSample..." << std::endl;
 		pressSpaceToQuit();
 	}
 	CList<Observable*, Observable*>* sample = new CList<Observable*, Observable*>(10);
@@ -599,16 +599,16 @@ CList<Observable*, Observable*>* StatisticsHandler::pickSample(CList<Observable*
 		}
 		loopCheck++;
 		if (loopCheck > 20000) {
-			cout << "ERROR: picksamle loopcheck" << endl;
+			std::cout << "ERROR: picksamle loopcheck" << std::endl;
 			pressSpaceToQuit();
 		}
 	}
 	//randIndexList is now filled with random indices in big list
 	int bigIndex;
-	//cout << "big list size: " << bigListSize << endl;
+	//std::cout << "big list size: " << bigListSize << std::endl;
 	for (i=0; i<sampleSize; i++) {
 		bigIndex = randIndexList->GetAt(i);
-		//cout << "now adding index " << bigIndex << endl;
+		//std::cout << "now adding index " << bigIndex << std::endl;
 		//pressSpaceOrQuit();
 		sample->AddTail( fullList->GetAt( fullList->FindIndex( bigIndex ) ) );
 	}
@@ -753,10 +753,10 @@ int StatisticsHandler::getLastCorrectRespTotal() {
 int StatisticsHandler::getLastCorrectRespTotal(bool cat) {
 	int numOfEff=-1;
 	if (cat==0) {
-		//cout << "now reading cat 0 lastresp" << endl;
+		//std::cout << "now reading cat 0 lastresp" << std::endl;
 		numOfEff = lastCorrectRespCatZero->getTotalSum();
 	} else {
-		//cout << "now reading cat 1 lastresp" << endl;
+		//std::cout << "now reading cat 1 lastresp" << std::endl;
 		numOfEff = lastCorrectRespCatOne->getTotalSum();
 	}
 	//int numOfEff = lastSesCorrectResp->getTotalSum();
@@ -800,12 +800,12 @@ void StatisticsHandler::resetSessionData( bool newLoadedCat) {
 
 	if (lastSesCorrectCategory == 0) {
 		delete lastCorrectRespCatZero;
-		//cout << "DEBUG: lastCZero are set to thisCorrResp" << endl;
+		//std::cout << "DEBUG: lastCZero are set to thisCorrResp" << std::endl;
 		//pressSpaceOrQuit();
 		lastCorrectRespCatZero = thisSesCorrectResp->clone();
 	} else {
 		delete lastCorrectRespCatOne;
-		//cout << "DEBUG: lastCOne are set to thisCorrResp" << endl;
+		//std::cout << "DEBUG: lastCOne are set to thisCorrResp" << std::endl;
 		//pressSpaceOrQuit();
 		lastCorrectRespCatOne = thisSesCorrectResp->clone();
 	}
@@ -874,8 +874,8 @@ void StatisticsHandler::updateSessionReward() {
 		numOfCatZero++;
 	else
 		numOfCatOne++;
-	//cout << "debug: num of zero cat: " << numOfCatZero	<< endl;
-	//cout << "debug: num of one cat : " << numOfCatOne	<< endl;
+	//std::cout << "debug: num of zero cat: " << numOfCatZero	<< std::endl;
+	//std::cout << "debug: num of one cat : " << numOfCatOne	<< std::endl;
 	lastSesCorrectCategory = thisSesCorrectCategory;
 	thisSesCorrectCategory = cat;
 }*/
@@ -983,7 +983,7 @@ void StatisticsHandler::addToNumBitsFromEnv(int numOfBits) {
 
 void StatisticsHandler::adjustAgents(int value, int type) {
 	if ((value !=-1) && (value != 1)) {
-		cout << "Error: adjust agents" << endl;
+		std::cout << "Error: adjust agents" << std::endl;
 		pressSpaceToQuit();
 	}
 	numOfAgents += value;
@@ -996,14 +996,14 @@ void StatisticsHandler::adjustAgents(int value, int type) {
 	else if (type == TYPE_FOUNTAIN)
 		numOfAgents_foun += value;
 	else{
-		cout << "ERROR: adjustagents"<<endl;
+		std::cout << "ERROR: adjustagents"<<std::endl;
 		pressSpaceToQuit();
 	}
 }
 
 void StatisticsHandler::adjustObservers(int value, int type) {
 	if ((value !=-1) && (value != 1)) {
-		cout << "Error: adjust observers" << endl;
+		std::cout << "Error: adjust observers" << std::endl;
 		pressSpaceToQuit();
 	}
 	numOfObservers += value;
@@ -1016,14 +1016,14 @@ void StatisticsHandler::adjustObservers(int value, int type) {
 	else if (type == TYPE_EFFECTOR)
 		numOfObs_eff += value;
 	else {
-		cout << "ERROR: adjustagents"<<endl;
+		std::cout << "ERROR: adjustagents"<<std::endl;
 		pressSpaceToQuit();
 	}
 }
 
 void StatisticsHandler::adjustProcessors(int value, int type) {
 	if ((value !=-1) && (value != 1)) {
-		cout << "Error: adjust processors" << endl;
+		std::cout << "Error: adjust processors" << std::endl;
 		pressSpaceToQuit();
 	}
 	numOfProcessors += value;
@@ -1036,14 +1036,14 @@ void StatisticsHandler::adjustProcessors(int value, int type) {
 	else if (type == TYPE_EFFECTOR)
 		numOfProc_eff += value;
 	else {
-		cout << "ERROR: adjustagents"<<endl;
+		std::cout << "ERROR: adjustagents"<<std::endl;
 		pressSpaceToQuit();
 	}
 }
 
 void StatisticsHandler::adjustDrifters(int value, int type) {
 	if ((value !=-1) && (value != 1)) {
-		cout << "Error: adjust drifters" << endl;
+		std::cout << "Error: adjust drifters" << std::endl;
 		pressSpaceToQuit();
 	}
 	numOfDrifters += value;
@@ -1056,14 +1056,14 @@ void StatisticsHandler::adjustDrifters(int value, int type) {
 	else if (type == TYPE_EFFECTOR)
 		numOfDrif_eff += value;
 	else {
-		cout << "ERROR: adjustagents"<<endl;
+		std::cout << "ERROR: adjustagents"<<std::endl;
 		pressSpaceToQuit();
 	}
 }
 
 void StatisticsHandler::adjustMaters(int value, int type) {
 	if ((value !=-1) && (value != 1)) {
-		cout << "Error: adjust maters" << endl;
+		std::cout << "Error: adjust maters" << std::endl;
 		pressSpaceToQuit();
 	}
 	numOfMaters += value;
@@ -1074,7 +1074,7 @@ void StatisticsHandler::adjustMaters(int value, int type) {
 	else if (type == TYPE_EFFECTOR)
 		numOfMaters_eff += value;
 	else {
-		cout << "ERROR: adjustagents"<<endl;
+		std::cout << "ERROR: adjustagents"<<std::endl;
 		pressSpaceToQuit();
 	}
 }
@@ -1104,14 +1104,14 @@ void StatisticsHandler::adjustFitnessColline(int change, int type) {
 	else if (type == TYPE_FOUNTAIN) {
 		fitnessColline -= change; //fitness goes to environment
 	} else {
-		cout << "ERROR: adjustagents" << endl;
+		std::cout << "ERROR: adjustagents" << std::endl;
 		pressSpaceToQuit();
 	}
 }
 
 void StatisticsHandler::pressSpaceOrQuit() {
 	int ch;
-	cout << "press space or 'q' to quit..." << endl;
+	std::cout << "press space or 'q' to quit..." << std::endl;
 	while ((ch != ' ') && (ch != 'q')) {
 		ch = _getch();
 	}
@@ -1121,7 +1121,7 @@ void StatisticsHandler::pressSpaceOrQuit() {
 
 void StatisticsHandler::pressSpaceToQuit() {
 	int ch;
-	cout << "press space..." << endl;
+	std::cout << "press space..." << std::endl;
 	while (ch != ' ') {
 		ch = _getch();
 	}
@@ -1136,7 +1136,7 @@ CString StatisticsHandler::numToString(int number) {
 }
 
 void StatisticsHandler::setThisSesEstimatedOkResp(int val, int level) {
-	//cout << "setting num of resp est for next to " << val << " on level " << level << endl;
+	//std::cout << "setting num of resp est for next to " << val << " on level " << level << std::endl;
 	thisSesNumOfCorr_EstForNext->setValue(val, level, 0);
 }
 
@@ -1160,7 +1160,7 @@ int StatisticsHandler::getNumOfAgents() {
 
 void StatisticsHandler::addToNumOfProcEffectors(int bidAgrLevel, int cIndex) {
 	if (cIndex < 0 || bidAgrLevel<0) {
-		cout << "ERROR 103: cIndex negative: " << cIndex << " , (bidAgrLev="<< bidAgrLevel << ")" << endl;
+		std::cout << "ERROR 103: cIndex negative: " << cIndex << " , (bidAgrLev="<< bidAgrLevel << ")" << std::endl;
 		pressSpaceToQuit();
 	}
 	thisSesNumOfProcEff->addToValue(1,bidAgrLevel,cIndex);
@@ -1168,7 +1168,7 @@ void StatisticsHandler::addToNumOfProcEffectors(int bidAgrLevel, int cIndex) {
 
 void StatisticsHandler::addToCorrectResp(int bidAgrLevel, int cIndex) {
 	if (cIndex < 0 || bidAgrLevel<0) {
-		cout << "ERROR 742: cIndex negative: " << cIndex << " , (bidAgrLev="<< bidAgrLevel << ")" << endl;
+		std::cout << "ERROR 742: cIndex negative: " << cIndex << " , (bidAgrLev="<< bidAgrLevel << ")" << std::endl;
 		pressSpaceToQuit();
 	}
 	thisSesCorrectResp->addToValue(1, bidAgrLevel,cIndex);
@@ -1176,7 +1176,7 @@ void StatisticsHandler::addToCorrectResp(int bidAgrLevel, int cIndex) {
 
 void StatisticsHandler::addToWrongResp(int bidAgrLevel, int cIndex) {
 	if (cIndex < 0 || bidAgrLevel<0) {
-		cout << "ERROR 174: cIndex negative: " << cIndex << " , (bidAgrLev="<< bidAgrLevel << ")" << endl;
+		std::cout << "ERROR 174: cIndex negative: " << cIndex << " , (bidAgrLev="<< bidAgrLevel << ")" << std::endl;
 		pressSpaceToQuit();
 	}
 	thisSesWrongResp->addToValue(1,bidAgrLevel,cIndex);
@@ -1184,7 +1184,7 @@ void StatisticsHandler::addToWrongResp(int bidAgrLevel, int cIndex) {
 
 void StatisticsHandler::addToFitnessPaid(int value, int bidAgrLevel, int cIndex) {
 	if (cIndex < 0 || bidAgrLevel<0) {
-		cout << "ERROR 017: cIndex negative: " << cIndex << " , (bidAgrLev="<< bidAgrLevel << ", value="<<value<<")" << endl;
+		std::cout << "ERROR 017: cIndex negative: " << cIndex << " , (bidAgrLev="<< bidAgrLevel << ", value="<<value<<")" << std::endl;
 		pressSpaceToQuit();
 	}
 	thisSesFitnessPaid->addToValue(value,bidAgrLevel,cIndex);
@@ -1303,7 +1303,7 @@ void StatisticsHandler::changeGridView(Observable* changingAgent, GridCell* oldP
 		else if (type == TYPE_EFFECTOR)
 			color = COLOR_EFF; //blue
 		else {
-			cout << "ERROR:changeGridview" << endl;
+			std::cout << "ERROR:changeGridview" << std::endl;
 			pressSpaceToQuit();
 		}
 	} else if (status == ST_PROCESSOR)
@@ -1311,7 +1311,7 @@ void StatisticsHandler::changeGridView(Observable* changingAgent, GridCell* oldP
 	else if (status == ST_DEAD)
 		color = COLOR_GRID;
 	else {
-		cout << "ERROR: changeGridView ..2" << endl;
+		std::cout << "ERROR: changeGridView ..2" << std::endl;
 		pressSpaceToQuit();
 	}
 	nextViewFrame->SetAt(newIndex, color);
@@ -1357,7 +1357,7 @@ void StatisticsHandler::saveSessionData() {
 }
 
 void StatisticsHandler::closeFiles() {
-	cout << "info: Closing files...";
+	std::cout << "info: Closing files...";
 	fclose( file_fitnColline);
 	fclose( file_fitnBuff);
 	fclose( file_fitnEnv);
@@ -1372,7 +1372,7 @@ void StatisticsHandler::closeFiles() {
 
 int StatisticsHandler::calcSpeciesNum(Message* appMating, Message* appIdeal) {
 	if (appMating->getSize() != 2 || appIdeal->getSize() != 2) {
-		cout << "ERROR: statHandler, calcSpeciesNum, only impl for a 2 bit app" << endl;
+		std::cout << "ERROR: statHandler, calcSpeciesNum, only impl for a 2 bit app" << std::endl;
 		pressSpaceToQuit();
 	}
 	int specNum = -1;
@@ -1399,7 +1399,7 @@ int StatisticsHandler::calcSpeciesNum(Message* appMating, Message* appIdeal) {
 	else if ((val1==2 && val2==3) || (val1==3 && val2==2))
 		specNum=9;
 	if (specNum==-1) {
-		cout << "ERROR; statHandler calcspec, 991" << endl;
+		std::cout << "ERROR; statHandler calcspec, 991" << std::endl;
 		pressSpaceToQuit();
 	}
 	return specNum;
@@ -1419,7 +1419,7 @@ void StatisticsHandler::updateCurrentSpeciesCount(int type, Message* appMating, 
 	else if (type==TYPE_EFFECTOR)
 		currentSpeciesCount->addToValue( change, specNum, 2);
 	else {
-		cout << "ERROR: sstatHan, update, 400" << endl;
+		std::cout << "ERROR: sstatHan, update, 400" << std::endl;
 	}
 }
 
@@ -1428,7 +1428,7 @@ int StatisticsHandler::getEnvFitnIndex() {
 	int index = 0;
 	int total = fitnessEnvironment + fitnessColline;
 	if (total == 0) {
-		cout << "ERROR: 843" << endl;
+		std::cout << "ERROR: 843" << std::endl;
 		pressSpaceToQuit();
 	} else 
 		index = (fitnessEnvironment*100)/(total/2);
@@ -1439,7 +1439,7 @@ int StatisticsHandler::getSysFitnIndex() {
 	int index = 0;
 	int total = fitnessEnvironment + fitnessColline;
 	if (total == 0) {
-		cout << "ERROR: 843" << endl;
+		std::cout << "ERROR: 843" << std::endl;
 		pressSpaceToQuit();
 	} else 
 		index = (fitnessColline*100)/(total/2);
@@ -1466,7 +1466,7 @@ void StatisticsHandler::updateAvgStateBuyers_inp(int numOfBuyers) {
 }
 
 void StatisticsHandler::updateStatAgentDies(Observable* dAgent) {
-	//cout << "entering agent sies in sh" << endl;
+	//std::cout << "entering agent sies in sh" << std::endl;
 	
 	Agent* dyingAgent = (Agent*)dAgent;
 	int type = dyingAgent->getType();
@@ -1478,7 +1478,7 @@ void StatisticsHandler::updateStatAgentDies(Observable* dAgent) {
 	else if ( status == ST_PROCESSOR)
 		adjustProcessors(-1, type);
 	else {
-		cout << "Error: set to dead 459" << endl;
+		std::cout << "Error: set to dead 459" << std::endl;
 		pressSpaceToQuit();
 	}
 	adjustAgents(-1 , type );
@@ -1495,20 +1495,20 @@ void StatisticsHandler::updateStatAgentDies(Observable* dAgent) {
 	if (dyingAgent->isReadyToMate() )
 		adjustMaters(-1, type ); //syncMan->numOfMatersSub();
 	accumulateDead();
-	//cout << "ag dies in sh....ok" << endl;
+	//std::cout << "ag dies in sh....ok" << std::endl;
 	//pressSpaceOrQuit();
 	*/
 }
 
 void StatisticsHandler::updateStatAgentBorn(Observable* nAgent) {
-	//cout << "entering agent born in sh" << endl;
+	//std::cout << "entering agent born in sh" << std::endl;
 	
 	Agent* newBorn = (Agent*)nAgent;
 	int type = newBorn->getType();
 	accumulateBorn();
 	if (newBorn->isReadyToMate()) {
 		adjustMaters(1,type);
-		cout << "ERROR? how can this be? 843" << endl;
+		std::cout << "ERROR? how can this be? 843" << std::endl;
 		pressSpaceToQuit();
 	}
 	//updateCurrentSpeciesCount(type, newBorn->getAppearMat(), newBorn->getAppIdealMat(), true);
@@ -1522,7 +1522,7 @@ void StatisticsHandler::updateStatAgentBorn(Observable* nAgent) {
 	*/
 	adjustObservers(1,type); //because 1 is subtracted in setToDrifter
     adjustAgents(1, type);
-	//cout << "agent born sh...ok" << endl;
+	//std::cout << "agent born sh...ok" << std::endl;
 	//if (newBorn->getId() >515)
 	//	pressSpaceOrQuit();
 	

@@ -6,7 +6,7 @@
 #include "stdafx.h"
 #include "Colline.h"
 #include "Observable.h"
-#include "iostream.h"
+#include <iostream>
 #include <conio.h> //for press key
 #include "Konst.h"
 #include "dCollector.h" //delete these when solution to overload problem found in 'setStatusToDrifter'
@@ -44,7 +44,7 @@ Observable::Observable(Environment* e, /*StatisticsHandler* sh,*/ IdStamp* collS
 	appearBusSmall = appearanceBusiness;
 	if (type != TYPE_CATEGORY) {
 		if (appearanceBusiness->getSize() != (APPEAR_SIZE_BUS - 2)) {
-			cout << "ERROR: DNA bit length error observable " << appearanceBusiness->getSize() << " = " << (APPEAR_SIZE_BUS - 2) << endl;
+			std::cout << "ERROR: DNA bit length error observable " << appearanceBusiness->getSize() << " = " << (APPEAR_SIZE_BUS - 2) << std::endl;
 			pressSpaceToQuit();
 		}
 		appearBusFull = new Message((int)type,2); //the first two bits in appearBus is linked to agentType
@@ -64,19 +64,19 @@ Observable::Observable(Environment* e, /*StatisticsHandler* sh,*/ IdStamp* collS
 
 Observable::~Observable()
 {
-	//cout << "debug: deletes allocated mem for observable" << endl;
+	//std::cout << "debug: deletes allocated mem for observable" << std::endl;
 	delete appearBusSmall;
 	delete appearBusFull;
 	delete agentsObserved;
 	delete observersProc;
 	delete observersUnproc;
 	delete observersState;
-	//cout << "ok, observable delete" << endl;
+	//std::cout << "ok, observable delete" << std::endl;
 }
 
 void Observable::pressSpaceToQuit() {
 	int ch;
-	cout << "press space..." << endl;
+	std::cout << "press space..." << std::endl;
 	while (ch != ' ') {
 		ch = _getch();
 	}
@@ -85,7 +85,7 @@ void Observable::pressSpaceToQuit() {
 
 void Observable::pressSpaceOrQuit() {
 	int ch;
-	cout << "press space or 'q' to quit..." << endl;
+	std::cout << "press space or 'q' to quit..." << std::endl;
 	while ((ch != ' ') && (ch != 'q')) {
 		ch = _getch();
 	}
@@ -96,7 +96,7 @@ void Observable::pressSpaceOrQuit() {
 void Observable::deleteBusinessConnections() {
 	//debug start
 	/*if (getId() == 137) {
-		cout << "debug: agent 137 deletes all buscon" << endl;
+		std::cout << "debug: agent 137 deletes all buscon" << std::endl;
 		pressSpaceOrQuit();
 	}*/ //end
 
@@ -109,21 +109,21 @@ void Observable::deleteBusinessConnections() {
 	else if (getType() == TYPE_EFFECTOR) {
 		numOfObs = ((Effector*)this)->clearNumOfObservedAgents();
 		/*if (numOfObs>2) {
-			cout << "DEBUG: effector clears business connections" << endl;
-			cout << "num of agents observed: " << numOfObs << endl;
-			cout << toString() << endl;
+			std::cout << "DEBUG: effector clears business connections" << std::endl;
+			std::cout << "num of agents observed: " << numOfObs << std::endl;
+			std::cout << toString() << std::endl;
 			pressSpaceOrQuit();
 		}*/
 	}
 	else  if (getType() != TYPE_FOUNTAIN) {
-		cout << "ERROR: 590" << endl;
+		std::cout << "ERROR: 590" << std::endl;
 		pressSpaceToQuit();
 	}
 	if (numOfPotSell != numOfObs) {
-		cout << "ERROR: deleteBusConn 101, " << endl;
-		cout << "numOfPotsell: " << numOfPotSell << endl;
-		cout << "numOfObsAgents: " << numOfObs << endl;
-		cout << this->toString() << endl;
+		std::cout << "ERROR: deleteBusConn 101, " << std::endl;
+		std::cout << "numOfPotsell: " << numOfPotSell << std::endl;
+		std::cout << "numOfObsAgents: " << numOfObs << std::endl;
+		std::cout << this->toString() << std::endl;
 		pressSpaceOrQuit();
 	}
 	clearPotentialSellers();
@@ -143,7 +143,7 @@ int Observable::getType() {
 }
 
 bool Observable::hasOneStateMessage() {
-	cout << "ERROR: observable hasOne state mess.." << endl;
+	std::cout << "ERROR: observable hasOne state mess.." << std::endl;
 	pressSpaceToQuit();
 	return false;
 }
@@ -224,13 +224,13 @@ CString Observable::toStringAgentsObserved() {
 
 
 int Observable::auctionWon(Observable* seller, Message* m) {
-	cout << "ERROR: Observable, aucitonwon, method must be overloaded" << endl;
+	std::cout << "ERROR: Observable, aucitonwon, method must be overloaded" << std::endl;
 	pressSpaceToQuit();
 	return 0;
 }
 
 int Observable::getBid() {
-	cout << "ERROR: obs, getBid, must be overloaded" << endl;
+	std::cout << "ERROR: obs, getBid, must be overloaded" << std::endl;
 	pressSpaceToQuit();
 	return 0;
 }
@@ -251,13 +251,13 @@ void Observable::notifyObservers(CTypedPtrList<CObList, Observable*>* /*CList<Ob
 
 	CTypedPtrList<CObList, Observable*>* tempCopy = new CTypedPtrList<CObList, Observable*>;
 	tempCopy->AddTail( listOfObs ); //tempCopy stay unaffected if listOfObs changes due to 'turnFocusTo' (if observer dies)
-	//cout << "DEBUG: ready to notify" << endl;
+	//std::cout << "DEBUG: ready to notify" << std::endl;
 	int numOfObs = listOfObs->GetCount();
-	//cout << "DEBUG: numOfObs " << numOfObs << endl;
+	//std::cout << "DEBUG: numOfObs " << numOfObs << std::endl;
 	//Observable* t;
 	for (int i=0; i<numOfObs; i++) {
 		//t = tempCopy->GetAt( tempCopy->FindIndex(i));
-		//cout << i << ". observer data is " << t->toString() << endl;
+		//std::cout << i << ". observer data is " << t->toString() << std::endl;
 		//pressSpaceOrQuit();
 		//t->turnFocusTo(this);
 		tempCopy->GetAt( tempCopy->FindIndex(i))->turnFocusTo(this); //observers make bid
@@ -284,7 +284,7 @@ CString Observable::toStringStatus() {
 	else if (getStatus() == ST_DRIFTER)
 		info = "DRIFTER";
 	else
-		cout << "ERROR: toStringStatus" ;
+		std::cout << "ERROR: toStringStatus" ;
 	if (getStatusAndActive() == ST_FINISHED_THIS_CYCLE)
 		info += " (not active)";
 	else 
@@ -329,18 +329,18 @@ CString Observable::toString() {
 //agents also keep track on which agents is observed: Agent change to drifter when no agents is observed
 void Observable::addToAgentsObserved(Observable* potentialSeller) {
 	/*if ((getId()==112) && potentialSeller->getId()==213){
-		cout << "agent 213 is added to agent 112 observe-list" << endl;
+		std::cout << "agent 213 is added to agent 112 observe-list" << std::endl;
 		pressSpaceOrQuit();
 	}*/
 	agentsObserved->AddTail(potentialSeller);
 }
 
 void Observable::removeFromAgentsObserved(Observable* leavingAgent) {
-	//cout << "observer: " << (LPCTSTR)toString() << endl;
-	//cout << "observed: " << (LPCTSTR)leavingAgent->toString() << endl;
+	//std::cout << "observer: " << (LPCTSTR)toString() << std::endl;
+	//std::cout << "observed: " << (LPCTSTR)leavingAgent->toString() << std::endl;
 	if (getStatus() == ST_DEAD) {
 		if (agentsObserved->GetCount() != 0) {
-			cout << "ERROR: observable removeFromAgents.. should be zero length" << endl;
+			std::cout << "ERROR: observable removeFromAgents.. should be zero length" << std::endl;
 			pressSpaceToQuit();
 		}
 		return; //the agents should already be deleted (in clear potentialSellers)
@@ -348,14 +348,14 @@ void Observable::removeFromAgentsObserved(Observable* leavingAgent) {
 	POSITION pos;
 	pos = agentsObserved->Find(leavingAgent);
 	if (pos == NULL) {
-		cout << "ERROR: observable, removeFrom...agent not found" << endl;
-		cout << "leavingAgent id=" << leavingAgent->getId() << ", type="<<getType()<< endl;
-		cout << "this         id=" << getId() <<", type="<<getType()<<endl;
+		std::cout << "ERROR: observable, removeFrom...agent not found" << std::endl;
+		std::cout << "leavingAgent id=" << leavingAgent->getId() << ", type="<<getType()<< std::endl;
+		std::cout << "this         id=" << getId() <<", type="<<getType()<<std::endl;
 		pressSpaceToQuit();
 	} else
 		agentsObserved->RemoveAt(pos);
 	/*if ((getId()==112) && leavingAgent->getId()==213){
-		cout << "agent 213 has been removed from agent 112 observe-list" << endl;
+		std::cout << "agent 213 has been removed from agent 112 observe-list" << std::endl;
 		pressSpaceOrQuit();
 	}*/
 	
@@ -384,10 +384,10 @@ void Observable::addToUnprocObservers(Observable* observer) {
 }
 //agents keep track on other agents observing themselve: Used when auction is announced
 void Observable::addToStateObservers(Observable* observer) {
-	//cout << "agent, type " << observer->getType() << " is added as state obs to agent type " << getType() << endl;
+	//std::cout << "agent, type " << observer->getType() << " is added as state obs to agent type " << getType() << std::endl;
 	observersState->AddTail(observer);
 	/*if (observer->getId()==839 && getId()==137) {
-		cout << "debug: effector 839 is added as stateobserver to agent " << getId() << endl;
+		std::cout << "debug: effector 839 is added as stateobserver to agent " << getId() << std::endl;
 		pressSpaceOrQuit();
 	}*/
 }
@@ -396,7 +396,7 @@ void Observable::addToStateObservers(Observable* observer) {
 //change to method with pointer passing?
 void Observable::clearPotentialBuyers() {
 	/*if (getId()==213){
-		cout << "agent 213 clears pot buyers" << endl;
+		std::cout << "agent 213 clears pot buyers" << std::endl;
 		pressSpaceOrQuit();
 	}*/
 	informAndClearObservers( observersProc );	
@@ -404,15 +404,15 @@ void Observable::clearPotentialBuyers() {
 	informAndClearObservers( observersState ) ;
 	//FIX: TEMPORARY TEST ..delete later:
 	/*if (observersProc->GetCount() != 0) {
-		cout << "ERROR: obs clearpotsell" << endl;
+		std::cout << "ERROR: obs clearpotsell" << std::endl;
 		pressSpaceToQuit();
 	}
 	if (observersUnproc->GetCount() != 0) {
-		cout << "ERROR: obs clearpotsell" << endl;
+		std::cout << "ERROR: obs clearpotsell" << std::endl;
 		pressSpaceToQuit();
 	}
 	if (observersState->GetCount() != 0) {
-		cout << "ERROR: obs clearpotsell" << endl;
+		std::cout << "ERROR: obs clearpotsell" << std::endl;
 		pressSpaceToQuit();
 	}*/
 	//END TEMP TEST
@@ -446,7 +446,7 @@ void Observable::clearPotentialSellers() {
 }
 
 /*void Observable::setNumOfObsAgentsToZero() {
-	cout << "ERROR: should be overloaded, setnumtozero" << endl;
+	std::cout << "ERROR: should be overloaded, setnumtozero" << std::endl;
 	pressSpaceToQuit();
 }*/
 
@@ -458,7 +458,7 @@ void Observable::potentialBuyerIsDrifting(Observable* leavingAgent) {
 		if (pos == NULL) {
 			pos = observersState->Find(leavingAgent);
 			if (pos == NULL) {
-				cout << "ERROR: observable, type " << type << ", id=" << getId() << ", potentialbuyer " << leavingAgent->getType() << ", id=" << leavingAgent->getId() << " ...agent not found!" << endl;
+				std::cout << "ERROR: observable, type " << type << ", id=" << getId() << ", potentialbuyer " << leavingAgent->getType() << ", id=" << leavingAgent->getId() << " ...agent not found!" << std::endl;
 				pressSpaceToQuit();
 			} else
 				observersState->RemoveAt(pos);
@@ -472,11 +472,11 @@ bool Observable::agentIsObserved(Observable* nbAgent) {
 	POSITION pos;
 	pos = agentsObserved->Find(nbAgent);
 	if (pos == NULL) {
-		//cout << "debug: nbAgent is not observed, pos is NULL" << endl;
+		//std::cout << "debug: nbAgent is not observed, pos is NULL" << std::endl;
 		return false;
 	}
 	else {
-		//cout <<"debug: nbAgent is observed" << endl;
+		//std::cout <<"debug: nbAgent is observed" << std::endl;
 		//pressSpaceOrQuit();
 		return true;
 	}
@@ -485,12 +485,12 @@ bool Observable::agentIsObserved(Observable* nbAgent) {
 
 void Observable::turnFocusTo(Observable* changedObj) {
 	//Should be placed in Agent.h (don't know how to use Agent in Observable without loop conflict)
-	cout << "ERROR.Observable:turnFocusTo must be overloaded in derived classes!" << endl;
+	std::cout << "ERROR.Observable:turnFocusTo must be overloaded in derived classes!" << std::endl;
 }
 
 void Observable::observedAgentIsDrifting(Observable* obsAgent) {
 	//Should be placed in Agent.h (only)
-	cout << "ERROR.Observable: observedAgentIs ... must be overloaded in derived classes!" << endl;
+	std::cout << "ERROR.Observable: observedAgentIs ... must be overloaded in derived classes!" << std::endl;
 	pressSpaceToQuit();
 }
 
@@ -521,7 +521,7 @@ bool Observable::isCollector() {
 
 int Observable::getStatus() {
 	return agentStatus;
-	/*cout << "ERROR: getStatus must be overloaded in derived classes!" << endl;
+	/*std::cout << "ERROR: getStatus must be overloaded in derived classes!" << std::endl;
 	pressSpaceToQuit();
 	return 0;*/
 }
@@ -531,7 +531,7 @@ void Observable::setStatus(int status) {
 }
 
 int Observable::getStatusAndActive() {
-	cout << "ERROR: getStatus must be overloaded in derived classes!" << endl;
+	std::cout << "ERROR: getStatus must be overloaded in derived classes!" << std::endl;
 	pressSpaceToQuit();
 	return 0;
 }
@@ -545,22 +545,22 @@ Message* Observable::getAppearBusSmall() {
 }
 
 void Observable::addToBidders(Observable* bidder) { //only one method in observable needed?
-	cout << "ERROR: addTobidders must be overloaded in derived classes!!" << endl;
+	std::cout << "ERROR: addTobidders must be overloaded in derived classes!!" << std::endl;
 	pressSpaceToQuit();
 }
 
 void Observable::process() {
-	cout << "ERROR: process, observable..." << endl;
+	std::cout << "ERROR: process, observable..." << std::endl;
 	pressSpaceToQuit();
 }
 
 void Observable::drift() {
-	cout << "ERROR: drift, observable" << endl;
+	std::cout << "ERROR: drift, observable" << std::endl;
 	pressSpaceToQuit();
 }
 
 int Observable::clearNumOfObservedAgents() {
-	cout << "error: 453 must be overloaded" << endl;
+	std::cout << "error: 453 must be overloaded" << std::endl;
 	pressSpaceToQuit();
 	return 0;
 }

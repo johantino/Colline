@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "Colline.h"
 #include "UIntGrid.h"
-#include "iostream.h"
+#include <iostream>
 #include <conio.h> //for press key
 #include "math.h"
 
@@ -29,7 +29,7 @@ UIntGrid::UIntGrid(int h, int w)
 		isOneDim = false;
 	int arrayLength = hight*width;
 	if (arrayLength == 0) {
-		cout << "ERROR: UintGrid constructor" << endl;
+		std::cout << "ERROR: UintGrid constructor" << std::endl;
 		pressSpaceToQuit();
 	}
 	gridArray = new CUIntArray;
@@ -56,7 +56,7 @@ UIntGrid* UIntGrid::clone() {
 	isOneDim = true;
 	int arrayLength = hight*width;
 	if (arrayLength == 0) {
-		cout << "ERROR: UintGrid constructor" << endl;
+		std::cout << "ERROR: UintGrid constructor" << std::endl;
 		while (true) {}
 	}
 	gridArray = new CUIntArray;
@@ -101,7 +101,7 @@ CString UIntGrid::toStringRow(int row) {
 	}
 	info += "\n";
 	int len = info.GetLength();
-	for (i=0; i<len; i++) {
+	for (int i=0; i<len; i++) {
 		info += "-";
 	}
 	info += "\n";
@@ -234,17 +234,17 @@ void UIntGrid::addToValue(int change, int row, int column) {
 }*/
 
 void UIntGrid::setValue(unsigned int val, int row, int column) {
-	//cout << "setvalue" << endl;
+	//std::cout << "setvalue" << std::endl;
 	testPos(row, column);
-	//cout << "ok" << endl;
+	//std::cout << "ok" << std::endl;
 	int index = get2dIndex(row, column);
 	gridArray->SetAt(index, val);
 }
 
 unsigned int UIntGrid::readValue(int row, int column) {
-	//cout << "readvalku" << endl;
+	//std::cout << "readvalku" << std::endl;
 	testPos(row,column);
-	//cout << "ok" << endl;
+	//std::cout << "ok" << std::endl;
 	int index = get2dIndex(row, column);
 	unsigned int val = gridArray->GetAt(index);
 	return val;
@@ -257,24 +257,24 @@ int UIntGrid::get2dIndex(int row, int column) {
 
 void UIntGrid::testPos(int row, int column) {
 	if ((row<0) || (row > ( hight-1 ))) {
-		cout << "ERROR: uintgrid, testPos error 1" << endl;
-		cout << "hight = " << hight << endl;
-		cout << "width = " << width << endl;
-		cout << "tried to read row " << row <<", column " << column << endl;
+		std::cout << "ERROR: uintgrid, testPos error 1" << std::endl;
+		std::cout << "hight = " << hight << std::endl;
+		std::cout << "width = " << width << std::endl;
+		std::cout << "tried to read row " << row <<", column " << column << std::endl;
 		pressSpaceToQuit();
 	}
 	if (column<0 || column > (width-1)) {
-		cout << "ERROR: uintgrid, testPos error 2" << endl;
-		cout << "hight = " << hight << endl;
-		cout << "width = " << width << endl;
-		cout << "tried to read row " << row <<", column " << column << endl;
+		std::cout << "ERROR: uintgrid, testPos error 2" << std::endl;
+		std::cout << "hight = " << hight << std::endl;
+		std::cout << "width = " << width << std::endl;
+		std::cout << "tried to read row " << row <<", column " << column << std::endl;
 		pressSpaceToQuit();
 	}
 }
 
 void UIntGrid::pressSpaceToQuit() {
 	int ch;
-	cout << "press space..." << endl;
+	std::cout << "press space..." << std::endl;
 	while (ch != ' ') {
 		ch = _getch();
 	}

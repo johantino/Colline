@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "Colline.h"
 #include "dCollector.h"
-#include "iostream.h"
+#include <iostream>
 #include "Konst.h"
 
 #ifdef _DEBUG
@@ -39,7 +39,7 @@ Collector::Collector(Environment* e,
 	// ---------DNA values:--------------
 	int msbPos = 0; //DNA position counter
 	if (collectorPart->getSize() != N_DNA_COLL) {
-		cout << "ERROR: DNA bit length error collector" << endl;
+		std::cout << "ERROR: DNA bit length error collector" << std::endl;
 		pressSpaceToQuit();
 	}
 	collectorDNA = collectorPart;
@@ -53,7 +53,7 @@ Collector::Collector(Environment* e,
 	collectMax = 4 + (b_collMax*2); //pow(2,b_collMax+1);     //gives values of 4 or 6
 	//-----test DNA counter:------
 	if (msbPos != N_DNA_COLL) {
-		cout << "ERROR: DNA bit count in collector \n" << endl;
+		std::cout << "ERROR: DNA bit count in collector \n" << std::endl;
 		pressSpaceToQuit();
 	}
 
@@ -70,14 +70,14 @@ Collector::Collector(Environment* e,
 
 Collector::~Collector()
 {
-	//cout << "debug: deletes allocated mem for collector" << endl;
+	//std::cout << "debug: deletes allocated mem for collector" << std::endl;
 	delete collectorDNA;
 	delete appIdealBus;
 	delete appPickiBus;
-	//cout << "about to delete EMPTYMESS :";
-	//cout << EMPTYMESS->toString() << endl;
+	//std::cout << "about to delete EMPTYMESS :";
+	//std::cout << EMPTYMESS->toString() << std::endl;
 	//delete EMPTYMESS;
-	//cout << "...ok delete alloac coll" << endl;
+	//std::cout << "...ok delete alloac coll" << std::endl;
 }
 
 /*Message* Collector::TESTgetAppIdealBus() {
@@ -139,7 +139,7 @@ CString Collector::toStringTypeSpec() {
 }
 
 int Collector::auctionWon(Observable* seller, Message* boughtMess) {
-	//cout << "Collector " << getId() << " buys [" << boughtMess->toStringBits() << "] from " << seller->toStringType() << seller->getId() << endl;
+	//std::cout << "Collector " << getId() << " buys [" << boughtMess->toStringBits() << "] from " << seller->toStringType() << seller->getId() << std::endl;
 	boughtMessage = boughtMess;
 	setStatusForNextProcessor();
 	int fitnToPay = getBid();
@@ -152,14 +152,14 @@ int Collector::auctionWon(Observable* seller, Message* boughtMess) {
 bool Collector::makeBusinessConnections( ) {
 	//CList<Observable*,Observable*>*
 	if (numOfObsAgents != 0) {
-		cout << "ERROR: in collector makebus" << endl;
-		cout <<"numOfObs: " << numOfObsAgents << endl;
+		std::cout << "ERROR: in collector makebus" << std::endl;
+		std::cout <<"numOfObs: " << numOfObsAgents << std::endl;
 		pressSpaceToQuit();
 	}
 	if (getCurrentNeighbours()->GetCount() == 0)
 		return false; //no neighbours
 	CList<Observable*,Observable*>* legalBus = removeNonLegalBusiness(); //Removes non-observers and collectors from list
-	//cout << "num of legal bus subj: " << legalBus.size() << endl;
+	//std::cout << "num of legal bus subj: " << legalBus.size() << std::endl;
 	if (legalBus->GetCount() == 0) {
 		delete legalBus;
 		return false; //no business in neighbourhood
@@ -185,7 +185,7 @@ bool Collector::makeBusinessConnections( ) {
 
 bool Collector::checkForNewObserveConnection(Agent* newObserverInNB) {
 	if (agentIsObserved(newObserverInNB)) {
-		cout << "error: checkfornewobsconn... newAgent has just been drifter!" << endl;
+		std::cout << "error: checkfornewobsconn... newAgent has just been drifter!" << std::endl;
 		pressSpaceToQuit();
 	}
 	bool newInNBObserved = false;
@@ -268,13 +268,13 @@ void Collector::observe(Observable* obj) {
 void Collector::observedAgentIsDrifting(Observable* agent){
 	//this have just been removed from agents observerlist
 	if ((getStatus() == ST_DRIFTER) || (getStatus() == ST_DEAD)) {
-		cout << "info: collector were drifting or dead when notified of drifting seller (ok?)" << endl;
+		std::cout << "info: collector were drifting or dead when notified of drifting seller (ok?)" << std::endl;
 		return;
 	}
 	numOfObsAgents--;
 	removeFromAgentsObserved(agent);
 	if (numOfObsAgents != getNumOfPotentialSellers()) {
-		cout << "ERROR: collector, observedAgent... numOfObsAgents error" << endl;
+		std::cout << "ERROR: collector, observedAgent... numOfObsAgents error" << std::endl;
 		pressSpaceToQuit();
 	}
 	//only set to drifter if none is obs AND status is not processor: if agent is processor it either waits 
@@ -286,7 +286,7 @@ void Collector::observedAgentIsDrifting(Observable* agent){
 //TEST: test ok(1)
 void Collector::process() {
 	lastProcessedInSess = syncMan->getSessionNum();
-	//cout << "info: Collector " << getId() << " process..." << endl;
+	//std::cout << "info: Collector " << getId() << " process..." << std::endl;
 	bool pState;
 	collectedMessage->addToEnd(boughtMessage);
 	//if (collectedMessage->getSize() > MAX_MSIZE) {
@@ -297,7 +297,7 @@ void Collector::process() {
 			collectedMessage = new Message(0,0); //Start over
 		else { //test if message should be  discarded
 			if (collectedMessage->getSize() > collectMax ) {
-				//cout << "info: Collector " << getId() << " waste collected message..." << endl;
+				//std::cout << "info: Collector " << getId() << " waste collected message..." << std::endl;
 				statHandler->addToNumOfDiscUBits( collectedMessage->getSize() );
 				//delete collectedMessage;
 				//collectedMessage = EMPTYMESS;
@@ -309,13 +309,13 @@ void Collector::process() {
 		pState = false;
 		//note: could try to sell unprocessed
 	}
-	//cout << "proces state: " << pState << endl;
-	//cout << "coll mess: " << (LPCTSTR)collectedMessage->toStringBits() << endl;
+	//std::cout << "proces state: " << pState << std::endl;
+	//std::cout << "coll mess: " << (LPCTSTR)collectedMessage->toStringBits() << std::endl;
 	Observable::notifyObserversState(); //collect bids
-	//cout << "info: Collector " << getId() << " bids gathered..." << endl;
+	//std::cout << "info: Collector " << getId() << " bids gathered..." << std::endl;
 	int numOfBuyers = sellState(pState);
 	statHandler->addToNumOfProducedBits(numOfBuyers); //each buyer buys one bit
-	//cout << "REMEM testIfReadyTOMate!" << endl;
+	//std::cout << "REMEM testIfReadyTOMate!" << std::endl;
 
 	if (getFitness() < minBusinessFitness)
 		setStatusForNextDead(); //agent has been involved in too many unprofitable businesses ...delete it
@@ -324,7 +324,7 @@ void Collector::process() {
 		//numOfObsAgents=0;
 		setStatusForNextDrifter();
 	}
-	//cout << "info: Collector " << getId() << " processing finished." << endl;
+	//std::cout << "info: Collector " << getId() << " processing finished." << std::endl;
 }
 
 Message* Collector::getTypeDNA() {

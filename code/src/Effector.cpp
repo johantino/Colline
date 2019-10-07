@@ -6,7 +6,7 @@
 #include "stdafx.h"
 #include "Colline.h"
 #include "Effector.h"
-#include "iostream.h"
+#include <iostream>
 #include "Konst.h"
 
 #ifdef _DEBUG
@@ -40,7 +40,7 @@ Effector::Effector(Environment* e,
 	//-------------set DNA values:-----------------
 	int msbPos=0; //DNA position counter
 	if (effectorPart->getSize() != N_DNA_EFF) {
-		cout << "ERROR: DNA bit length error effector" << endl;
+		std::cout << "ERROR: DNA bit length error effector" << std::endl;
 		pressSpaceToQuit();
 	}
 	effectorDNA = effectorPart;
@@ -50,14 +50,14 @@ Effector::Effector(Environment* e,
 	appPickiBus2 = effectorDNA->readRange(msbPos,APPEAR_SIZE_BUS);	msbPos += APPEAR_SIZE_BUS;
 	typeOfProc = effectorDNA->readValue(msbPos,3);		msbPos += 3; //FACTOR = 8;
 
-	//cout << "DEBUG: effector dna is " << effectorDNA->toStringBits( /*new Message(pow(2,N_DNA_EFF)-1,N_DNA_EFF)*/) << ", value is: " << effectorDNA->getValue() << endl;
-	//cout << "appIdeal2 is: " << appIdealBus2->toStringBits() << " (12-17)" << endl;
-	//cout << "appPicki2 is: " << appPickiBus2->toStringBits() << " (18-23)" << endl;
+	//std::cout << "DEBUG: effector dna is " << effectorDNA->toStringBits( /*new Message(pow(2,N_DNA_EFF)-1,N_DNA_EFF)*/) << ", value is: " << effectorDNA->getValue() << std::endl;
+	//std::cout << "appIdeal2 is: " << appIdealBus2->toStringBits() << " (12-17)" << std::endl;
+	//std::cout << "appPicki2 is: " << appPickiBus2->toStringBits() << " (18-23)" << std::endl;
 	//pressSpaceOrQuit();
 
 	//---------test counter:-------------------
 	if (msbPos != N_DNA_EFF) {
-		cout << "ERROR: DNA bit count in Agent \n" << endl;
+		std::cout << "ERROR: DNA bit count in Agent \n" << std::endl;
 		pressSpaceToQuit();
 	}
 	//------set various attributs---------------------
@@ -85,14 +85,14 @@ Effector::Effector(Environment* e,
 
 Effector::~Effector()
 {
-	//cout << "debug: deletes allocated mem for effector" << endl;
+	//std::cout << "debug: deletes allocated mem for effector" << std::endl;
 	delete effectorDNA;
 	delete appIdealBus1;
 	delete appPickiBus1;
 	delete appIdealBus2;
 	delete appPickiBus2;
 	delete EMPTYMESS;
-	//cout << "...(ok)" << endl;
+	//std::cout << "...(ok)" << std::endl;
 }
 
 void Effector::TESTsetBoughtMess1(Message* m1) {
@@ -193,7 +193,7 @@ CString Effector::toStringTypeSpec() {
 			bn = numOfBits;
 		bn++;
 	}
-	//cout << "DEBUG: EFFECTOR is born with decCat level: " << level << endl;
+	//std::cout << "DEBUG: EFFECTOR is born with decCat level: " << level << std::endl;
 	return level;
 }*/
 
@@ -220,13 +220,13 @@ Observable* Effector::makeBaby(Environment* e, IdStamp* cStamp, Grid* collineGri
 bool Effector::makeBusinessConnections() {
 	//start test...
 	if ((numOfObsAgents1 != 0) || (numOfObsAgents2 != 0)) {
-		cout << "error: effector has not been observing anyone (was drifter)" << endl;
+		std::cout << "error: effector has not been observing anyone (was drifter)" << std::endl;
 		pressSpaceToQuit();
 	}//end test
 	if (getCurrentNeighbours()->GetCount() == 0)
 		return false; //no neighbours
 	CList<Observable*,Observable*>* legalBus = removeNonLegalBusiness(); //Removes drifters from neigbourhood list
-	//cout << "num of legal bus subj: " << legalBus.size() << endl;
+	//std::cout << "num of legal bus subj: " << legalBus.size() << std::endl;
 	if (legalBus->GetCount() == 0) {
 		delete legalBus;
 		return false; //no business in neighbourhood
@@ -251,7 +251,7 @@ bool Effector::makeBusinessConnections() {
 	int onlyMatch1 = agentsInput1->GetCount();
 	int onlyMatch2 = agentsInput2->GetCount();
 	int numOfObsAgentsBoth = agentsInputBoth->GetCount();
-	//cout << "Effector " << getId() << " observing at least two needed: size 1= " << size1 << "  ,size2= "<<size2<<"   ,sizeB= " << sizeBoth << endl;
+	//std::cout << "Effector " << getId() << " observing at least two needed: size 1= " << size1 << "  ,size2= "<<size2<<"   ,sizeB= " << sizeBoth << std::endl;
 	//Test if enough agents match:
 	if ((onlyMatch1==0) && (onlyMatch2==0)) {
 		if (numOfObsAgentsBoth<2) { // || MAX_NUM_OF_OBS_BOTH_EFF<2) {
@@ -300,25 +300,25 @@ bool Effector::makeBusinessConnections() {
 	//numOfObsAgents2 = onlyMatch2 + numThatMatchBoth;
 	//test...delete later..fix:
 	if (numOfObsAgents1>statHandler->MAX_NUM_OF_OBS_EFF || numOfObsAgents2>statHandler->MAX_NUM_OF_OBS_EFF) {
-		cout <<"error: makebus. effector" << "\n";
+		std::cout <<"error: makebus. effector" << "\n";
 		pressSpaceToQuit();
 	} //end test
 	delete legalBus;
 	delete agentsInput1;
 	delete agentsInput2;
 	delete agentsInputBoth;
-	//cout << "DEBUG: Effector observes, numOfObs1=" << numOfObs1 << " , numOfObs2=" << numOfObs2 << ", numThatmBoth=" << numThatMatchBoth << endl;
+	//std::cout << "DEBUG: Effector observes, numOfObs1=" << numOfObs1 << " , numOfObs2=" << numOfObs2 << ", numThatmBoth=" << numThatMatchBoth << std::endl;
 	//pressSpaceOrQuit();
 	return true;
 }
 
 bool Effector::checkForNewObserveConnection(Agent* newObserverInNB){
 	if (agentIsObserved(newObserverInNB)) {
-		cout << "error: 494 checkfornewobsconn... newAgent has just been drifter!" << endl;
-		cout << "newObserverInNB: " << endl;
-		cout << newObserverInNB->toString() << endl;
-		cout << "agent who observe newInNB: " << endl;
-		cout << toString();
+		std::cout << "error: 494 checkfornewobsconn... newAgent has just been drifter!" << std::endl;
+		std::cout << "newObserverInNB: " << std::endl;
+		std::cout << newObserverInNB->toString() << std::endl;
+		std::cout << "agent who observe newInNB: " << std::endl;
+		std::cout << toString();
 		pressSpaceToQuit();
 	}
 	bool newInNBObserved = false;
@@ -345,7 +345,7 @@ bool Effector::checkForNewObserveConnection(Agent* newObserverInNB){
 	}
 	//debug
 	/*if (newInNBObserved && newObserverInNB->getId()==137) {
-		cout << "debug: effector " << getId() << " start observing 137 (new in nb), cat=" << cat << endl;
+		std::cout << "debug: effector " << getId() << " start observing 137 (new in nb), cat=" << cat << std::endl;
 		pressSpaceOrQuit();
 	}*/ //end debug
 	return newInNBObserved;
@@ -391,12 +391,12 @@ void Effector::observe(Observable* obj) { //fix, transfer in 'cat' as parameter
 		numOfObsAgents2++;
 		numOfObsAgentsBoth++;
 	} else {
-		cout << "error; observe effector" << endl;
+		std::cout << "error; observe effector" << std::endl;
 		pressSpaceToQuit();
 	}
 	//debug:
 	/*if (obj->getId()==137 && getId()==839) {
-		cout << "debug: effector " << getId() << " start observing 137 (observe method)" << endl;
+		std::cout << "debug: effector " << getId() << " start observing 137 (observe method)" << std::endl;
 		pressSpaceOrQuit();
 	}*/
 
@@ -418,12 +418,12 @@ int Effector::findObserveCategory(Observable* agent) {
 			category = CAT_BOTH;
 	}
 	/*if (category == CAT_BOTH) {
-		cout << "Effector: findobservecategory, the cat = bOTH, because:" << endl;
-		cout << "Effector observes (inp1): " << appIdealBus1->toStringBits(appPickiBus1) << endl;
-		cout << "Effector observes (inp2): " << appIdealBus2->toStringBits(appPickiBus2) << endl;
-		cout << "Agent appearance        : " << agentApp->toStringBits() << endl;
-		cout << "agentApp == inp1?       : " << appIdealBus1->isEqualTo(agentApp, appPickiBus1) << endl;
-		cout << "agentApp == inp2?       : " << appIdealBus2->isEqualTo(agentApp, appPickiBus2) << endl;
+		std::cout << "Effector: findobservecategory, the cat = bOTH, because:" << std::endl;
+		std::cout << "Effector observes (inp1): " << appIdealBus1->toStringBits(appPickiBus1) << std::endl;
+		std::cout << "Effector observes (inp2): " << appIdealBus2->toStringBits(appPickiBus2) << std::endl;
+		std::cout << "Agent appearance        : " << agentApp->toStringBits() << std::endl;
+		std::cout << "agentApp == inp1?       : " << appIdealBus1->isEqualTo(agentApp, appPickiBus1) << std::endl;
+		std::cout << "agentApp == inp2?       : " << appIdealBus2->isEqualTo(agentApp, appPickiBus2) << std::endl;
 		pressSpaceOrQuit();
 	}*/
 	return category;
@@ -435,17 +435,17 @@ void Effector::turnFocusTo(Observable* seller) {
 	if (!updateAge())
 		return; //agent dies
 	if (lastBoughtFromAgent==seller->getId() && lastBoughtInCycle==syncMan->getCycleNum()) { //if effector already has bought one mess from this seller in this cycle, message are the same as before: do not buy 
-		cout << "ERROR: effector turnFocusTo, buy from same twice: Must be on obs list more than once (error)" << endl;
+		std::cout << "ERROR: effector turnFocusTo, buy from same twice: Must be on obs list more than once (error)" << std::endl;
 		pressSpaceToQuit();
 	}
-	//cout << "Effector " << getId() << " turns focus to " << seller->toStringType() << seller->getId() << endl;
+	//std::cout << "Effector " << getId() << " turns focus to " << seller->toStringType() << seller->getId() << std::endl;
 	int sellerCat = findObserveCategory(seller);
-	//cout << "seller cat is: " << (int)sellerCat << endl;
+	//std::cout << "seller cat is: " << (int)sellerCat << std::endl;
 	//char numOfBidsMadeTC = numberOfBidsThisCycle();
 	int numOfMissingInputs = 2 - getNumOfBoughtMess(); //legalBidsLeftTC = legalBidsLeftThisCycle( numOfBidsMadeTC ); //0, 1 or 2 legal bids left
-	//cout << "legalBidsLeftTC: " << (int)legalBidsLeftTC << endl;
+	//std::cout << "legalBidsLeftTC: " << (int)legalBidsLeftTC << std::endl;
 	if (numOfMissingInputs == 0) {
-		cout << "\n \n ERROR: effector turnFocusTO ...this shouldnt happen\n" << endl;
+		std::cout << "\n \n ERROR: effector turnFocusTO ...this shouldnt happen\n" << std::endl;
 		return; //dont bid: Has already all messages needed
 	}
 	if (numOfMissingInputs == 1) {
@@ -458,11 +458,11 @@ void Effector::turnFocusTo(Observable* seller) {
 		else
 			return; //dont bid: The input that the seller offer a message to is 'loaded'
 	} else if (numOfMissingInputs != 2) {
-		cout << "ERROR: Effector turnFocusTo error..." << endl;
+		std::cout << "ERROR: Effector turnFocusTo error..." << std::endl;
 		pressSpaceToQuit();
 	}
 	//MissingInputs = 2
-	//cout << "***EFFECTOR: bid cat from " << seller->toStringType() << " is " << sellerCat << endl;
+	//std::cout << "***EFFECTOR: bid cat from " << seller->toStringType() << " is " << sellerCat << std::endl;
 	bidCategory = sellerCat;
 	makeBidUpdate(seller); //Needs both inputs: Make bid no matter what category
 }
@@ -473,7 +473,7 @@ bool Effector::hasOneStateMessage() {
 	else if (getNumOfBoughtMess() == 0)
 		return false;
 	else {
-		cout << "ERRROR: effector has one mess..." << endl;
+		std::cout << "ERRROR: effector has one mess..." << std::endl;
 		pressSpaceToQuit();
 	}
 	return false;
@@ -501,7 +501,7 @@ int Effector::findBoughtMessCat() {
 	else if (boughtMessageBoth->getSize() != 0) 
 		boughtMessCat = CAT_BOTH;
 	else {
-		cout << "ERROR: effector findprevcat" << endl;
+		std::cout << "ERROR: effector findprevcat" << std::endl;
 		pressSpaceToQuit();
 	}
 	return boughtMessCat;
@@ -517,10 +517,10 @@ int Effector::getNumOfBoughtMess() {
 	if (boughtMessageBoth->getSize() != 0)
 		numOfBoughtMess++;
 	if (numOfBoughtMess > 2) {
-		cout << "ERROR: effector legalBidsLeft" << endl;
-		cout << "inp1 size: " << boughtMessageInp1->getSize() << endl;
-		cout << "inp2 size: " << boughtMessageInp2->getSize() << endl;
-		cout << "Both size: " << boughtMessageBoth->getSize() << endl;
+		std::cout << "ERROR: effector legalBidsLeft" << std::endl;
+		std::cout << "inp1 size: " << boughtMessageInp1->getSize() << std::endl;
+		std::cout << "inp2 size: " << boughtMessageInp2->getSize() << std::endl;
+		std::cout << "Both size: " << boughtMessageBoth->getSize() << std::endl;
 		pressSpaceToQuit();
 	}
 	return numOfBoughtMess;
@@ -529,17 +529,17 @@ int Effector::getNumOfBoughtMess() {
 
 
 void Effector::observedAgentIsDrifting(Observable* agent) {
-	//cout << "DEBUG: EFFOBSDRIF effector, method: observedAgentIsDrifting..." << endl;
+	//std::cout << "DEBUG: EFFOBSDRIF effector, method: observedAgentIsDrifting..." << std::endl;
 	if ((getStatus() == ST_DRIFTER) || (getStatus() == ST_DEAD)) {
-		//cout << "warning: 124 bus con should be removed, id=" << getId() << "leaving id=" << agent->getId() << endl;
+		//std::cout << "warning: 124 bus con should be removed, id=" << getId() << "leaving id=" << agent->getId() << std::endl;
 		return; //no problem, already signed up to drift or die
 	}
 	removeFromAgentsObserved(agent);
-	//cout << "DEBUG: EFFOBSDRIF " << getId() << "after remove from agents observing..." << endl;
+	//std::cout << "DEBUG: EFFOBSDRIF " << getId() << "after remove from agents observing..." << std::endl;
 	int cat = findObserveCategory(agent);
-	//cout << "Effector: " << agent->toStringType() << " is drifting...<< endl;
+	//std::cout << "Effector: " << agent->toStringType() << " is drifting...<< std::endl;
 	int neededMess = 2 - getNumOfBoughtMess();
-	//cout << "DEBUG: EFFOBSDRIF number of needed mess: " << neededMess << endl;
+	//std::cout << "DEBUG: EFFOBSDRIF number of needed mess: " << neededMess << std::endl;
 	if (cat == CAT_INP1)
 		numOfObsAgents1--;
 	else if (cat == CAT_INP2)
@@ -549,22 +549,22 @@ void Effector::observedAgentIsDrifting(Observable* agent) {
 		numOfObsAgents2--;
 		numOfObsAgentsBoth--;
 	} else
-		cout << "ERROR in observed agent" << endl;
-	//cout << "DEBUG: EFFOBSDRIF " << getId() << " (numOfObs1, numOfObs2, numThatMatchBoth) : " << numOfObs1 << " , " << numOfObs2 << " , " << numThatMatchBoth << endl;
-	/*cout << "effector.numOfObs1 = " << numOfObs1 << endl;
-	cout << "effector.numOfObs2 = " << numOfObs2 << endl;
-	cout << "effector.numThatMatchBoth = " << numThatMatchBoth << endl;*/
+		std::cout << "ERROR in observed agent" << std::endl;
+	//std::cout << "DEBUG: EFFOBSDRIF " << getId() << " (numOfObs1, numOfObs2, numThatMatchBoth) : " << numOfObs1 << " , " << numOfObs2 << " , " << numThatMatchBoth << std::endl;
+	/*std::cout << "effector.numOfObs1 = " << numOfObs1 << std::endl;
+	std::cout << "effector.numOfObs2 = " << numOfObs2 << std::endl;
+	std::cout << "effector.numThatMatchBoth = " << numThatMatchBoth << std::endl;*/
 	//Only set to drifter if misses input AND the status is not processor: if status is processor effector either waits to process
 	//this cycle (and then drifter) or it is ready for proc. next cycle, i.e. DONT move agent
 	if (getStatus() == ST_PROCESSOR)
 		return;
 	if (neededMess < 1) {
-		cout << "ERROR, effector. observedAgentIsDrifting" << endl;
+		std::cout << "ERROR, effector. observedAgentIsDrifting" << std::endl;
 		pressSpaceToQuit();
 	}
 	//two situations: need 1 message or needs both mess
 	if (neededMess == 1) {
-		//cout << "neededMess = 1" << endl;
+		//std::cout << "neededMess = 1" << std::endl;
 		int bmCat = findBoughtMessCat();
 		if (bmCat == CAT_INP1) {
 			if (numOfObsAgents2 > 0)
@@ -576,7 +576,7 @@ void Effector::observedAgentIsDrifting(Observable* agent) {
 			if (numOfObsAgents1>0 || numOfObsAgents2>0)
 				return;
 		} else
-			cout << "ERROR, effector observedAgentisDrifting" << endl;
+			std::cout << "ERROR, effector observedAgentisDrifting" << std::endl;
 	} else if (neededMess == 2) {
 		if (numOfObsAgentsBoth > 1)
 			return;
@@ -585,19 +585,19 @@ void Effector::observedAgentIsDrifting(Observable* agent) {
 		int test1 = numOfObsAgents1 - numOfObsAgentsBoth;
 		int test2 = numOfObsAgents2 - numOfObsAgentsBoth;
 		if (test1<0 || test2<0) {
-			cout << "ERROR; effector, test1 test2" << endl;
-			cout << "n1=" << numOfObsAgents1 << ", n2=" << numOfObsAgents2 << " , nboth=" << numOfObsAgentsBoth << endl;
-			cout << "cat=" <<cat << endl;
-			cout << "id=" << getId() << endl;
-			cout << "numObserved: " << getNumOfPotentialSellers() << endl;
+			std::cout << "ERROR; effector, test1 test2" << std::endl;
+			std::cout << "n1=" << numOfObsAgents1 << ", n2=" << numOfObsAgents2 << " , nboth=" << numOfObsAgentsBoth << std::endl;
+			std::cout << "cat=" <<cat << std::endl;
+			std::cout << "id=" << getId() << std::endl;
+			std::cout << "numObserved: " << getNumOfPotentialSellers() << std::endl;
 			pressSpaceToQuit();
 		}
 		if (test1>0 || test2>0)
 			return;
 	}
 	//If method reaches this point _this_ needs input -> drift
-	//cout << "Effector about to change status to drifter" << endl;
-	//cout << "DEBUG: EFFOBSDRIF effector " << getId() << " changes to drifter" << endl;
+	//std::cout << "Effector about to change status to drifter" << std::endl;
+	//std::cout << "DEBUG: EFFOBSDRIF effector " << getId() << " changes to drifter" << std::endl;
 	wasteMessages();
 	//numOfObsAgents1 = 0;
 	//numOfObsAgents2 = 0;
@@ -626,7 +626,7 @@ void Effector::wasteMessages() {
 
 void Effector::process() {
 	if (getStatus()!=ST_PROCESSOR) {
-		cout << "ERROR: effector, process 334" << endl;
+		std::cout << "ERROR: effector, process 334" << std::endl;
 		pressSpaceOrQuit();
 	}
 	lastProcessedInSess = syncMan->getSessionNum();
@@ -644,27 +644,27 @@ void Effector::process() {
 		inpA = boughtMessageInp1;
 		inpB = boughtMessageInp2;
 	} else {
-		cout << "ERROR: effector process ...input slot error!" << endl;
+		std::cout << "ERROR: effector process ...input slot error!" << std::endl;
 	}
-	//cout << "info: Effector " << getId() << " process...(result=";
+	//std::cout << "info: Effector " << getId() << " process...(result=";
 	bool pResult = getProcResult(inpA, inpB, typeOfProc);
-	//cout << pResult << ")" << endl;
+	//std::cout << pResult << ")" << std::endl;
 	procResult = new Message(pResult,1);
 	//statHandler->addToNumOfProcEffectors_total(); use other method (not total)
 	if (syncMan->getCollectionIndex() != -1) //within reward period (collection time)
 		statHandler->addToNumOfProcEffectors( bidAgressionLevel, syncMan->getCollectionIndex() ); //can not be here: 
 	statHandler->addToNumOfProcessedBits(2);
 	statHandler->addToNumOfProducedBits(1);
-	//cout << "processing result: " << (LPCTSTR)procResult->toStringBits() << endl;
+	//std::cout << "processing result: " << (LPCTSTR)procResult->toStringBits() << std::endl;
 	effCategory->turnFocusTo(this); //collect bid from decCat (should be incl. in notifyObservers, fix)
 	notifyObserversProc(); //collect bids from observers
-	//cout << "INFO: Effector " << getId() << " bids gathered..." << endl;
+	//std::cout << "INFO: Effector " << getId() << " bids gathered..." << std::endl;
 	if (!sellMessage(procResult)) {
-		//cout << "DEBUG: effector processing result not sold..." << endl;
+		//std::cout << "DEBUG: effector processing result not sold..." << std::endl;
 		statHandler->addToNumOfDiscUBits(1);
 		delete procResult; //to bad! message not sold
 	}
-	//cout << "(remem testIfreadytomate)" << endl;
+	//std::cout << "(remem testIfreadytomate)" << std::endl;
 	if (getFitness() < minBusinessFitness)
 		setStatusForNextDead(); //agent has been involved in too many unprofitable businesses ...delete it
 	else {
@@ -674,8 +674,8 @@ void Effector::process() {
 		//numOfObsAgentsBoth=0;
 		setStatusForNextDrifter();
 	}
-	//cout << "INFO: Effector " << getId() << " end of processing..." << endl;
-	//cout << toString() << endl;
+	//std::cout << "INFO: Effector " << getId() << " end of processing..." << std::endl;
+	//std::cout << toString() << std::endl;
 }
 
 bool Effector::getProcResult(Message* inpA, Message* inpB, int procType) {
@@ -702,12 +702,12 @@ bool Effector::getProcResult(Message* inpA, Message* inpB, int procType) {
 	else if (procType == PROC_INB)
 		result = inpB->getBoolValue();
 	else {
-		cout << "ERROR: effector getprocresult error" << endl;
+		std::cout << "ERROR: effector getprocresult error" << std::endl;
 		pressSpaceToQuit();
 	}
 	wasteMessages(); //deletes used messages
 	if (getNumOfBoughtMess() != 0) {
-		cout << "ERROR: getProcResult, effector. clearing failed!" << endl;
+		std::cout << "ERROR: getProcResult, effector. clearing failed!" << std::endl;
 		pressSpaceToQuit();
 	}
 	return result;
@@ -725,50 +725,50 @@ int Effector::auctionWon(Observable* seller, Message* boughtMess) {
 	//input it needs (or doesnt need) and therefor bids for (or doesnt bid for)
 	
 	int cat = findObserveCategory(seller); //change to cat = bidCategory after a few tests
-	//cout << "****Effector wins auciton from " << seller->toStringType() << ", cat=" << cat << endl;
+	//std::cout << "****Effector wins auciton from " << seller->toStringType() << ", cat=" << cat << std::endl;
 	if (cat != bidCategory) {
-		cout << "ERROR: effector, auction won. cat error" << endl;
+		std::cout << "ERROR: effector, auction won. cat error" << std::endl;
 		pressSpaceToQuit();
 	}
-	//cout << "Effector " << getId() << " buys [" << boughtMess->toStringBits() << "] from " << seller->toStringType() << seller->getId();
+	//std::cout << "Effector " << getId() << " buys [" << boughtMess->toStringBits() << "] from " << seller->toStringType() << seller->getId();
 	if (bidCategory == CAT_INP1) {
 		if (boughtMessageInp1->getSize() != 0) {
-			cout << "ERROR: effector auctionWon input category already 'booked'!!" << endl;
+			std::cout << "ERROR: effector auctionWon input category already 'booked'!!" << std::endl;
 			pressSpaceToQuit();
 		} else {
-			//cout << " (INP1)" << endl;
+			//std::cout << " (INP1)" << std::endl;
 			boughtMessageInp1 = boughtMess;
 		}
 	} else if (bidCategory == CAT_INP2) {
 		if (boughtMessageInp2->getSize() != 0) {
-			cout << "ERROR: effector auctionWon input category already 'booked'!!" << endl;
+			std::cout << "ERROR: effector auctionWon input category already 'booked'!!" << std::endl;
 			pressSpaceToQuit();
 		} else {
-			//cout << " (INP2)" << endl;
+			//std::cout << " (INP2)" << std::endl;
 			boughtMessageInp2 = boughtMess;
 		}
 	} else if (bidCategory == CAT_BOTH) {
 		if (boughtMessageBoth->getSize() != 0) {
 			if (boughtMessageInp1->getSize() != 0) { //boughtMessInp1 is by def. used when bMessBoth is taken (could just as well be inp2)
-				cout << "ERROR: effector " << getId() << " auctionWon input category already 'booked'!! (inp1)" << endl;
-				cout << "message: " << (LPCTSTR)boughtMessageInp1->toString() << endl;
+				std::cout << "ERROR: effector " << getId() << " auctionWon input category already 'booked'!! (inp1)" << std::endl;
+				std::cout << "message: " << (LPCTSTR)boughtMessageInp1->toString() << std::endl;
 				pressSpaceToQuit();
 			} else {
-				//cout << " (INP1)" << endl;
+				//std::cout << " (INP1)" << std::endl;
 				boughtMessageInp1 = boughtMess;
 			}
 		} else {
-			//cout << " (BOTH)" << endl;
+			//std::cout << " (BOTH)" << std::endl;
 			boughtMessageBoth = boughtMess;
 		}
 	} else {
-		cout << "ERROR: auction won wrong categori!" << endl;
+		std::cout << "ERROR: auction won wrong categori!" << std::endl;
 		pressSpaceToQuit();
 	}
 	//removeFromAgentsObserved(seller); //when one mess are bought stop observing mess from this agent, since to different agent states must be compared
 
 	if (getNumOfBoughtMess() == 2) {
-		//cout << "DEBUG: effector " << getId() << " are processor next cycle" << endl;
+		//std::cout << "DEBUG: effector " << getId() << " are processor next cycle" << std::endl;
 		setStatusForNextProcessor();
 	}
 	// (else keep observer status)
