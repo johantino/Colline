@@ -9,8 +9,10 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include <afxcoll.h> //used for CUINTArray
+//#include <afxcoll.h> //used for CUINTArray
 //#include "UIntGridRow.h"
+
+#include <vector>
 
 //supports both 1d and 2d grids
 class UIntGrid  
@@ -51,7 +53,7 @@ private:
 	int width;
 	
 	
-	CUIntArray* gridArray;
+	std::vector<unsigned int> gridArray;
 
 };
 

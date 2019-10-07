@@ -48,7 +48,7 @@ void WndColline::paintGrid( /*CUIntArray* gridView*/ /*CByteArray* gridView*/) {
 	for (x=0; x<gridWidth; x++) {
 		for (y=0; y<gridHight; y++) {
 			colorIndex = y*gridHight + x;
-			color = statHandler->nextViewFrame->GetAt(colorIndex);
+			color = statHandler->nextViewFrame.at(colorIndex);
 			startX = x*2*ZOOM; //ensures 'air' between agents
 			startY = y*2*ZOOM;
 			//paintGridCell(x, y, color);

@@ -32,8 +32,8 @@ UIntGrid::UIntGrid(int h, int w)
 		std::cout << "ERROR: UintGrid constructor" << std::endl;
 		pressSpaceToQuit();
 	}
-	gridArray = new CUIntArray;
-	gridArray->SetSize(arrayLength);
+
+	gridArray.resize(arrayLength);
 	clear();
 
 }
@@ -63,7 +63,7 @@ UIntGrid* UIntGrid::clone() {
 	gridArray->SetSize(arrayLength);
 	//initialize gridArray:
 	for (int i=0; i<arrayLength; i++)
-		gridArray->SetAt(i, 0);
+		gridArray.at(i, 0);
 }*/
 
 
@@ -90,7 +90,7 @@ std::string UIntGrid::toStringRow(int row) {
 	info = "|";
 	for (int i=0; i<width; i++) {
 		index = get2dIndex(row, i);
-		val = gridArray->GetAt(index);
+		val = gridArray.at(index);
 		_itoa(val, strVal, 10);
 		if (val<100)
 			info += " ";
@@ -120,7 +120,7 @@ int UIntGrid::getWidth() {
 void UIntGrid::clear() {
 	int size = hight*width;
 	for (int index=0; index<size; index++)
-		gridArray->SetAt(index, 0);
+		gridArray.at(index) = 0;
 }
 
 int UIntGrid::getColumnSum(int col) {
@@ -220,17 +220,17 @@ std::string UIntGrid::toStringValue(int row, int column) {
 void UIntGrid::addToValue(int change, int row, int column) {
 	testPos(row, column);
 	int index = get2dIndex(row,column);
-	int oldVal = gridArray->GetAt(index);
+	int oldVal = gridArray.at(index);
 	int newVal = oldVal + change;
-	gridArray->SetAt(index, newVal);
+	gridArray.at(index) = newVal;
 }
 
 /*void UIntGrid::increaseVal(int row, int column) {
 	testPos(row,column);
 	int index = get2dIndex(row, column);
-	unsigned int val = gridArray->GetAt(index);
+	unsigned int val = gridArray.at(index);
 	val++;
-	gridArray->SetAt(index, val);
+	gridArray.at(index, val);
 }*/
 
 void UIntGrid::setValue(unsigned int val, int row, int column) {
@@ -238,7 +238,7 @@ void UIntGrid::setValue(unsigned int val, int row, int column) {
 	testPos(row, column);
 	//std::cout << "ok" << std::endl;
 	int index = get2dIndex(row, column);
-	gridArray->SetAt(index, val);
+	gridArray.at(index) = val;
 }
 
 unsigned int UIntGrid::readValue(int row, int column) {
@@ -246,7 +246,7 @@ unsigned int UIntGrid::readValue(int row, int column) {
 	testPos(row,column);
 	//std::cout << "ok" << std::endl;
 	int index = get2dIndex(row, column);
-	unsigned int val = gridArray->GetAt(index);
+	unsigned int val = gridArray.at(index);
 	return val;
 }
 

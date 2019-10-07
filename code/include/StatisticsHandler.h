@@ -176,7 +176,7 @@ public:
 	UIntGrid* lastCorrectRespCatZero; //used to estimate num of resp for next cat zero session
 	UIntGrid* lastCorrectRespCatOne; //used to estimate num of resp for next cat one session
 
-	CUIntArray* nextViewFrame;
+	std::vector<unsigned int> nextViewFrame;
 
 	UIntGrid* currentSpeciesCount; //{ [Coll] ; [Inp] ; [Eff] }
 	UIntGrid* speciesStat_col;

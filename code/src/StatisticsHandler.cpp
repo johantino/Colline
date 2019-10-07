@@ -36,12 +36,12 @@ StatisticsHandler::StatisticsHandler(bool isNewOrganism, int restoredSesReward, 
 	//gridView = gView;
 	dnaSampleNum = restoredDNAsampleNum; //0
 
-	nextViewFrame = new CUIntArray;
+
 	int totalCells = agentGrid->getHightY() * agentGrid->getWidthX();
 	//int totalCells = gridView->getWidth() * gridView->getHight();
-	nextViewFrame->SetSize(totalCells);
+	nextViewFrame.resize(totalCells);
 	for (int i=0; i<totalCells; i++) {
-		nextViewFrame->SetAt(i, COLOR_GRID);
+		nextViewFrame.at(i) = COLOR_GRID;
 	}
 	//int fileIdVal = (byte)time(NULL); //used to avoid overwriting of files
 	fname_begin = "cdata" + numToString( fileIdVal );
@@ -568,8 +568,9 @@ CList<Observable*, Observable*>* StatisticsHandler::pickSample(CList<Observable*
 		pressSpaceToQuit();
 	}
 	CList<Observable*, Observable*>* sample = new CList<Observable*, Observable*>(10);
-	CUIntArray* randIndexList = new CUIntArray();
-	randIndexList->SetSize(sampleSize);
+	
+	auto randIndexList = std::vector<unsigned int>(sampleSize);
+
 	int bigListSize = fullList->GetCount();
 	int loopCheck = 0;
 	int i;
@@ -579,7 +580,7 @@ CList<Observable*, Observable*>* StatisticsHandler::pickSample(CList<Observable*
 	unsigned int indexInBigList;
 	unsigned int emptyPos = 99999;
 	for (i=0; i<sampleSize; i++) {
-		randIndexList->SetAt(i,emptyPos);
+		randIndexList.at(i) = emptyPos;
 	}
 	//fill randIndexList with sampleSize random indices
 	while (numFilled<sampleSize) {
@@ -587,14 +588,14 @@ CList<Observable*, Observable*>* StatisticsHandler::pickSample(CList<Observable*
 		//check if index is already taken
 		isTaken = false;
 		for (i=0; i<numFilled; i++) {
-			val = randIndexList->GetAt(i);
+			val = randIndexList.at(i);
 			if (val == indexInBigList) {
 				isTaken = true;
 				i=sampleSize;
 			}
 		}
 		if (!isTaken) {
-			randIndexList->SetAt(numFilled, indexInBigList);
+			randIndexList.at(numFilled) = indexInBigList;
 			numFilled++;
 		}
 		loopCheck++;
@@ -607,7 +608,7 @@ CList<Observable*, Observable*>* StatisticsHandler::pickSample(CList<Observable*
 	int bigIndex;
 	//std::cout << "big list size: " << bigListSize << std::endl;
 	for (i=0; i<sampleSize; i++) {
-		bigIndex = randIndexList->GetAt(i);
+		bigIndex = randIndexList.at(i);
 		//std::cout << "now adding index " << bigIndex << std::endl;
 		//pressSpaceOrQuit();
 		sample->AddTail( fullList->GetAt( fullList->FindIndex( bigIndex ) ) );
@@ -1314,11 +1315,11 @@ void StatisticsHandler::changeGridView(Observable* changingAgent, GridCell* oldP
 		std::cout << "ERROR: changeGridView ..2" << std::endl;
 		pressSpaceToQuit();
 	}
-	nextViewFrame->SetAt(newIndex, color);
+	nextViewFrame.at(newIndex) = color;
 	if (newIndex != oldIndex) {
 		//clear old position
 		int backColor = COLOR_GRID;
-		nextViewFrame->SetAt(oldIndex, backColor);
+		nextViewFrame.at(oldIndex) = backColor;
 	}
 }
 
