@@ -4,7 +4,7 @@ set_property(DIRECTORY PROPERTY CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(${PROJECT_NAME}Test
         "main.cpp"
-#		"todo.cpp"
+		"GridTest.cpp"
 )
 
 target_include_directories(${PROJECT_NAME}Test PRIVATE ${CMAKE_SOURCE_DIR}/include)

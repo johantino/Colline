@@ -270,7 +270,7 @@ CList<GridCell*, GridCell*>* Grid::getFreeCells(GridCell* center, int vicinity) 
 }
 
 void Grid::pressSpaceToQuit() {
-	int ch;
+	int ch = 0;
 	std::cout << "press space..." << std::endl;
 	while (ch != ' ') {
 		ch = _getch();
