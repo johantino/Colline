@@ -61,8 +61,8 @@ Fountain::~Fountain()
 	delete EMPTYMESS;
 }
 
-CString Fountain::toString() {
-	CString info;
+std::string Fountain::toString() {
+	std::string info;
 	char strId[7];
 	_itoa(getId(), strId, 10);
 	Message* appBus = getAppearBusFull();

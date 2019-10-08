@@ -100,16 +100,16 @@ Message* Inpoder::getTypeDNA() {
 	return inpoderDNA;
 }
 
-CString Inpoder::toStringObserveBusApp() {
-	CString info;
+std::string Inpoder::toStringObserveBusApp() {
+	std::string info;
 	info = "\n| Obs. agents with app: ";
 	info += appIdealBus->toStringBits(appPickiBus);
 	info += "\n";
 	return info;
 }
 
-CString Inpoder::toStringTypeSpec() {
-	CString info;
+std::string Inpoder::toStringTypeSpec() {
+	std::string info;
 	char strVic[2];
 	_itoa(getVicinityBus(), strVic, 10);
 	info = toStringObserveBusApp();
@@ -157,11 +157,9 @@ int Inpoder::auctionWon(Observable* seller, Message* boughtMess) {
 
 CList<Observable*,Observable*>* Inpoder::removeNonLegalBusiness() {
 	CList<Observable*,Observable*>* legalBusiness = new CList<Observable*,Observable*>;
-	CList<Observable*,Observable*>* currNB = getCurrentNeighbours();
-	Observable* subj;
-	int nbSize = currNB->GetCount();
-	for (int i=0; i<nbSize; i++) {
-		subj = currNB->GetAt(currNB->FindIndex(i));
+	auto currNB = getCurrentNeighbours();
+
+	for (auto subj : currNB) {
 		if (subj->isEffector() && INP_CAN_BUY_FROM_EFF && (subj->getStatusAndActive() == ST_OBSERVER))  //proceed if non-effector
 			legalBusiness->AddTail(subj);
 		else if (!subj->isEffector() && (subj->getStatusAndActive() == ST_OBSERVER)) //proceed if non-effector
@@ -190,7 +188,7 @@ bool Inpoder::makeBusinessConnections() {
 		std::cout << toString() << std::endl;
 		pressSpaceToQuit();
 	}
-	if (getCurrentNeighbours()->GetCount() == 0)
+	if (getCurrentNeighbours().empty())
 		return false; //no neighbours
 	CList<Observable*,Observable*>* legalBus = removeNonLegalBusiness(); //Removes non-observers from list...FIX use same pointer
 	//std::cout << "(Inpoder) num of legal bus in nb: " << legalBus.size() << std::endl;

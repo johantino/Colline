@@ -176,7 +176,7 @@ public:
 	UIntGrid* lastCorrectRespCatZero; //used to estimate num of resp for next cat zero session
 	UIntGrid* lastCorrectRespCatOne; //used to estimate num of resp for next cat one session
 
-	CUIntArray* nextViewFrame;
+	std::vector<unsigned int> nextViewFrame;
 
 	UIntGrid* currentSpeciesCount; //{ [Coll] ; [Inp] ; [Eff] }
 	UIntGrid* speciesStat_col;
@@ -189,23 +189,23 @@ public:
 
 private:
 
-	CString numToString(int number);
+	std::string numToString(int number);
 	int getAverage(int fValue, int agents);
 	void pressSpaceToQuit();
 	void pressSpaceOrQuit();
 	bool getCollineAnswer();
 	void writeConstants();
 	void saveDNAinfo_common(FILE* f, Observable* agent);
-	void saveDNAinfo_coll(CList<Observable*, Observable*>* sample);
-	void saveDNAinfo_inp(CList<Observable*, Observable*>* sample);
-	void saveDNAinfo_eff(CList<Observable*, Observable*>* sample);
-	CList<Observable*, Observable*>* pickSample(CList<Observable*, Observable*>* fullList, int sampleSize);
+	void saveDNAinfo_coll(std::list<Observable*> sample);
+	void saveDNAinfo_inp(std::list<Observable*> sample);
+	void saveDNAinfo_eff(std::list<Observable*> sample);
+	std::list<Observable*> pickSample(std::list<Observable*> fullList, int sampleSize);
 
 
 	Grid* agentGrid;
 	int dnaSampleNum;
 	//int max_fitn_rew_sess; //the maximum fitness that Colline can receive in one session (to prevent unstability)
-	CString fname_begin;
+	std::string fname_begin;
 	
 	//int sessionNum;
 	//WndCollineText* agentView;

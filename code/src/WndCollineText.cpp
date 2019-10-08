@@ -102,65 +102,66 @@ void WndCollineText::updateInfoAgents(int cycNum/*CStringArray* info*/) {
 	hPos = 10;
 	vPos = 220;
 	for (i=0; i<NUM_OF_SPECIES; i++) {
-		dc.TextOut(hPos, vPos, "Species " + numToString(i));		
+		std::string text = "Species " + numToString(i);
+		dc.TextOut(hPos, vPos, text.c_str());
 		vPos += 20;
 	}
 	
 	//display values
 	dc.SetTextAlign(TA_RIGHT );
-	dc.TextOut(90, 30, numToString( cycNum ));   //info->GetAt(0));
+	dc.TextOut(90, 30, numToString( cycNum ).c_str());   //info->GetAt(0));
 	vPos = 50;
 	hPos = 145;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfProc_foun));		vPos += 20;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfObs_foun));		vPos += 20;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfDrif_foun));		vPos += 20;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfProc_foun).c_str());		vPos += 20;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfObs_foun).c_str());		vPos += 20;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfDrif_foun).c_str());		vPos += 20;
 	dc.TextOut(hPos, vPos, "-");				vPos += 25; // info->GetAt(4)
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfAgents_foun));			
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfAgents_foun).c_str());
 	vPos = 50;
 	hPos = 225;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfProc_coll));			vPos += 20;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfObs_coll));			vPos += 20;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfDrif_coll - statHandler->numOfMaters_coll));			vPos += 20;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfMaters_coll));			vPos += 25;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfAgents_coll));
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfProc_coll).c_str());			vPos += 20;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfObs_coll).c_str());			vPos += 20;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfDrif_coll - statHandler->numOfMaters_coll).c_str());			vPos += 20;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfMaters_coll).c_str());			vPos += 25;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfAgents_coll).c_str());
 	vPos = 50;
 	hPos = 305;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfProc_inp));		vPos += 20;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfObs_inp));		vPos += 20;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfDrif_inp - statHandler->numOfMaters_inp));		vPos += 20;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfMaters_inp));		vPos += 25;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfAgents_inp));
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfProc_inp).c_str());		vPos += 20;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfObs_inp).c_str());		vPos += 20;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfDrif_inp - statHandler->numOfMaters_inp).c_str());		vPos += 20;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfMaters_inp).c_str());		vPos += 25;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfAgents_inp).c_str());
 	vPos = 50;
 	hPos = 385;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfProc_eff));		vPos += 20;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfObs_eff));		vPos += 20;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfDrif_eff - statHandler->numOfMaters_eff));		vPos += 20;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfMaters_eff));		vPos += 25;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfAgents_eff));
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfProc_eff).c_str());		vPos += 20;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfObs_eff).c_str());		vPos += 20;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfDrif_eff - statHandler->numOfMaters_eff).c_str());		vPos += 20;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfMaters_eff).c_str());		vPos += 25;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfAgents_eff).c_str());
 	vPos = 50;
 	hPos = 470;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfProcessors));		vPos += 20;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfObservers));		vPos += 20;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfDrifters - statHandler->numOfMaters));		vPos += 20;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfMaters));		vPos += 25;
-	dc.TextOut(hPos, vPos, numToString(statHandler->numOfAgents));
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfProcessors).c_str());		vPos += 20;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfObservers).c_str());		vPos += 20;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfDrifters - statHandler->numOfMaters).c_str());		vPos += 20;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfMaters).c_str());		vPos += 25;
+	dc.TextOut(hPos, vPos, numToString(statHandler->numOfAgents).c_str());
 
 	hPos = 225;
 	vPos = 220;
 	for (i=0; i<NUM_OF_SPECIES; i++) {
-		dc.TextOut(hPos, vPos, numToString(statHandler->currentSpeciesCount->readValue(i,0)));		
+		dc.TextOut(hPos, vPos, numToString(statHandler->currentSpeciesCount->readValue(i,0)).c_str());
 		vPos += 20;
 	}
 	hPos = 305;
 	vPos = 220;
 	for (i=0; i<NUM_OF_SPECIES; i++) {
-		dc.TextOut(hPos, vPos, numToString(statHandler->currentSpeciesCount->readValue(i,1)));		
+		dc.TextOut(hPos, vPos, numToString(statHandler->currentSpeciesCount->readValue(i,1)).c_str());
 		vPos += 20;
 	}
 	hPos = 385;
 	vPos = 220;
 	for (i=0; i<NUM_OF_SPECIES; i++) {
-		dc.TextOut(hPos, vPos, numToString(statHandler->currentSpeciesCount->readValue(i,2)));		
+		dc.TextOut(hPos, vPos, numToString(statHandler->currentSpeciesCount->readValue(i,2)).c_str());
 		vPos += 20;
 	}
 
@@ -171,10 +172,10 @@ void WndCollineText::updateInfoAgents(int cycNum/*CStringArray* info*/) {
 	dc.SetTextAlign(TA_RIGHT );
 	dc.TextOut(140, vPos, "-");
 	hPos = 225;
-	dc.TextOut(hPos, vPos, numToString(statHandler->fitnessColline_coll/1000));		hPos += 80;
-	dc.TextOut(hPos, vPos, numToString(statHandler->fitnessColline_inp/1000));		hPos += 80;
-	dc.TextOut(hPos, vPos, numToString(statHandler->fitnessColline_eff/1000));		hPos += 85;
-	dc.TextOut(hPos, vPos, numToString(statHandler->fitnessColline/1000));		
+	dc.TextOut(hPos, vPos, numToString(statHandler->fitnessColline_coll/1000).c_str());		hPos += 80;
+	dc.TextOut(hPos, vPos, numToString(statHandler->fitnessColline_inp/1000).c_str());		hPos += 80;
+	dc.TextOut(hPos, vPos, numToString(statHandler->fitnessColline_eff/1000).c_str());		hPos += 85;
+	dc.TextOut(hPos, vPos, numToString(statHandler->fitnessColline/1000).c_str());
 	hPos = 10;
 	vPos = 185;
 	dc.SetTextAlign(TA_LEFT );
@@ -182,10 +183,10 @@ void WndCollineText::updateInfoAgents(int cycNum/*CStringArray* info*/) {
 	dc.SetTextAlign(TA_RIGHT );
 	dc.TextOut(140, vPos, "-");
 	hPos = 225;
-	dc.TextOut(hPos, vPos, numToString( getAverage(statHandler->fitnessColline_coll, statHandler->numOfAgents_coll) ));		hPos += 80;
-	dc.TextOut(hPos, vPos, numToString( getAverage(statHandler->fitnessColline_inp, statHandler->numOfAgents_inp) ));		hPos += 80;
-	dc.TextOut(hPos, vPos, numToString( getAverage(statHandler->fitnessColline_eff, statHandler->numOfAgents_eff)) );		hPos += 85;
-	dc.TextOut(hPos, vPos, numToString( getAverage(statHandler->fitnessColline, (statHandler->numOfAgents - statHandler->numOfAgents_foun)) ));		
+	dc.TextOut(hPos, vPos, numToString( getAverage(statHandler->fitnessColline_coll, statHandler->numOfAgents_coll) ).c_str());		hPos += 80;
+	dc.TextOut(hPos, vPos, numToString( getAverage(statHandler->fitnessColline_inp, statHandler->numOfAgents_inp) ).c_str());		hPos += 80;
+	dc.TextOut(hPos, vPos, numToString( getAverage(statHandler->fitnessColline_eff, statHandler->numOfAgents_eff)).c_str());		hPos += 85;
+	dc.TextOut(hPos, vPos, numToString( getAverage(statHandler->fitnessColline, (statHandler->numOfAgents - statHandler->numOfAgents_foun)) ).c_str());
 
 	//delete info;
 	InvalidateRect(backgroundRect, false);
@@ -215,37 +216,37 @@ void WndCollineText::updateInfoTraining( int sesNum/*CStringArray* info, UIntGri
 	vPos = 5;
 	dc.TextOut(hPos, vPos,"Session: ");
 	hPos += 70;
-	dc.TextOut(hPos,vPos, numToString( sesNum));
+	dc.TextOut(hPos,vPos, numToString( sesNum).c_str());
 	hPos += 30;
 	dc.TextOut(hPos, vPos, "Correct answer:");
 	hPos += 105;
-	dc.TextOut(hPos,vPos, numToString( statHandler->lastSesCorrectCategory) );
+	dc.TextOut(hPos,vPos, numToString( statHandler->lastSesCorrectCategory).c_str());
 	hPos += 30;
 	dc.TextOut(hPos, vPos, "Colline answer:");
 	hPos += 105;
-	dc.TextOut(hPos,vPos, numToString( statHandler->lastSesCollineAnswer) );
+	dc.TextOut(hPos,vPos, numToString( statHandler->lastSesCollineAnswer).c_str());
 	hPos += 30;
 	dc.TextOut(hPos, vPos, "pLevel:");
 	hPos += 80;
-	dc.TextOut(hPos,vPos, numToString( statHandler->lastSesChosenPickiLevel) );
+	dc.TextOut(hPos,vPos, numToString( statHandler->lastSesChosenPickiLevel).c_str());
 		
 	//draw response table row labels:
 	hPos = 5;
 	vPos = 60;
-	CString rowHead;
+	std::string rowHead;
 	int numOfRows = statHandler->lastSesNumOfProcEff->getHight();
 	for (row=0; row<numOfRows; row++) {
 		rowHead = "Agr.lev ";
 		_itoa( row, str, 10);
 		rowHead += str;
-		dc.TextOut(hPos, vPos, rowHead);
+		dc.TextOut(hPos, vPos, rowHead.c_str());
 		vPos += 20;
 	}
 	vPos += 10;
 	dc.TextOut(hPos, vPos, "Total");
 
 	//draw response table values:
-	CString colHead;
+	std::string colHead;
 	hPos = 5;
 	vPos = 30;
 	dc.SetTextAlign(TA_LEFT );
@@ -256,14 +257,14 @@ void WndCollineText::updateInfoTraining( int sesNum/*CStringArray* info, UIntGri
 	for (col=0; col<numOfCol; col++) {
 		_itoa( (col + statHandler->COLL_MIN_PROCTIME ), str, 10);
 		colHead = str;
-		dc.TextOut(hPos, vPos, colHead);
+		dc.TextOut(hPos, vPos, colHead.c_str());
 		vPos += 30;
 		for (row=0; row<numOfRows; row++) {
-			dc.TextOut(hPos, vPos, statHandler->lastSesNumOfProcEff->toStringValue(row,col) );
+			dc.TextOut(hPos, vPos, statHandler->lastSesNumOfProcEff->toStringValue(row,col).c_str());
 			vPos += 20;
 		}
 		vPos += 10; 
-		dc.TextOut(hPos, vPos, statHandler->lastSesNumOfProcEff->toStringColumnSum(col) );
+		dc.TextOut(hPos, vPos, statHandler->lastSesNumOfProcEff->toStringColumnSum(col).c_str());
 		vPos = 30;
 		hPos += 30;
 	}
@@ -273,11 +274,11 @@ void WndCollineText::updateInfoTraining( int sesNum/*CStringArray* info, UIntGri
 	dc.TextOut(hPos,vPos,"Total");
 	vPos += 30;
 	for (row=0; row<numOfRows; row++) {
-		dc.TextOut(hPos, vPos, statHandler->lastSesNumOfProcEff->toStringRowSum(row ) );
+		dc.TextOut(hPos, vPos, statHandler->lastSesNumOfProcEff->toStringRowSum(row ).c_str());
 		vPos += 20;
 	}
 	vPos += 10;
-	dc.TextOut(hPos, vPos, statHandler->lastSesNumOfProcEff->toStringTotalSum() );
+	dc.TextOut(hPos, vPos, statHandler->lastSesNumOfProcEff->toStringTotalSum().c_str());
 
 	//draw Correct resp row-sum
 	hPos += 40;
@@ -285,7 +286,7 @@ void WndCollineText::updateInfoTraining( int sesNum/*CStringArray* info, UIntGri
 	dc.TextOut(hPos,vPos,"Ok");
 	vPos += 30;
 	for (row=0; row<numOfRows; row++) {
-		dc.TextOut(hPos, vPos, statHandler->lastSesCorrectResp->toStringRowSum(row));
+		dc.TextOut(hPos, vPos, statHandler->lastSesCorrectResp->toStringRowSum(row).c_str());
 		vPos += 20;
 	}
 
@@ -295,7 +296,7 @@ void WndCollineText::updateInfoTraining( int sesNum/*CStringArray* info, UIntGri
 	dc.TextOut(hPos,vPos,"!Ok");
 	vPos += 30;
 	for (row=0; row<numOfRows; row++) {
-		dc.TextOut(hPos, vPos, statHandler->lastSesWrongResp->toStringRowSum(row));
+		dc.TextOut(hPos, vPos, statHandler->lastSesWrongResp->toStringRowSum(row).c_str());
 		vPos += 20;
 	}
 
@@ -305,7 +306,7 @@ void WndCollineText::updateInfoTraining( int sesNum/*CStringArray* info, UIntGri
 	dc.TextOut(hPos,vPos,"Paid");
 	vPos += 30;
 	for (level=0; level<numOfRows; level++) { //(numOfRows = numOfLevels)
-		dc.TextOut(hPos, vPos, statHandler->lastSesFitnessPaid->toStringRowSum1000(level)); //display paid fitness for level
+		dc.TextOut(hPos, vPos, statHandler->lastSesFitnessPaid->toStringRowSum1000(level).c_str()); //display paid fitness for level
 		vPos += 20;
 	}
 
@@ -315,7 +316,7 @@ void WndCollineText::updateInfoTraining( int sesNum/*CStringArray* info, UIntGri
 	dc.TextOut(hPos,vPos,"E.Ok");
 	vPos += 30;
 	for (level=0; level<numOfRows; level++) { //(numOfRows = numOfLevels)
-		dc.TextOut(hPos, vPos, statHandler->lastSesNumOfCorr_EstForNext->toStringRowSum(level)); //
+		dc.TextOut(hPos, vPos, statHandler->lastSesNumOfCorr_EstForNext->toStringRowSum(level).c_str()); //
 		vPos += 20;
 	}
 
@@ -325,7 +326,7 @@ void WndCollineText::updateInfoTraining( int sesNum/*CStringArray* info, UIntGri
 	dc.TextOut(hPos,vPos,"Rew");
 	vPos += 30;
 	for (level=0; level<numOfRows; level++) { //(numOfRows = numOfLevels)
-		dc.TextOut(hPos, vPos, statHandler->lastSesRewardOnLevels->toStringRowSum(level)); //display paid fitness for level
+		dc.TextOut(hPos, vPos, statHandler->lastSesRewardOnLevels->toStringRowSum(level).c_str()); //display paid fitness for level
 		vPos += 20;
 	}
 
@@ -337,11 +338,11 @@ void WndCollineText::updateInfoTraining( int sesNum/*CStringArray* info, UIntGri
 	dc.SetTextAlign(TA_RIGHT );
 	hPos = 80;
 	for (col=0; col<numOfCol; col++) {
-		dc.TextOut(hPos, vPos, statHandler->lastSesCorrectResp->toStringColumnSum(col));
+		dc.TextOut(hPos, vPos, statHandler->lastSesCorrectResp->toStringColumnSum(col).c_str());
 		hPos += 30;
 	}
 	hPos += 50;
-	dc.TextOut(hPos, vPos, statHandler->lastSesCorrectResp->toStringTotalSum() );
+	dc.TextOut(hPos, vPos, statHandler->lastSesCorrectResp->toStringTotalSum().c_str());
 
 	//draw wrong resp col-sum
 	hPos = 5;
@@ -351,11 +352,11 @@ void WndCollineText::updateInfoTraining( int sesNum/*CStringArray* info, UIntGri
 	dc.SetTextAlign(TA_RIGHT );
 	hPos = 80;
 	for (col=0; col<numOfCol; col++) {
-		dc.TextOut(hPos, vPos, statHandler->lastSesWrongResp->toStringColumnSum(col));
+		dc.TextOut(hPos, vPos, statHandler->lastSesWrongResp->toStringColumnSum(col).c_str());
 		hPos += 30;
 	}
 	hPos += 80;
-	dc.TextOut(hPos, vPos, statHandler->lastSesWrongResp->toStringTotalSum() );
+	dc.TextOut(hPos, vPos, statHandler->lastSesWrongResp->toStringTotalSum().c_str());
 		
 	//draw paid fitness col-sum
 	hPos = 5;
@@ -366,11 +367,11 @@ void WndCollineText::updateInfoTraining( int sesNum/*CStringArray* info, UIntGri
 	
 	hPos = 80;
 	for (col=0; col<numOfCol; col++) {
-		dc.TextOut(hPos, vPos, statHandler->lastSesFitnessPaid->toStringColumnSum1000(col));
+		dc.TextOut(hPos, vPos, statHandler->lastSesFitnessPaid->toStringColumnSum1000(col).c_str());
 		hPos += 30;
 	}
 	hPos += 110;
-	dc.TextOut(hPos, vPos, statHandler->lastSesFitnessPaid->toStringTotalSum1000() );
+	dc.TextOut(hPos, vPos, statHandler->lastSesFitnessPaid->toStringTotalSum1000().c_str());
 
 	//display percent processed
 	dc.SetTextAlign(TA_LEFT );
@@ -378,17 +379,17 @@ void WndCollineText::updateInfoTraining( int sesNum/*CStringArray* info, UIntGri
 	vPos += 30;
 	dc.TextOut(hPos, vPos, "Bits from env:");
 	hPos = 110;
-	dc.TextOut(hPos, vPos, numToString(statHandler->lastSesBitsFromEnv) );
+	dc.TextOut(hPos, vPos, numToString(statHandler->lastSesBitsFromEnv).c_str());
 	hPos = 5;
 	vPos += 20;
 	dc.TextOut(hPos, vPos, "Bits 'eaten' :");
 	hPos = 110;
-	dc.TextOut(hPos, vPos, numToString(statHandler->lastSesBitsEaten) );
+	dc.TextOut(hPos, vPos, numToString(statHandler->lastSesBitsEaten).c_str());
 	hPos = 5;
 	vPos += 20;
 	dc.TextOut(hPos, vPos, "Bits disc.(P):");
 	hPos = 110;
-	dc.TextOut(hPos, vPos, numToString(statHandler->lastSesBitsDiscP));
+	dc.TextOut(hPos, vPos, numToString(statHandler->lastSesBitsDiscP).c_str());
 
 	//fitnessBalance
 	vPos -= 40;
@@ -396,28 +397,29 @@ void WndCollineText::updateInfoTraining( int sesNum/*CStringArray* info, UIntGri
 	dc.TextOut(hPos, vPos, "Fitn (env/sys):");
 	hPos += 140;
 	//dc.SetTextAlign(TA_RIGHT );
-	dc.TextOut(hPos, vPos, numToString(statHandler->getEnvFitnIndex()) + "/" + numToString(statHandler->getSysFitnIndex()) );
+	std::string text = numToString(statHandler->getEnvFitnIndex()) + "/" + numToString(statHandler->getSysFitnIndex());
+	dc.TextOut(hPos, vPos, text.c_str() );
 
 	//lastSesFromEnvToBuff
 	vPos += 20;
 	hPos = 150;
 	dc.TextOut(hPos, vPos, "From env to buff:"); 
 	hPos += 140;
-	dc.TextOut(hPos, vPos, numToString(statHandler->lastSesFromEnvToBuff ) );
+	dc.TextOut(hPos, vPos, numToString(statHandler->lastSesFromEnvToBuff ).c_str());
 
 	//lastSesFitnessBuffer0
 	vPos += 20;
 	hPos = 150;
 	dc.TextOut(hPos, vPos, "Fitn.buf_0:"); 
 	hPos += 140;
-	dc.TextOut(hPos, vPos, numToString(statHandler->lastSesFitnessBuffer0_cp ));
+	dc.TextOut(hPos, vPos, numToString(statHandler->lastSesFitnessBuffer0_cp ).c_str());
 
 	//lastSesFitnessBuffer1
 	vPos += 20;
 	hPos = 150;
 	dc.TextOut(hPos, vPos, "Fitn.buf_1:"); 
 	hPos += 140;
-	dc.TextOut(hPos, vPos, numToString(statHandler->lastSesFitnessBuffer1_cp ));
+	dc.TextOut(hPos, vPos, numToString(statHandler->lastSesFitnessBuffer1_cp ).c_str());
 
 	//lastSesMatingBonusBuffer
 	/*vPos += 20;
@@ -431,14 +433,14 @@ void WndCollineText::updateInfoTraining( int sesNum/*CStringArray* info, UIntGri
 	hPos = 355;
 	dc.TextOut(hPos, vPos, "Perf.cat0:"); 
 	hPos += 140;
-	dc.TextOut(hPos, vPos, numToString(floor(statHandler->performance_cat0)) );
+	dc.TextOut(hPos, vPos, numToString(floor(statHandler->performance_cat0)).c_str());
 	
 	//perf_cat1
 	vPos += 20;
 	hPos = 355;
 	dc.TextOut(hPos, vPos, "Perf.cat1:"); 
 	hPos += 140;
-	dc.TextOut(hPos, vPos, numToString(floor(statHandler->performance_cat1)) );
+	dc.TextOut(hPos, vPos, numToString(floor(statHandler->performance_cat1)).c_str());
 
 	//delete info;
 	InvalidateRect(backgroundRect, false);
@@ -456,10 +458,10 @@ void WndCollineText::pressSpaceOrQuit() {
 		exit(0);
 }
 
-CString WndCollineText::numToString(int number) {
+std::string WndCollineText::numToString(int number) {
 	char str[5];
 	_itoa(number, str, 10);
-	CString info = str;
+	std::string info = str;
 	return info;
 }
 

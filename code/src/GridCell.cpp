@@ -61,8 +61,8 @@ int GridCell::getDistance(GridCell* cell) {
 	return distance;
 }
 
-CString GridCell::toString() {
-	CString tPos;
+std::string GridCell::toString() {
+	std::string tPos;
 	char tX[3];
 	char tY[3];
 	_itoa(posX,tX,10);

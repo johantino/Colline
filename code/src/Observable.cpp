@@ -148,12 +148,12 @@ bool Observable::hasOneStateMessage() {
 	return false;
 }
 
-CString Observable::toStringAppBus() {
-	CString info = appearBusFull->toStringBits();
+std::string Observable::toStringAppBus() {
+	std::string info = appearBusFull->toStringBits();
 	return info;
 }
 
-CString Observable::toStringType() {
+std::string Observable::toStringType() {
 	if (type == TYPE_FOUNTAIN)
 		return "Fountain ";
 	else if (type == TYPE_COLLECTOR)
@@ -165,16 +165,16 @@ CString Observable::toStringType() {
 	return "Error";
 }
 
-CString Observable::toStringId() {
-	CString info;
+std::string Observable::toStringId() {
+	std::string info;
 	char strId[7];
 	_itoa(getId(), strId, 10);
 	info = strId;
 	return info;
 }
 
-CString Observable::toStringObservedBy() {
-	CString info;
+std::string Observable::toStringObservedBy() {
+	std::string info;
 	int i;
 	int sizeProc = observersProc->GetCount();
 	int sizeUnproc = observersUnproc->GetCount();
@@ -206,8 +206,8 @@ CString Observable::toStringObservedBy() {
 	return info;
 }
 
-CString Observable::toStringAgentsObserved() {
-	CString info;
+std::string Observable::toStringAgentsObserved() {
+	std::string info;
 	info = "\n| AgentsObserved: ";
 	int numOfObserved = agentsObserved->GetCount();
 	if (numOfObserved == 0)
@@ -265,18 +265,18 @@ void Observable::notifyObservers(CTypedPtrList<CObList, Observable*>* /*CList<Ob
 	delete tempCopy;
 }
 
-CString Observable::toStringAgentSpec() {
-	CString info = "error obs tostring";
+std::string Observable::toStringAgentSpec() {
+	std::string info = "error obs tostring";
 	return info;
 }
 
-CString Observable::toStringTypeSpec() {
-	CString info = "error obs tostring";
+std::string Observable::toStringTypeSpec() {
+	std::string info = "error obs tostring";
 	return info;
 }
 
-CString Observable::toStringStatus() {
-	CString info;
+std::string Observable::toStringStatus() {
+	std::string info;
 	if (getStatus() == ST_OBSERVER) 
 		info = "OBSERVER";
 	else if (getStatus() == ST_PROCESSOR)
@@ -292,9 +292,9 @@ CString Observable::toStringStatus() {
 	return info;
 }
 
-CString Observable::toString() {
+std::string Observable::toString() {
 	//CString info = "error obs tostring";
-	CString info;
+	std::string info;
 	char strId[7];
 	_itoa(id, strId, 10);
 	

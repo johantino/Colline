@@ -35,10 +35,10 @@ public:
 	int getSize();
 	Message* clone(); //returns an exact copy of this 
 	bool getBoolValue(); //when size =1 this message returns value in bool form
-	CString toString(); //full info
-	CString toStringBits(); //returns the total bitstring only
-	CString toStringBits(unsigned int val, unsigned int size); //overloaded , free value. dont really belong to this class
-	CString toStringBits(Message* filter); //overloaded...returns '#' when filter value is 0
+	std::string toString(); //full info
+	std::string toStringBits(); //returns the total bitstring only
+	std::string toStringBits(unsigned int val, unsigned int size); //overloaded , free value. dont really belong to this class
+	std::string toStringBits(Message* filter); //overloaded...returns '#' when filter value is 0
 	bool clear(); //Bad method, pointers should instead point to NULL value ....DELETE method?
 	//bool bitNumOld(unsigned int bNum); //return bit number bNum: 0,1,2...length-1
 	bool bitNum(unsigned int bNum); //return bit number bNum: 0,1,2...length-1

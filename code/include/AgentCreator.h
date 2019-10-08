@@ -23,7 +23,7 @@ class AgentCreator
 public:
 	AgentCreator(Environment* e, StatisticsHandler* sh, SyncManager* sm, Grid* aGrid, IdStamp* iStamp, DecisionCategory* dc);
 	virtual ~AgentCreator();
-	void restorePopulation(CString fname_begin);
+	void restorePopulation(std::string fname_begin);
 	void createFountains();
 	void createCollectors();
 	void createInpoders();

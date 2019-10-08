@@ -18,7 +18,7 @@ public:
 	GridCell(int posX, int posY);
 	virtual ~GridCell();
 	bool isOccupied();
-	CString toString();
+	std::string toString();
 	void placeOccupier(Observable* occ);
 	void freeCell(); //called when agent moves or dies
 	int getPosX();

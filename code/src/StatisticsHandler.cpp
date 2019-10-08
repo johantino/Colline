@@ -36,12 +36,12 @@ StatisticsHandler::StatisticsHandler(bool isNewOrganism, int restoredSesReward, 
 	//gridView = gView;
 	dnaSampleNum = restoredDNAsampleNum; //0
 
-	nextViewFrame = new CUIntArray;
+
 	int totalCells = agentGrid->getHightY() * agentGrid->getWidthX();
 	//int totalCells = gridView->getWidth() * gridView->getHight();
-	nextViewFrame->SetSize(totalCells);
+	nextViewFrame.resize(totalCells);
 	for (int i=0; i<totalCells; i++) {
-		nextViewFrame->SetAt(i, COLOR_GRID);
+		nextViewFrame.at(i) = COLOR_GRID;
 	}
 	//int fileIdVal = (byte)time(NULL); //used to avoid overwriting of files
 	fname_begin = "cdata" + numToString( fileIdVal );
@@ -50,26 +50,26 @@ StatisticsHandler::StatisticsHandler(bool isNewOrganism, int restoredSesReward, 
 	int useThisNumOfOks;
 	//check whether new organism or restoring previously
 	if (isNewOrganism) {
-		file_fitnColline = fopen(fname_begin + FN_FITNCOL, "w" );
-		file_fitnBuff = fopen(fname_begin + FN_FITNBUFF,"w");
-		file_fitnEnv = fopen(fname_begin + FN_FITNENV,"w");
-		file_maters = fopen(fname_begin + FN_MATERS,"w");
-		file_agents = fopen(fname_begin + FN_AGENTS,"w");
-		file_bits_eaten = fopen(fname_begin + FN_BITSEATEN,"w");
-		file_correct_resp = fopen(fname_begin + FN_RESPCORRECT,"w");
-		file_wrong_resp = fopen(fname_begin + FN_RESPWRONG,"w");
-		file_category = fopen(fname_begin + FN_CATEGORY, "w");
+		file_fitnColline = fopen((fname_begin + FN_FITNCOL).c_str(), "w" );
+		file_fitnBuff = fopen((fname_begin + FN_FITNBUFF).c_str(),"w");
+		file_fitnEnv = fopen((fname_begin + FN_FITNENV).c_str(),"w");
+		file_maters = fopen((fname_begin + FN_MATERS).c_str(),"w");
+		file_agents = fopen((fname_begin + FN_AGENTS).c_str(),"w");
+		file_bits_eaten = fopen((fname_begin + FN_BITSEATEN).c_str(),"w");
+		file_correct_resp = fopen((fname_begin + FN_RESPCORRECT).c_str(),"w");
+		file_wrong_resp = fopen((fname_begin + FN_RESPWRONG).c_str(),"w");
+		file_category = fopen((fname_begin + FN_CATEGORY).c_str(), "w");
 		useThisNumOfOks = 0;
 	} else { //append to previously stored data
-		file_fitnColline = fopen(fname_begin + FN_FITNCOL, "a+" );
-		file_fitnBuff = fopen(fname_begin + FN_FITNBUFF,"a+");
-		file_fitnEnv = fopen(fname_begin + FN_FITNENV,"a+");
-		file_maters = fopen(fname_begin + FN_MATERS,"a+");
-		file_agents = fopen(fname_begin + FN_AGENTS,"a+");
-		file_bits_eaten = fopen(fname_begin + FN_BITSEATEN,"a+");
-		file_correct_resp = fopen(fname_begin + FN_RESPCORRECT,"a+");
-		file_wrong_resp = fopen(fname_begin + FN_RESPWRONG,"a+");
-		file_category = fopen(fname_begin + FN_CATEGORY, "a+");
+		file_fitnColline = fopen((fname_begin + FN_FITNCOL).c_str(), "a+" );
+		file_fitnBuff = fopen((fname_begin + FN_FITNBUFF).c_str(),"a+");
+		file_fitnEnv = fopen((fname_begin + FN_FITNENV).c_str(),"a+");
+		file_maters = fopen((fname_begin + FN_MATERS).c_str(),"a+");
+		file_agents = fopen((fname_begin + FN_AGENTS).c_str(),"a+");
+		file_bits_eaten = fopen((fname_begin + FN_BITSEATEN).c_str(),"a+");
+		file_correct_resp = fopen((fname_begin + FN_RESPCORRECT).c_str(),"a+");
+		file_wrong_resp = fopen((fname_begin + FN_RESPWRONG).c_str(),"a+");
+		file_category = fopen((fname_begin + FN_CATEGORY).c_str(), "a+");
 		useThisNumOfOks = DC_NUM_OF_OKS_RESTORING;
 	}
 
@@ -215,17 +215,17 @@ void StatisticsHandler::storePopulation(int cycNum, int sesNum, int matingBuffer
 	Agent* currAgent;
 	Fountain* currFountain;
 	char tab = '	';
-	FILE* agentPopFile = fopen(fname_begin + FN_AGENTPOP + "_" + numToString(sesNum) + FN_EXT, "w");
-	CList<Observable*, Observable*>* allAgents = agentGrid->getNeighbours( agentGrid->getCellAt( agentGrid->getWidthX()/2, agentGrid->getHightY()/2), agentGrid->getWidthX()/2 + 2, true);
-	if (allAgents->GetCount() != numOfAgents) {
+	FILE* agentPopFile = fopen((fname_begin + FN_AGENTPOP + "_" + numToString(sesNum) + FN_EXT).c_str(), "w");
+	auto allAgents = agentGrid->getNeighbours( agentGrid->getCellAt( agentGrid->getWidthX()/2, agentGrid->getHightY()/2), agentGrid->getWidthX()/2 + 2, true);
+	if (allAgents.size() != numOfAgents) {
 		std::cout << "ERROR: storePop, numOfagents error" << std::endl;
-		std::cout << "vec: " << allAgents->GetCount() << std::endl;
+		std::cout << "vec: " << allAgents.size() << std::endl;
 		std::cout << "stat: " << numOfAgents << std::endl;
 		pressSpaceToQuit();
 	}
 	fprintf(agentPopFile, "%d\n", numOfAgents);
-	for (int i=0; i<numOfAgents; i++) {
-		currObs = allAgents->GetAt( allAgents->FindIndex(i) );
+
+	for (auto currObs : allAgents) {
 		fprintf(agentPopFile, "%d%c", currObs->getType(), tab);
 		if (currObs->getType() == TYPE_FOUNTAIN) {
 			currFountain = (Fountain*)currObs;
@@ -262,8 +262,8 @@ void StatisticsHandler::storePopulation(int cycNum, int sesNum, int matingBuffer
 	}
 
 	fclose(agentPopFile);
-	delete allAgents;
-	FILE* organismVarFile = fopen(fname_begin + FN_ORGANISMVAR + "_" + numToString(sesNum) + FN_EXT, "w");
+
+	FILE* organismVarFile = fopen((fname_begin + FN_ORGANISMVAR + "_" + numToString(sesNum) + FN_EXT).c_str(), "w");
 	fprintf(organismVarFile, "%d\n", cycNum );
 	fprintf(organismVarFile, "%d\n", sesNum );
 	fprintf(organismVarFile, "%d\n", fitnessEnvironment);
@@ -323,7 +323,7 @@ void StatisticsHandler::storePopulation(int cycNum, int sesNum, int matingBuffer
 }*/
 
 void StatisticsHandler::writeConstants() {
-	file_constants = fopen(fname_begin + FN_CONSTANTS + numToString(dnaSampleNum) + ".m", "w");
+	file_constants = fopen((fname_begin + FN_CONSTANTS + numToString(dnaSampleNum) + ".m").c_str(), "w");
 	fprintf(file_constants, "%s", "GRIDSIZE = ");
 	fprintf(file_constants, "%d\n", GRIDSIZE);
 	fprintf(file_constants, "%s", "IDEAL_NUM_OF_AGENTS_IN_GRID = ");
@@ -562,15 +562,16 @@ void StatisticsHandler::writeConstants() {
 	fclose(file_constants);
 }
 
-CList<Observable*, Observable*>* StatisticsHandler::pickSample(CList<Observable*, Observable*>* fullList, int sampleSize) {
-	if (sampleSize > fullList->GetCount()) {
+std::list<Observable*> StatisticsHandler::pickSample(std::list<Observable*> fullList, int sampleSize) {
+	if (sampleSize > fullList.size()) {
 		std::cout << "ERROR: pickSample..." << std::endl;
 		pressSpaceToQuit();
 	}
-	CList<Observable*, Observable*>* sample = new CList<Observable*, Observable*>(10);
-	CUIntArray* randIndexList = new CUIntArray();
-	randIndexList->SetSize(sampleSize);
-	int bigListSize = fullList->GetCount();
+	auto sample = std::list<Observable*>(10);
+	
+	auto randIndexList = std::vector<unsigned int>(sampleSize);
+
+	int bigListSize = fullList.size();
 	int loopCheck = 0;
 	int i;
 	bool isTaken;
@@ -579,7 +580,7 @@ CList<Observable*, Observable*>* StatisticsHandler::pickSample(CList<Observable*
 	unsigned int indexInBigList;
 	unsigned int emptyPos = 99999;
 	for (i=0; i<sampleSize; i++) {
-		randIndexList->SetAt(i,emptyPos);
+		randIndexList.at(i) = emptyPos;
 	}
 	//fill randIndexList with sampleSize random indices
 	while (numFilled<sampleSize) {
@@ -587,14 +588,14 @@ CList<Observable*, Observable*>* StatisticsHandler::pickSample(CList<Observable*
 		//check if index is already taken
 		isTaken = false;
 		for (i=0; i<numFilled; i++) {
-			val = randIndexList->GetAt(i);
+			val = randIndexList.at(i);
 			if (val == indexInBigList) {
 				isTaken = true;
 				i=sampleSize;
 			}
 		}
 		if (!isTaken) {
-			randIndexList->SetAt(numFilled, indexInBigList);
+			randIndexList.at(numFilled) = indexInBigList;
 			numFilled++;
 		}
 		loopCheck++;
@@ -607,33 +608,31 @@ CList<Observable*, Observable*>* StatisticsHandler::pickSample(CList<Observable*
 	int bigIndex;
 	//std::cout << "big list size: " << bigListSize << std::endl;
 	for (i=0; i<sampleSize; i++) {
-		bigIndex = randIndexList->GetAt(i);
+		bigIndex = randIndexList.at(i);
 		//std::cout << "now adding index " << bigIndex << std::endl;
 		//pressSpaceOrQuit();
-		sample->AddTail( fullList->GetAt( fullList->FindIndex( bigIndex ) ) );
+		sample.emplace_back(*std::next(fullList.begin(), bigIndex));
 	}
-	delete fullList;
+
 	return sample;
 }
 
 void StatisticsHandler::saveDNAinfo() {
 	//remember collectors!
 	//save inpoder data:
-	CList<Observable*, Observable*>* allCollectors = agentGrid->getCollectors( agentGrid->getCellAt( agentGrid->getWidthX()/2, agentGrid->getHightY()/2), agentGrid->getWidthX()/2 + 1, true);
-	CList<Observable*, Observable*>* sampleCollectors = pickSample(allCollectors, (allCollectors->GetCount() * SAMPLE_PERCENT_AGENTS)/100);
-	if (sampleCollectors->GetCount() > 0)
+	auto allCollectors = agentGrid->getCollectors( agentGrid->getCellAt( agentGrid->getWidthX()/2, agentGrid->getHightY()/2), agentGrid->getWidthX()/2 + 1, true);
+	auto sampleCollectors = pickSample(allCollectors, (allCollectors.size() * SAMPLE_PERCENT_AGENTS)/100);
+	if (sampleCollectors.size() > 0)
 		saveDNAinfo_coll(sampleCollectors);
-	else
-		delete sampleCollectors;
 	
 	//save inpoder data:
-	CList<Observable*, Observable*>* allInpoders = agentGrid->getInpoders( agentGrid->getCellAt( agentGrid->getWidthX()/2, agentGrid->getHightY()/2), agentGrid->getWidthX()/2 + 1, true);
-	CList<Observable*, Observable*>* sampleInpoders = pickSample(allInpoders, (allInpoders->GetCount() * SAMPLE_PERCENT_AGENTS)/100);
+	auto allInpoders = agentGrid->getInpoders( agentGrid->getCellAt( agentGrid->getWidthX()/2, agentGrid->getHightY()/2), agentGrid->getWidthX()/2 + 1, true);
+	auto sampleInpoders = pickSample(allInpoders, (allInpoders.size() * SAMPLE_PERCENT_AGENTS)/100);
 	saveDNAinfo_inp(sampleInpoders);
 	
 	//save effector data:
-	CList<Observable*, Observable*>* allEffectors = agentGrid->getEffectors( agentGrid->getCellAt( agentGrid->getWidthX()/2, agentGrid->getHightY()/2), agentGrid->getWidthX()/2 + 1, true);
-	CList<Observable*, Observable*>* sampleEffectors = pickSample(allEffectors, (allEffectors->GetCount() * SAMPLE_PERCENT_AGENTS)/100);
+	auto allEffectors = agentGrid->getEffectors( agentGrid->getCellAt( agentGrid->getWidthX()/2, agentGrid->getHightY()/2), agentGrid->getWidthX()/2 + 1, true);
+	auto sampleEffectors = pickSample(allEffectors, (allEffectors.size() * SAMPLE_PERCENT_AGENTS)/100);
 	saveDNAinfo_eff(sampleEffectors);
 	dnaSampleNum++;
 }
@@ -655,15 +654,14 @@ void StatisticsHandler::saveDNAinfo_common(FILE* f, Observable* currAgent) {
 	fprintf(f, "%d%c", (int)agent->isReadyToMate(), tab );
 	fprintf(f, "%d%c", agent->getNumOfOffspring(), tab );
 }
-void StatisticsHandler::saveDNAinfo_coll(CList<Observable*, Observable*>* sample) {
+void StatisticsHandler::saveDNAinfo_coll(std::list<Observable*> sample) {
 	Observable* currAgent;
 	Collector* colPointer;
 	char header[] = "%apMat	apBusSm	dna_a	dna_i	fitn	apIdM	bidP	maxAge	age	rtm	#off	apIdB	apPiB";
 	char tab = '	';
-	FILE* file_col = fopen(fname_begin + FN_DNACOLL + "_"  + numToString(dnaSampleNum) + FN_EXT, "w" );
+	FILE* file_col = fopen((fname_begin + FN_DNACOLL + "_"  + numToString(dnaSampleNum) + FN_EXT).c_str(), "w" );
 	fprintf(file_col, "%s\n", header);
-	for (int i=0; i<sample->GetCount(); i++) {
-		currAgent = sample->GetAt( sample->FindIndex(i) );
+	for (const auto &currAgent : sample) {
 		colPointer = (Collector*)currAgent;
 		saveDNAinfo_common(file_col, currAgent);
 		fprintf(file_col, "%d%c", colPointer->getAppBusIdeal()->getValue(), tab );
@@ -673,19 +671,17 @@ void StatisticsHandler::saveDNAinfo_coll(CList<Observable*, Observable*>* sample
 		fprintf(file_col, "%d\n", colPointer->getCollMax()  );
 	}
 	fclose(file_col);
-	delete sample;
 }
 
-void StatisticsHandler::saveDNAinfo_inp(CList<Observable*, Observable*>* sample) {
+void StatisticsHandler::saveDNAinfo_inp(std::list<Observable*> sample) {
 	// (common) | appIdealBus | appPickiBus | smallFood | food
 	Observable* currAgent;
 	Inpoder* inpPointer;
 	char header[] = "%apMat	apBusSm	dna_a	dna_i	fitn	apIdM	bidP	maxAge	age	rtm	#off	apIdB	apPiB	smFo	food";
 	char tab = '	';
-	FILE* file_inp = fopen(fname_begin + FN_DNAINP + "_"  + numToString(dnaSampleNum) + FN_EXT, "w" );
+	FILE* file_inp = fopen((fname_begin + FN_DNAINP + "_"  + numToString(dnaSampleNum) + FN_EXT).c_str(), "w" );
 	fprintf(file_inp, "%s\n", header);
-	for (int i=0; i<sample->GetCount(); i++) {
-		currAgent = sample->GetAt( sample->FindIndex(i) );
+	for (const auto &currAgent : sample) {
 		inpPointer = (Inpoder*)currAgent;
 		saveDNAinfo_common(file_inp, currAgent);
 		fprintf(file_inp, "%d%c", inpPointer->getAppBusIdeal()->getValue(), tab );
@@ -694,19 +690,18 @@ void StatisticsHandler::saveDNAinfo_inp(CList<Observable*, Observable*>* sample)
 		fprintf(file_inp, "%d\n", inpPointer->getFood()->getValue() );
 	}
 	fclose(file_inp);
-	delete sample;
 }
 
-void StatisticsHandler::saveDNAinfo_eff(CList<Observable*, Observable*>* sample) {
+void StatisticsHandler::saveDNAinfo_eff(std::list<Observable*> sample) {
 	// (common) | appIdealBus1 | appPickiBus1 | appIdealBus2 | appPickiBus2 | typeOfProc | numOfObs1 | numOfObs2
 	Observable* currAgent;
 	Effector* effPointer;
 	char header[] = "%apMat	aoBusSm	dna_a	dna_i	fitn	apIdM	bidP	maxAge	age	rtm	#off	apIdB1	apPiB1	apIdB2	apPiB2	ToP	#Obs1	#Obs2";
 	char tab = '	';
-	FILE* file_eff = fopen(fname_begin + FN_DNAEFF + "_"  + numToString(dnaSampleNum) + FN_EXT, "w" );
+	FILE* file_eff = fopen((fname_begin + FN_DNAEFF + "_"  + numToString(dnaSampleNum) + FN_EXT).c_str(), "w" );
 	fprintf(file_eff, "%s\n", header);
-	for (int i=0; i<sample->GetCount(); i++) {
-		currAgent = sample->GetAt( sample->FindIndex(i) );
+
+	for (const auto &currAgent : sample) {
 		effPointer = (Effector*)currAgent;
 		saveDNAinfo_common(file_eff, currAgent);
 		fprintf(file_eff, "%d%c", effPointer->getAppIdealBus1()->getValue(), tab);
@@ -718,7 +713,6 @@ void StatisticsHandler::saveDNAinfo_eff(CList<Observable*, Observable*>* sample)
 		fprintf(file_eff, "%d\n", effPointer->getNumOfObsAgents2());
 	}
 	fclose(file_eff);
-	delete sample;
 }
 
 int StatisticsHandler::getLastCorrectRespOnLevel(int row) {
@@ -1128,10 +1122,10 @@ void StatisticsHandler::pressSpaceToQuit() {
 	exit(0);
 }
 
-CString StatisticsHandler::numToString(int number) {
+std::string StatisticsHandler::numToString(int number) {
 	char str[5];
 	_itoa(number, str, 10);
-	CString info = str;
+	std::string info = str;
 	return info;
 }
 
@@ -1314,11 +1308,11 @@ void StatisticsHandler::changeGridView(Observable* changingAgent, GridCell* oldP
 		std::cout << "ERROR: changeGridView ..2" << std::endl;
 		pressSpaceToQuit();
 	}
-	nextViewFrame->SetAt(newIndex, color);
+	nextViewFrame.at(newIndex) = color;
 	if (newIndex != oldIndex) {
 		//clear old position
 		int backColor = COLOR_GRID;
-		nextViewFrame->SetAt(oldIndex, backColor);
+		nextViewFrame.at(oldIndex) = backColor;
 	}
 }
 

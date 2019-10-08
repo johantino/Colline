@@ -200,22 +200,22 @@ const int CAT_BOTH = -32; //both
 const int CAT_NONE = -33;
 
 //Filenames
-const char FN_EXT[20] = ".out";
-const char FN_CONSTANTS[20] = "_constants";
-const char FN_FITNCOL[25] = "_inf_fitn_colline.out";
-const char FN_FITNBUFF[25] = "_inf_fitn_buff.out";
-const char FN_FITNENV[25] = "_inf_fitn_env.out";
-const char FN_MATERS[25] = "_inf_maters.out";
-const char FN_AGENTS[25] = "_inf_agents.out";
-const char FN_BITSEATEN[25] = "_inf_bits_eaten.out";
-const char FN_RESPCORRECT[25] = "_inf_resp_correct.out";
-const char FN_RESPWRONG[25] = "_inf_resp_wrong.out";
-const char FN_CATEGORY[25] = "_inf_category.out";
-const char FN_DNACOLL[20] = "_dna_coll";
-const char FN_DNAINP[20] = "_dna_inp";
-const char FN_DNAEFF[20] = "_dna_eff";
-const char FN_AGENTPOP[20] = "_rest_agent_pop";
-const char FN_ORGANISMVAR[25] = "_rest_organism_var";
+constexpr auto FN_EXT = ".out";
+constexpr auto FN_CONSTANTS = "_constants";
+constexpr auto FN_FITNCOL = "_inf_fitn_colline.out";
+constexpr auto FN_FITNBUFF = "_inf_fitn_buff.out";
+constexpr auto FN_FITNENV = "_inf_fitn_env.out";
+constexpr auto FN_MATERS = "_inf_maters.out";
+constexpr auto FN_AGENTS = "_inf_agents.out";
+constexpr auto FN_BITSEATEN = "_inf_bits_eaten.out";
+constexpr auto FN_RESPCORRECT = "_inf_resp_correct.out";
+constexpr auto FN_RESPWRONG = "_inf_resp_wrong.out";
+constexpr auto FN_CATEGORY = "_inf_category.out";
+constexpr auto FN_DNACOLL = "_dna_coll";
+constexpr auto FN_DNAINP = "_dna_inp";
+constexpr auto FN_DNAEFF = "_dna_eff";
+constexpr auto FN_AGENTPOP = "_rest_agent_pop";
+constexpr auto FN_ORGANISMVAR = "_rest_organism_var";
 
 //colors
 const UINT COLOR_GRID = RGB(245,245,245); //light grey

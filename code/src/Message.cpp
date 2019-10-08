@@ -233,8 +233,8 @@ Message* Message::takeRightMost(unsigned int numOfBits) {
 }
 
 
-CString Message::toString() {
-	CString text;
+std::string Message::toString() {
+	std::string text;
 	
 	char tszStr[2];
 	char tvaStr[20];
@@ -254,15 +254,15 @@ CString Message::toString() {
 	return text;
 }
 
-CString Message::toStringBits() {
+std::string Message::toStringBits() {
 	if (getSize() == 0)
 		return "(empty)";
 	char bStr[MAX_MSIZE];
 	int bitv = getValue();
 	_itoa(bitv,bStr,2);
-	CString bCStr = bStr;
-	int numOfMissZeros = getSize() - bCStr.GetLength();
-	CString zeros;
+	std::string bCStr = bStr;
+	int numOfMissZeros = getSize() - bCStr.size();
+	std::string zeros;
 	while (numOfMissZeros>0) {
 		zeros += "0";
 		numOfMissZeros--;
@@ -271,8 +271,8 @@ CString Message::toStringBits() {
 	return bCStr;
 }
 
-CString Message::toStringBits(Message* filter) {
-	CString info;
+std::string Message::toStringBits(Message* filter) {
+	std::string info;
 	if (getSize() != filter->getSize()) {
 		std::cout << "ERROR: toStringBits size error!" << std::endl;
 		pressSpaceToQuit();
@@ -293,12 +293,12 @@ CString Message::toStringBits(Message* filter) {
 
 
 
-CString Message::toStringBits(unsigned int bitv, unsigned int size) {
+std::string Message::toStringBits(unsigned int bitv, unsigned int size) {
 	char bStr[MAX_MSIZE];
 	_itoa(bitv,bStr,2);
-	CString bCStr = bStr;
-	int numOfMissZeros = size - bCStr.GetLength();
-	CString zeros;
+	std::string bCStr = bStr;
+	int numOfMissZeros = size - bCStr.size();
+	std::string zeros;
 	while (numOfMissZeros>0) {
 		zeros += "0";
 		numOfMissZeros--;

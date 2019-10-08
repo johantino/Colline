@@ -62,10 +62,10 @@ public:
 	//char getStatus();
 	void pressSpaceToQuit();
 	void pressSpaceOrQuit();
-	virtual CString toString();
-	CString toStringType();
-	CString toStringId();
-	CString toStringAgentsObserved();
+	virtual std::string toString();
+	std::string toStringType();
+	std::string toStringId();
+	std::string toStringAgentsObserved();
 	virtual int clearNumOfObservedAgents(); //returns num of agents cleared
 	//void setStatusForNextDrifter();
 	//void setStatusForNextObserver();
@@ -78,15 +78,15 @@ public:
 protected:
 	Environment* env;
 	IdStamp* collineStamp; //a stamp object exist (shared) to give id numbers to new born agents
-	CString toStringObservedBy(); //gives the id's of the agents observing this one
+	std::string toStringObservedBy(); //gives the id's of the agents observing this one
 	void setStatus(int status);
-	CString toStringAppBus(); //DELETE
+	std::string toStringAppBus(); //DELETE
 	
-	virtual CString toStringAgentSpec();
-	virtual CString toStringTypeSpec();
+	virtual std::string toStringAgentSpec();
+	virtual std::string toStringTypeSpec();
 
 private:
-	CString toStringStatus();
+	std::string toStringStatus();
 	void clearPotentialSellers();
 	void clearPotentialBuyers();
 	int id;

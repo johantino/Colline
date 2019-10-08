@@ -101,8 +101,8 @@ void Collector::TESTsetBoughtMessage(Message* m) {
 }
 
 
-CString Collector::toStringObserveBusApp() {
-	CString info;
+std::string Collector::toStringObserveBusApp() {
+	std::string info;
 	info = "\n| Observes: ";
 	info += appIdealBus->toStringBits(appPickiBus);
 	if (observesForProcessed)
@@ -112,8 +112,8 @@ CString Collector::toStringObserveBusApp() {
 	return info;
 }
 
-CString Collector::toStringTypeSpec() {
-	CString info;
+std::string Collector::toStringTypeSpec() {
+	std::string info;
 	char strMax[6];
 	_itoa(collectMax, strMax, 10);
 	char strThr[6];
@@ -156,7 +156,7 @@ bool Collector::makeBusinessConnections( ) {
 		std::cout <<"numOfObs: " << numOfObsAgents << std::endl;
 		pressSpaceToQuit();
 	}
-	if (getCurrentNeighbours()->GetCount() == 0)
+	if (getCurrentNeighbours().empty())
 		return false; //no neighbours
 	CList<Observable*,Observable*>* legalBus = removeNonLegalBusiness(); //Removes non-observers and collectors from list
 	//std::cout << "num of legal bus subj: " << legalBus.size() << std::endl;
@@ -201,12 +201,10 @@ bool Collector::checkForNewObserveConnection(Agent* newObserverInNB) {
 }
 
 CList<Observable*,Observable*>* Collector::removeNonLegalBusiness() {
-	CList<Observable*,Observable*>* currNB = getCurrentNeighbours();
+	auto currNB = getCurrentNeighbours();
 	CList<Observable*,Observable*>* legalBusiness = new CList<Observable*,Observable*>;
-	Observable* subj;
-	int nbSize = currNB->GetCount();
-	for (int i=0; i<nbSize; i++) {
-		subj = currNB->GetAt( currNB->FindIndex(i));
+
+	for (auto subj : currNB) {
 		if (!subj->isCollector()) { //Remove collectors
 			if (subj->getStatusAndActive() == ST_OBSERVER) 
 				legalBusiness->AddTail(subj);

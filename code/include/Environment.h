@@ -24,7 +24,7 @@ public:
 	Message* getNextMessageFromPipe(int pipeNum); // When method is called the next mess is returned (is empty if none in pipe)
 	int readFitness();
 	bool getLoadedCategory();
-	CString getLastMessageString();
+	std::string getLastMessageString();
 	void fillPipesZerosOrOnes(bool loadCat); //when all pipes are empty this method is envoked
 	bool fillPipesZerosOrOnes(int sessNum, int perf_cat0, int perf_cat1);
 	void fillPipesAOrNotA(int sessNum);
@@ -47,7 +47,7 @@ private:
 	int lastSessCat0;
 	int lastSessCat1;
 	bool loadedCategory; //the answer (category) for the message(s) transmitted most recently
-	CString lastMessageString;
+	std::string lastMessageString;
 	Message* EMPTYMESS;
 	CList<Message*, Message*>* nextMessInPipes;
 	//StatisticsHandler* statHandler;

@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "Colline.h"
 #include <afxwin.h> //for wnd and bitmap
-#include <afxcoll.h> //used for CUINTArray
 //#include <conio.h> //for press key
 #include "WndColline.h"
 #include "WndCollineText.h"
@@ -62,10 +61,10 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 		srand( 12 ); //(unsigned)time( NULL ) );
 		bool isNewOrganism = true;
 		int fileIdVal = 137;
-		CString filename_beg = "cdata137";
-		CString fn_ses = "3739";
-		CString filename_pop = filename_beg + FN_AGENTPOP + "_" + fn_ses + FN_EXT;
-		CString filename_org = filename_beg + FN_ORGANISMVAR + "_" + fn_ses + FN_EXT;
+		std::string filename_beg = "cdata137";
+		std::string fn_ses = "3739";
+		std::string filename_pop = filename_beg + FN_AGENTPOP + "_" + fn_ses + FN_EXT;
+		std::string filename_org = filename_beg + FN_ORGANISMVAR + "_" + fn_ses + FN_EXT;
 		//std::cout << "pop: " << (LPCTSTR)filename_pop << std::endl;
 		//std::cout << "org: " << (LPCTSTR)filename_org << std::endl;
 		//while (true) {}
@@ -84,9 +83,9 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 		} else {
 			int restoredCycNum, restoredSesNum, restoredFitnEnv, restoredMatingBuff, restoredFitnBuff0, restoredFitnBuff1, restoredSesRew, restoredDnaSamNum, restoredIdCounterVal;
 			FILE* organismVarFile;
-			if ((organismVarFile = fopen( filename_org, "r")) == NULL) {
+			if ((organismVarFile = fopen( filename_org.c_str(), "r")) == NULL) {
 				std::cout << "ERROR: couldn't open file, file not found" << std::endl;
-				std::cout << (LPCTSTR)filename_org << std::endl;
+				std::cout << filename_org << std::endl;
 				exit(0); //pressSpaceToQuit();
 			} else
 				std::cout << "Loading variables..." << std::endl;

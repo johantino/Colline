@@ -38,7 +38,7 @@ AgentCreator::~AgentCreator()
 
 }
 
-void AgentCreator::restorePopulation( CString fname_agentpop ) {
+void AgentCreator::restorePopulation(std::string fname_agentpop ) {
 	Message* appMat;
 	Message* appBusSmall;
 	Message* dnaAgPart;
@@ -48,9 +48,9 @@ void AgentCreator::restorePopulation( CString fname_agentpop ) {
 	int initFitn, currFitn, age, matStat, lastPrSess;
 	bool matStatBool;
 	FILE* agentPopFile;
-	if ((agentPopFile = fopen(fname_agentpop, "r")) == NULL) {
+	if ((agentPopFile = fopen(fname_agentpop.c_str(), "r")) == NULL) {
 		std::cout << "ERROR: couldn't open restore population, file not found" << std::endl;
-		std::cout << (LPCTSTR)fname_agentpop << std::endl;
+		std::cout << fname_agentpop << std::endl;
 		pressSpaceToQuit();
 	} else
 		std::cout << "Restoring population..." << std::endl;

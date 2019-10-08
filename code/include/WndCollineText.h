@@ -23,7 +23,7 @@ public:
 
 private:
 	void pressSpaceOrQuit();
-	CString numToString(int number);
+	std::string numToString(int number);
 	int getAverage(int fValue, int agents);
 	//void drawLabels();
 	StatisticsHandler* statHandler;

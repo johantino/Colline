@@ -21,7 +21,7 @@
 #include "GridCell.h"
 //#include <bitset>
 //using std::bitset;
-
+#include <list>
 
 //namespace jf_w3_agent {
 
@@ -77,9 +77,9 @@ public:
 	unsigned int getMaxLifeTime();
 	int getNumOfOffspring();
 	int getLastProcessedInSession();
-	CList<Observable*, Observable*>* getCurrentNeighbours();
+	std::list<Observable*> getCurrentNeighbours();
 	//virtual Message* getAppearBus();
-	virtual CString toStringObserveBusApp();
+	virtual std::string toStringObserveBusApp();
 	void setBidPoF(int percent);
 	void setStatusForNextDrifter();
 	void setStatusForNextObserver();
@@ -92,7 +92,7 @@ public:
 	//bool isLocatedInNoMatingArea(); //returns true if agent position is within 'no-mating' area
 	int pickRandomPosition(int numOfPositions); //proteceted
 	//CString toString();
-	CString toStringAgentSpec();
+	std::string toStringAgentSpec();
 	void setHasBeenActiveInSession(bool value) {hasBeenActiveInSession = value;}
 	bool getHasBeenActiveInSession(){return hasBeenActiveInSession;}
 	int getRandNumBetwZeroAnd(int maximum);
@@ -141,15 +141,15 @@ private:
 	//vector<Observable*> sortBidders();
 	void increaseProducedOffspring();
 	//bool neighbourhoodTooOvercrowdedForMating(); //returns true if nb is too occupied for mating to occur
-	CString toStringAge();
-	CList<Agent*, Agent*>* getMatingSubjects(); //returns the agents that are ready-to-mate and match app. criteria (mutually)	
+	std::string toStringAge();
+	std::list<Agent*> getMatingSubjects(); //returns the agents that are ready-to-mate and match app. criteria (mutually)	
 	//virtual vector<Agent*> removeNonSimilarAgents(vector<Observable*> nb);
 	Observable* findHighestBidder();
 	virtual bool makeBusinessConnections(); //returns true if enough matches found
 	void takeRandomStep();
 	Message* getOffspringPart(int repPosStart, int repPosStop, int partPosStart, int partPosStop, Message* thisDNA, Message* mateDNA);
 	virtual Observable* makeBaby(Environment*,IdStamp*,Grid*, GridCell*, SyncManager*, int fitn, Message* appMat, Message* appBus, Message* agent, Message* type);
-	void setCurrentNeighbours( CList<Observable*, Observable*>* nb);
+	void setCurrentNeighbours( std::list<Observable*> nb);
 	void informNeighbourhoodOfNewcomer(); //informs agents in neighbourhood of this possible new agent to observe. NB! Introduces risk for 'frozen agentpatterns'
 	
 	//------------Attributs:---------------
@@ -160,7 +160,7 @@ private:
 	bool readyToMate;
 	//int numOfObsAgents; //counter that keeps track on # of observed agents
 
-	CList<Observable*, Observable*>* currentNeighbours;
+	std::list<Observable*> currentNeighbours;
 
 	int matingThrStart; //specifies when to start mating, value based on initialfitness, uses C_MATSTART
 	int matingThrStop;  //          -       stop  -     , -                              -    C_MATSTOP

@@ -122,7 +122,7 @@ Agent::Agent(Environment* e,
 		pressSpaceToQuit();
 	}
 	//------- initialize various values: -------
-	currentNeighbours = new CList<Observable*, Observable*>(10);
+	currentNeighbours = std::list<Observable*>(10);
 	//bidders = new CList<Observable*, Observable*>(10);  	
 //	numOfObsAgents = 0;
 	numOfOffspring = 0; //use restored
@@ -146,7 +146,7 @@ Agent::~Agent()
 	delete appearMat;
 	delete appIdealMat;
 	//delete appPickiMat;
-	delete currentNeighbours;
+
 	//delete bidders;	
 	/*agentPosition->freeCell();
 	env->receiveFitness( fitness );
@@ -160,7 +160,7 @@ unsigned int Agent::getMaxLifeTime() {
 	return maxLifeTime;
 }
 
-CList<Observable*, Observable*>* Agent::getCurrentNeighbours() {
+std::list<Observable*> Agent::getCurrentNeighbours() {
 	if (syncMan->getCycleNum() != lastNeighboursUpdateCycle) {
 		std::cout << "ERROR: neighbours not updated" << std::endl;
 		pressSpaceToQuit();
@@ -172,9 +172,8 @@ int Agent::getLastProcessedInSession() {
 	return lastProcessedInSess;
 }
 
-void Agent::setCurrentNeighbours( CList<Observable*, Observable*>* nb) {
+void Agent::setCurrentNeighbours( std::list<Observable*> nb) {
 	lastNeighboursUpdateCycle = syncMan->getCycleNum();
-	delete currentNeighbours;
 	currentNeighbours = nb;
 }
 
@@ -200,7 +199,7 @@ int Agent::getInitialFitness() {
 	agentStatus = status;
 }*/
 
-CString Agent::toStringObserveBusApp() {
+std::string Agent::toStringObserveBusApp() {
 	return "\n Error agent bus app \n";
 }
 
@@ -276,8 +275,8 @@ void Agent::setFitness(int value) {
 	statHandler->adjustFitnessColline(change, getType());
 }
 
-CString Agent::toStringAge() {
-	CString info;
+std::string Agent::toStringAge() {
+	std::string info;
 	char strAge[6];
 	_itoa(age, strAge, 10);
 	char strMax[6];
@@ -289,8 +288,8 @@ CString Agent::toStringAge() {
 	return info;
 }	
 
-CString Agent::toStringAgentSpec() {
-	CString info;
+std::string Agent::toStringAgentSpec() {
+	std::string info;
 	char strFit[6];
 	_itoa(fitness, strFit, 10);
 	char strVicm[2];
@@ -470,13 +469,12 @@ void Agent::informNeighbourhoodOfNewcomer() {
 			std::cout << "agent " << getStatus() << " status before inform: " << std::endl;
 			std::cout << toString() << std::endl;
 		}*/
-		CList<Observable*, Observable*>* currObsInNb = collineGrid->getObservers(agentPosition, vicinityBus, false);
+		auto currObsInNb = collineGrid->getObservers(agentPosition, vicinityBus, false);
 		Agent* subj;
 		int numOfNewConn = 0;
-		int listSize = currObsInNb->GetCount();
-		for (int i=0; i<listSize; i++) {
-			subj = (Agent*)currObsInNb->GetAt(currObsInNb->FindIndex(i));
-			if (subj->checkForNewObserveConnection(this))
+		for (auto subj : currObsInNb) {
+			// TODO fix ugly and unchecked cast
+			if (((Agent*)subj)->checkForNewObserveConnection(this))
 				numOfNewConn++;
 		}
 		/*if ((getId() == 317) || (getId()==1696) ) {
@@ -657,8 +655,8 @@ void Agent::drift() {
 	if (readyToMate) {
 		setCurrentNeighbours( collineGrid->getNeighbours(agentPosition, vicinityMat, false) );
 		//allNeighbours = collineGrid->getNeighbours(agentPosition, vicinityMat);
-		CList<Agent*, Agent*>* matingSubjects = getMatingSubjects();
-		if (matingSubjects->GetCount() == 0 ) { //|| neighbourhoodTooOvercrowdedForMating()) {
+		auto matingSubjects = getMatingSubjects();
+		if (matingSubjects.empty() ) { //|| neighbourhoodTooOvercrowdedForMating()) {
 			takeRandomStep();
 			/*int numOfSteps=1;
 			while (isLocatedInNoMatingArea() && numOfSteps<7) { //take up to 7 steps to try to get out of reward area
@@ -669,7 +667,7 @@ void Agent::drift() {
 			return;
 		}
 		else {
-			Agent* mate = matingSubjects->GetAt( matingSubjects->FindIndex( 0 )); //pickRandomPosition(matingSubjects->GetCount())));
+			Agent* mate = matingSubjects.front(); //pickRandomPosition(matingSubjects->GetCount())));
 			//std::cout << "Parent1: " << toString() << std::endl;
 			//std::cout << "Parent2: " << mate->toString() << std::endl;
 			bool isRoomForOffspring = true;
@@ -695,7 +693,7 @@ void Agent::drift() {
 			//mate->setStatusForNextDrifter();// do.
 			return;
 		}
-		delete matingSubjects; //consider method 'updateMatingSubj' like for neighbours
+		//delete matingSubjects; //consider method 'updateMatingSubj' like for neighbours
 	} else {
 		//std::cout << "INFO: " << toStringType() << getId() << " drift, about to get neighbors....";
 		//CList<Observable*, Observable*>* allNeighbours = collineGrid->getNeighbours(agentPosition, getVicinityBus() );
@@ -1088,7 +1086,7 @@ void Agent::takeRandomStep() {
 }
 
 
-CList<Agent*, Agent*>*  Agent::getMatingSubjects() {
+std::list<Agent*> Agent::getMatingSubjects() {
 	int i;
 	//TEST search nb for this agent
 	/*int thisId = getId();
@@ -1098,15 +1096,16 @@ CList<Agent*, Agent*>*  Agent::getMatingSubjects() {
 		}
 	}*/
 	CTypedPtrList<CObList, Agent*>  agents; //CList<Agent*, Agent*>* agents = new CList<Agent*, Agent*>(5);
-	CList<Agent*, Agent*>* matingSubjects = new CList<Agent*, Agent*>;
+	auto matingSubjects = std::list<Agent*>();
 	Message* candAppearMat;
 	Message* candAppIdealMat;
 	//Message* candAppPickiMat;
 	//find similar type and status=drifter:
 	Observable* tempObservable;
 	int thisType = getType();
-	for (i=0; i<currentNeighbours->GetCount(); i++) {
-		tempObservable = currentNeighbours->GetAt( currentNeighbours->FindIndex(i));
+	for (auto tempObservable : currentNeighbours) {
+	//for (i=0; i<currentNeighbours->GetCount(); i++) {
+		//tempObservable = currentNeighbours->GetAt( currentNeighbours->FindIndex(i));
 		if (tempObservable->getType() == thisType) {
 			if (tempObservable->getStatusAndActive() == ST_DRIFTER)
 				agents.AddTail((Agent*)tempObservable);
@@ -1125,9 +1124,9 @@ CList<Agent*, Agent*>*  Agent::getMatingSubjects() {
 				if ( candAppIdealMat->getValue() == appearMat->getValue()) {						//if (candAppIdealMat->isEqualTo(appearMat, candAppPickiMat) )  //this appearance accepted by candidate
 					if (candidate->getFitness() > maxCandidateFitness) {
 						maxCandidateFitness = candidate->getFitness();
-						matingSubjects->AddHead( candidate ); //Healthiest agent is at first position
+						matingSubjects.emplace_front( candidate ); //Healthiest agent is at first position
 					} else
-						matingSubjects->AddTail( candidate );
+						matingSubjects.emplace_back( candidate );
 				}
 			}
 		}

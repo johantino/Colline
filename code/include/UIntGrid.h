@@ -9,8 +9,9 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include <afxcoll.h> //used for CUINTArray
 //#include "UIntGridRow.h"
+
+#include <vector>
 
 //supports both 1d and 2d grids
 class UIntGrid  
@@ -25,24 +26,24 @@ public:
 	//void increaseVal(int row, int column); //add 1 to value in cell
 	unsigned int readValue(int row, int column);
 	void clear(); //sets all elements to 0
-	CString toString();
+	std::string toString();
 	int getHight();
 	int getWidth();
 	int getTotalSum();
 	int getColumnSum(int col);
 	int getRowSum(int row);
-	CString toStringValue(int row, int column);
-	CString toStringColumnSum(int column);
-	CString toStringRowSum(int row);
-	CString toStringTotalSum();
-	CString toStringColumnSum1000(int column);
-	CString toStringRowSum1000(int row);
-	CString toStringTotalSum1000();
+	std::string toStringValue(int row, int column);
+	std::string toStringColumnSum(int column);
+	std::string toStringRowSum(int row);
+	std::string toStringTotalSum();
+	std::string toStringColumnSum1000(int column);
+	std::string toStringRowSum1000(int row);
+	std::string toStringTotalSum1000();
 
 	UIntGrid* clone();
 
 private:
-	CString toStringRow(int row);
+	std::string toStringRow(int row);
 	int get2dIndex(int row, int column);
 	void testPos(int row, int column);
 	void pressSpaceToQuit();
@@ -51,7 +52,7 @@ private:
 	int width;
 	
 	
-	CUIntArray* gridArray;
+	std::vector<unsigned int> gridArray;
 
 };
 
