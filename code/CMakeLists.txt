@@ -6,9 +6,7 @@ else()
     cmake_policy(VERSION 3.13)
 endif()
 
-project(Colline VERSION 1.0
-                  DESCRIPTION "an open source AI system"
-                  LANGUAGES CXX)
+project(Colline VERSION 1.0 DESCRIPTION "an open source AI system" LANGUAGES CXX)
 
 if(MSVC)
     add_definitions("/W4 /D_CRT_SECURE_NO_WARNINGS /permissive-")
@@ -20,8 +18,10 @@ else()
     add_definitions("-Wall -Wextra -fpermissive")
 endif()
 
-#enable_testing()
-#include(CTest)
+find_package(Catch2 CONFIG REQUIRED)
+
+enable_testing()
+include(CTest)
 
 add_subdirectory(src)
-#add_subdirectory(test)
+add_subdirectory(test)
