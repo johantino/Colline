@@ -1,5 +1,5 @@
 # Colline
-Colline is an open source AI system. The code was originally developed in 2001-2003 has not been touched since then
+Colline is an open source AI system. The code was originally developed in 2001-2003 has not been touched since then.
 
 The last update in the code has been done on Oct 6th 2019, this changes along with the documentation (see folder) should be enough to get us started.
 
@@ -14,6 +14,27 @@ Johan Tino Frederiksen
 
 
 ## Build Instructions
+
+Colline requires a C++ compiler conforming to C++17. It has been tested with
+- Visual Studio 2019
+
+### Windows
+
+Using vcpkg to install dependencies is recommended.
+
+    1. Clone or download the repository
+
+    2. Install dependencies: `vcpkg install catch2`
+
+    3. Navigate into the terminal to /Colline/code/
+
+    4. `md build && cd build`
+
+    5. `cmake ../ -DCMAKE_TOOLCHAIN_FILE=\<path to vcpkg\>/scripts/buildsystems/vcpkg.cmake`
+
+    6. Open in Visual Studio as CMake project.
+
+### Linux
 
     1. Clone or download the repository
 
