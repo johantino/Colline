@@ -8,6 +8,7 @@
 #include "Effector.h"
 #include <iostream>
 #include "Konst.h"
+#include "Utilities.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -209,7 +210,7 @@ void DecisionCategory::setLateResponseRewardPRC() {
 	}
 	if (lateResponseRewardPRC < 99) {
 		std::cout << "ERROR: lateResponseRewardPRC" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 }
 

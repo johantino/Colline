@@ -7,7 +7,7 @@
 #include "Grid.h"
 #include "Konst.h"
 #include <iostream>
-#include <conio.h> //for press key
+#include "Utilities.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -26,7 +26,7 @@ Grid::Grid(int gridHight, int rowWidth)
 	hightY = gridHight;
 	if (widthX != hightY) {
 		std::cout << "ERROR: current imp doesnt support non-square grid" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	GridRow* tempRow;
 	GridCell* tc;
@@ -75,7 +75,7 @@ void Grid::setCellAt(int posX, int posY, GridCell* cell) {
 void Grid::checkPos(int posY) {
 	if (posY >= hightY) {
 		std::cout << "ERROR: row index error!" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 }
 
@@ -269,14 +269,6 @@ CList<GridCell*, GridCell*>* Grid::getFreeCells(GridCell* center, int vicinity) 
 	return freeCells;
 }
 
-void Grid::pressSpaceToQuit() {
-	int ch;
-	std::cout << "press space..." << std::endl;
-	while (ch != ' ') {
-		ch = _getch();
-	}
-	exit(0);
-}
 
 /*void Grid::putBabyAgentAt(GridCell* freePosition) {
 */

@@ -9,7 +9,7 @@
 #include <iostream>
 #include "math.h"
 //#include "StatisticsHandler.h"
-#include <conio.h> //for press key
+//#include <conio.h> //for press key
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -446,17 +446,6 @@ void WndCollineText::updateInfoTraining( int sesNum/*CStringArray* info, UIntGri
 	InvalidateRect(backgroundRect, false);
 }
 
-
-
-void WndCollineText::pressSpaceOrQuit() {
-	int ch;
-	std::cout << "press space or 'q' to quit..." << std::endl;
-	while ((ch != ' ') && (ch != 'q')) {
-		ch = _getch();
-	}
-	if (ch == 'q')
-		exit(0);
-}
 
 std::string WndCollineText::numToString(int number) {
 	char str[5];

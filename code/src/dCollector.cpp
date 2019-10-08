@@ -7,6 +7,7 @@
 #include "dCollector.h"
 #include <iostream>
 #include "Konst.h"
+#include "Utilities.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -40,7 +41,7 @@ Collector::Collector(Environment* e,
 	int msbPos = 0; //DNA position counter
 	if (collectorPart->getSize() != N_DNA_COLL) {
 		std::cout << "ERROR: DNA bit length error collector" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	collectorDNA = collectorPart;
 	appIdealBus = collectorDNA->readRange(msbPos,APPEAR_SIZE_BUS);	msbPos += APPEAR_SIZE_BUS;
@@ -54,7 +55,7 @@ Collector::Collector(Environment* e,
 	//-----test DNA counter:------
 	if (msbPos != N_DNA_COLL) {
 		std::cout << "ERROR: DNA bit count in collector \n" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 
 	//----set variuous attributs:-------------
@@ -154,7 +155,7 @@ bool Collector::makeBusinessConnections( ) {
 	if (numOfObsAgents != 0) {
 		std::cout << "ERROR: in collector makebus" << std::endl;
 		std::cout <<"numOfObs: " << numOfObsAgents << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	if (getCurrentNeighbours().empty())
 		return false; //no neighbours
@@ -186,7 +187,7 @@ bool Collector::makeBusinessConnections( ) {
 bool Collector::checkForNewObserveConnection(Agent* newObserverInNB) {
 	if (agentIsObserved(newObserverInNB)) {
 		std::cout << "error: checkfornewobsconn... newAgent has just been drifter!" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	bool newInNBObserved = false;
 	if (agentPosition->getDistance(newObserverInNB->getPosition()) <= vicinityBus) {//check that agent is within vicinity
@@ -273,7 +274,7 @@ void Collector::observedAgentIsDrifting(Observable* agent){
 	removeFromAgentsObserved(agent);
 	if (numOfObsAgents != getNumOfPotentialSellers()) {
 		std::cout << "ERROR: collector, observedAgent... numOfObsAgents error" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	//only set to drifter if none is obs AND status is not processor: if agent is processor it either waits 
 	//to process this cycle (and will be drifter afterwards) OR it has bought a mess this cycle and process next cycle

@@ -8,6 +8,7 @@
 #include "Inpoder.h"
 #include <iostream>
 #include "Konst.h"
+#include "Utilities.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -40,7 +41,7 @@ Inpoder::Inpoder(Environment* e,
 	int msbPos = 0; //DNA position counter
 	if (inpoderPart->getSize() != N_DNA_INP) {
 		std::cout << "ERROR: DNA bit length error inpoder" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	inpoderDNA = inpoderPart;
 	appIdealBus = inpoderDNA->readRange(msbPos,APPEAR_SIZE_BUS);		msbPos += APPEAR_SIZE_BUS; 
@@ -55,7 +56,7 @@ Inpoder::Inpoder(Environment* e,
 	//----------test DNA counter:-----------------
 	if (msbPos != N_DNA_INP) {
 		std::cout << "ERROR: DNA bit count in inpoder \n" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	//----set various attributs--------
 	//vicinityBus = VICINITY_BUS_INP;
@@ -186,7 +187,7 @@ bool Inpoder::makeBusinessConnections() {
 		std::cout <<"numOfObs: " << numOfObsAgents << std::endl;
 		std::cout << "id=" <<getId() << std::endl;
 		std::cout << toString() << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	if (getCurrentNeighbours().empty())
 		return false; //no neighbours
@@ -226,7 +227,7 @@ bool Inpoder::makeBusinessConnections() {
 bool Inpoder::checkForNewObserveConnection(Agent* newObserverInNB) {
 	if (agentIsObserved(newObserverInNB)) {
 		std::cout << "error: 811 checkfornewobsconn... newAgent has just been drifter!" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	bool newInNBObserved = false;
 	if (agentPosition->getDistance(newObserverInNB->getPosition()) <= vicinityBus) {//check that agent is within vicinity
@@ -284,14 +285,14 @@ void Inpoder::observe(Observable* obj) {
 void Inpoder::observedAgentIsDrifting(Observable* subj) {
 	if ((getStatus() == ST_DRIFTER) || (getStatus() == ST_DEAD)) {
 		std::cout << "info: inpoder " << getId() << " were drifting or dead, " << getStatus() << ", when notified of drifting seller " << subj->getId() << " (ok?)" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 		return;
 	}
 	numOfObsAgents--;
 	removeFromAgentsObserved(subj);
 	if (numOfObsAgents != getNumOfPotentialSellers()) {
 		std::cout << "ERROR: collector, observedAgent... numOfObsAgents error" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	if ((numOfObsAgents == 0) && getStatus() != ST_PROCESSOR) // (if status is processor: dontmove)
 		setStatusForNextDrifter();
@@ -302,7 +303,7 @@ void Inpoder::observedAgentIsDrifting(Observable* subj) {
 void Inpoder::process() {
 	if (getStatus()!=ST_PROCESSOR) {
 		std::cout << "ERROR: inpoder, process 634" << std::endl;
-		pressSpaceOrQuit();
+		Utilities::pressSpaceOrQuit();
 	}
 	lastProcessedInSess = syncMan->getSessionNum();
 	//std::cout << "Inpoder " << getId() << " process..." << std::endl;

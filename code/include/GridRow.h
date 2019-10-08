@@ -21,7 +21,6 @@ public:
 	GridCell* getCellAt(int posX);
 
 private:
-	void pressSpaceToQuit();
 	void checkPos(int pos);
 	CTypedPtrArray<CObArray, GridCell*> row;
 	int size;

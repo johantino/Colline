@@ -35,7 +35,6 @@ public:
 	CList<GridCell*, GridCell*>* getFreeCells(GridCell* center, int vicinity);
 	int getWidthX();
 	int getHightY();
-	void pressSpaceToQuit();
 
 private:
 	GridRow* rowAt(int posY);

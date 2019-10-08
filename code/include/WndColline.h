@@ -22,7 +22,6 @@ public:
 	int getHight();
 	
 private:
-	void pressSpaceOrQuit();
 	StatisticsHandler* statHandler;
 	
 	int gridWidth;

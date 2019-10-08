@@ -6,7 +6,7 @@
 #include "Colline.h"
 #include "UIntGrid.h"
 #include <iostream>
-#include <conio.h> //for press key
+#include "Utilities.h"
 #include "math.h"
 
 #ifdef _DEBUG
@@ -30,7 +30,7 @@ UIntGrid::UIntGrid(int h, int w)
 	int arrayLength = hight*width;
 	if (arrayLength == 0) {
 		std::cout << "ERROR: UintGrid constructor" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 
 	gridArray.resize(arrayLength);
@@ -261,22 +261,13 @@ void UIntGrid::testPos(int row, int column) {
 		std::cout << "hight = " << hight << std::endl;
 		std::cout << "width = " << width << std::endl;
 		std::cout << "tried to read row " << row <<", column " << column << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	if (column<0 || column > (width-1)) {
 		std::cout << "ERROR: uintgrid, testPos error 2" << std::endl;
 		std::cout << "hight = " << hight << std::endl;
 		std::cout << "width = " << width << std::endl;
 		std::cout << "tried to read row " << row <<", column " << column << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
-}
-
-void UIntGrid::pressSpaceToQuit() {
-	int ch;
-	std::cout << "press space..." << std::endl;
-	while (ch != ' ') {
-		ch = _getch();
-	}
-	exit(0);
 }
