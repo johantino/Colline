@@ -8,6 +8,7 @@
 #include "Agent.h"
 #include <iostream>
 #include "Konst.h"
+#include "Utilities.h"
 
 
 #ifdef _DEBUG
@@ -57,7 +58,7 @@ Agent::Agent(Environment* e,
 	initialFitness = initFitn;
 	if (age == 0 && initialFitness != currFitn) {
 		std::cout << "ERROR: newborn agents must have fitness=initialFitness" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	fitness = 0;
 	setFitness( currFitn);
@@ -65,7 +66,7 @@ Agent::Agent(Environment* e,
 	int msbPos = 0;
 	if (agentPart->getSize() != N_DNA_AG) {
 		std::cout << "ERROR: DNA bit length error agent" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	//------------- set DNA values:----------------
 	agentDNA = agentPart;
@@ -80,7 +81,7 @@ Agent::Agent(Environment* e,
 		vicinityBus = b_vicBus+VIC_ADD_EFF; //5 or 6
 	} else {
 		std::cout <<"ERROR: agent constr vicinityBus" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	//unsigned int b_maxLT = agentDNA->readValue(msbPos,1);	msbPos += 1;
 	maxLifeTime = statHandler->AGENT_LIFETIME_MAX;//200 + 100*b_maxLT;							//FACTOR = 4 (2)
@@ -103,7 +104,7 @@ Agent::Agent(Environment* e,
 
 	if (msbPos != N_DNA_AG) {
 		std::cout << "ERROR: DNA bit count in Agent \n" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 
 	//----set variuous attributs:-------------
@@ -119,7 +120,7 @@ Agent::Agent(Environment* e,
 		minBusinessFitness = initFitn * MIN_BUS_FITN_EFF_PRC/100;
 	else {
 		std::cout << "ERROR: agent const minbusfitn" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	//------- initialize various values: -------
 	currentNeighbours = std::list<Observable*>(10);
@@ -163,7 +164,7 @@ unsigned int Agent::getMaxLifeTime() {
 std::list<Observable*> Agent::getCurrentNeighbours() {
 	if (syncMan->getCycleNum() != lastNeighboursUpdateCycle) {
 		std::cout << "ERROR: neighbours not updated" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	return currentNeighbours;
 }
@@ -236,7 +237,7 @@ void Agent::makeBidUpdate(Observable* seller) {
 void Agent::makeBidNoUpdate(Observable* seller) {
 	if (getType() != TYPE_EFFECTOR) {
 		std::cout << "ERROR: makebidnoupdate" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	/*if (lastBidUpdateInCycle != syncMan->getCycleNum()) {
 		std::cout << "info: makeBidNoUpdate, " << std::endl;
@@ -365,7 +366,7 @@ void Agent::observe(Observable* obj) {
 	//Not interested in: Collectors
 
 	std::cout << "ERROR.Agent: Observe must be overloaded in derived classes!" << std::endl;
-	pressSpaceToQuit();
+	Utilities::pressSpaceToQuit();
 }
 
 bool Agent::updateAge() {
@@ -380,12 +381,12 @@ bool Agent::updateAge() {
 //collectors and inpoders use this method, effectors use derived method
 void Agent::turnFocusTo(Observable* seller) {
 	std::cout << "ERROR: turnFocus to must be overloaded in derived classes!" << std::endl;
-	pressSpaceToQuit();
+	Utilities::pressSpaceToQuit();
 }
 
 int Agent::auctionWon(Observable* seller, Message* bMess) {
 	std::cout << "ERROR: auctionwon must be overloaded in derived classes!" << std::endl;
-	pressSpaceToQuit();
+	Utilities::pressSpaceToQuit();
 	return 0;
 }
 
@@ -448,7 +449,7 @@ void Agent::addToBidders(Observable* bidder) {
 		bidders.AddTail(bidder);
 	if (bidders.GetCount() != numOfBidders+1) {
 		std::cout << "ERROR: addToBidders...";
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	//bidders.AddTail(bidder);
 	//bidders.push_back((Agent*)bidder);
@@ -456,7 +457,7 @@ void Agent::addToBidders(Observable* bidder) {
 
 bool Agent::hasOneStateMessage() {
 	std::cout << "ERROR: agent hasOne state mess.." << std::endl;
-	pressSpaceToQuit();
+	Utilities::pressSpaceToQuit();
 	return false;
 }
 
@@ -497,13 +498,13 @@ void Agent::setStatusForNextObserver() {
 	}*/
 	if (lastStatusUpdateInCycle == syncMan->getCycleNum()) {
 		std::cout << "ERROR: status already updated in this cycle, loop problem? [observer]" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	if (getStatus() == ST_DRIFTER)
 		statHandler->adjustDrifters(-1, getType());
 	else {
 		std::cout << "ERROR: set to observer" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	statHandler->adjustObservers( 1, getType() );
 	setStatus( ST_OBSERVER ); //agentStatus = ST_OBSERVER;
@@ -520,11 +521,11 @@ void Agent::setStatusForNextProcessor() {
 	}*/
 	if (lastStatusUpdateInCycle == syncMan->getCycleNum()) {
 		std::cout << "ERROR: status already updated in this cycle, loop problem? [processor]" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	if (getStatus() != ST_OBSERVER) {
 		std::cout << "ERROR: agent, type " << getType() <<", id=" << getId() << ", set status processor: prev status must be observer, was in fact " << getStatus() << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	statHandler->adjustObservers(-1, getType() );
 	statHandler->adjustProcessors(1, getType() );
@@ -543,7 +544,7 @@ void Agent::setStatusForNextDrifter() {
 	}*/
 	if (lastStatusUpdateInCycle == syncMan->getCycleNum()) {
 		std::cout << "ERROR: status already updated in this cycle, loop problem? [drifter]" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	lastStatusUpdateInCycle = syncMan->getCycleNum();
 	//std::cout << "DEBUG: agent " << getId() << " are drifter next cycle" << std::endl;
@@ -556,7 +557,7 @@ void Agent::setStatusForNextDrifter() {
 		statHandler->adjustProcessors(-1, getType() );
 	else {
 		std::cout << "ERROR: set to drifter" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	if (getStatus() == ST_OBSERVER || getStatus() == ST_PROCESSOR) { //if not obs: bus conn is already empty
 		deleteBusinessConnections();
@@ -575,7 +576,7 @@ void Agent::setStatusForNextDead() {
 		
 	if (getStatus() == ST_DEAD) {
 		std::cout << "ERROR: setStatusFor....agent already dead! " << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	statHandler->updateStatAgentDies(this);
 	agentPosition->freeCell();
@@ -608,7 +609,7 @@ void Agent::testIfReadyToMate() {
 	if (readyToMate) { //Agent is drifter and readyToMate, test if stop
 		if (getStatus() != ST_DRIFTER) {
 			std::cout << "ERROR.agent: MATER: testifreadytomate, agent should be drifter!" << std::endl;
-			pressSpaceToQuit();
+			Utilities::pressSpaceToQuit();
 		}
 		if ((fitness <= matingThrStop) || (numOfOffspring>=MAX_NUM_OFFSPRING)) {
 			readyToMate = false;
@@ -617,7 +618,7 @@ void Agent::testIfReadyToMate() {
 	} else { //is not-ready-to-mate, test fitness
 		if (getStatus() != ST_PROCESSOR) {
 			std::cout << "ERROR.agent: NON-mater: testifreadytomate, agent type " << getType() << " should be processor!" << std::endl;
-			pressSpaceToQuit();
+			Utilities::pressSpaceToQuit();
 		}
 		if (fitness >= matingThrStart) {
 			readyToMate = true;
@@ -631,14 +632,14 @@ void Agent::testIfReadyToMate() {
 //Note: processing and selling must be atomic events to prevent that an agent wins two auctions
 void Agent::process() {
 	std::cout << "ERROR: process must be overloaded in derived classes!" << std::endl;
-	pressSpaceToQuit();
+	Utilities::pressSpaceToQuit();
 
 }
 
 void Agent::drift() {
 	if (getNumOfPotentialSellers() != 0 || getNumOfPotentialBuyers() != 0) {
 		std::cout << "ERROR: agent drift(); agent are observing other agents or are observed by others" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	if (getStatusAndActive() == ST_FINISHED_THIS_CYCLE) {
 		return; //happens when agents mate (parent 'picked up' for mating is also drifter)
@@ -773,13 +774,13 @@ Message* Agent::getAgentDNA() {
 
 Message* Agent::getTypeDNA() {
 	std::cout << "ERROR: getTypeDNA must be overloaded in derived classes!" << std::endl;
-	pressSpaceToQuit();
+	Utilities::pressSpaceToQuit();
 	return (new Message(0,0));
 }
 
 int Agent::getNumOfTypeDNAbits() {
 	std::cout << "ERROR: getNumOfTypeDNA must be overloaded in derived classes!" << std::endl;
-	pressSpaceToQuit();
+	Utilities::pressSpaceToQuit();
 	return -1;
 }
 
@@ -884,7 +885,7 @@ void Agent::increaseProducedOffspring() {
 
 Observable* Agent::makeBaby(Environment* e, IdStamp* cStamp, Grid* collineGrid, GridCell* babyPosition, SyncManager* syncMan, int offspringFitness, Message* offspringAppMat, Message* offspringAppBusSmall, Message* offspringDNA_AG, Message* offspringDNA_TYPE) {
 	std::cout << " ERROR: agent, makebaby" << std::endl;
-	pressSpaceToQuit();
+	Utilities::pressSpaceToQuit();
 	return new Observable();
 }
 
@@ -912,7 +913,7 @@ Message* Agent::getOffspringPart(int repPosStart, int repPosStop, int partPosSta
 
 bool Agent::makeBusinessConnections() {
 	std::cout << "ERROR: makeBusinesscon must be overloaded in derived classes!" << std::endl;
-	pressSpaceToQuit();
+	Utilities::pressSpaceToQuit();
 	return false;
 }
 
@@ -935,7 +936,7 @@ int Agent::getOffspringFitness() {
 		percentage = C_PRC_TO_OFF_VERY_LOW;
 	else {
 		std::cout << "ERROR: getOff fitness" << std::endl;
-		pressSpaceOrQuit();
+		Utilities::pressSpaceOrQuit();
 	}
 	if (fitness > ((C_AGENT_HEALTHY_PRC*initialFitness)/100))
 		percentage += C_PRC_TO_OFF_BOOST; //if parent is 'boosted' begin by making strong offspring
@@ -988,7 +989,7 @@ int Agent::getOffspringFitness() {
 
 /*Message* Agent::getAppearBus() {
 	std::cout << "ERROR: getAppearBus must be overloaded in derived classes!" << std::endl;
-	pressSpaceToQuit();
+	Utilities::pressSpaceToQuit();
 	return (new Message());
 }*/
 
@@ -1005,7 +1006,7 @@ int Agent::pickRandomPosition(int numOfPositions) {
 
 	if (numOfPositions == 0) {
 		std::cout << "ERROR: pickRandom can't pick from zero!" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	if (numOfPositions == 1)
 		return 0;
@@ -1142,7 +1143,7 @@ Observable* Agent::findHighestBidder() { //the bidder can be an agent or a decis
 	int numOfBids = bidders.GetCount(); // bidders.size();
 	if (numOfBids == 0) {
 		std::cout << "ERROR: findhighestbidder assumes bidders!" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	Observable* maxBidder = bidders.GetAt( bidders.FindIndex(0) );
 	//Gentlemen agreement: Effectors have a 'gentlemen' agreement among each other: if a lower bidding effector have _one_ mess, it wins
@@ -1201,7 +1202,7 @@ int Agent::sellState(bool state) {
 			numOfBuyers = MAX_STATE_BUYERS_COL;
 	} else {
 		std::cout << "ERROR: sellstate" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	int payment;
 	//std::cout << "INFO: (sellstate) numOfBuyers: " << numOfBuyers << std::endl;
@@ -1264,7 +1265,7 @@ CList<Observable*, Observable*>* Agent::shuffleAgentList(CList<Observable*, Obse
 	//test that shuffle is ok:
 	if (listToBeShuffled->GetCount() != listSize) {
 		std::cout << "ERROR: shuffle list" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	/*if (listSize<26) {
 		std::cout << "after shuffling: " << std::endl;
@@ -1286,7 +1287,7 @@ int Agent::getRandNumBetwZeroAnd(int maximum) {
 		randomNum = ( ((double)rand()) / ((double)RAND_MAX)  ) *maximum;
 	if (randomNum<0) {
 		std::cout << "ERROR: getRandomNum" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	if (randomNum>maximum)
 		randomNum=maximum; //happens when rand() = RAND_MAX

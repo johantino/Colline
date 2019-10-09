@@ -7,7 +7,7 @@
 #include "AgentCreator.h"
 #include "Konst.h"
 #include <iostream>
-#include <conio.h> //for press key
+#include "Utilities.h"
 #include "Fountain.h"
 #include "dCollector.h"
 #include "Inpoder.h"
@@ -51,7 +51,7 @@ void AgentCreator::restorePopulation(std::string fname_agentpop ) {
 	if ((agentPopFile = fopen(fname_agentpop.c_str(), "r")) == NULL) {
 		std::cout << "ERROR: couldn't open restore population, file not found" << std::endl;
 		std::cout << fname_agentpop << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	} else
 		std::cout << "Restoring population..." << std::endl;
 	fseek( agentPopFile, 0, SEEK_SET);
@@ -90,7 +90,7 @@ void AgentCreator::restorePopulation(std::string fname_agentpop ) {
 				matStatBool = true;
 			else {
 				std::cout << "Error: rest pop. mating state" << std::endl;
-				pressSpaceToQuit();
+				Utilities::pressSpaceToQuit();
 			}
 			fscanf(agentPopFile,"%d", &lastPrSess);
 			appMat = new Message(appMat_val, APPEAR_SIZE_MAT);
@@ -119,7 +119,7 @@ void AgentCreator::restorePopulation(std::string fname_agentpop ) {
 			//delete dnaTypePart;
 		} else {
 			std::cout << "ERROR: reading file in rest.pop." << std::endl;
-			pressSpaceToQuit();
+			Utilities::pressSpaceToQuit();
 		}
 	}
 	fclose(agentPopFile);
@@ -267,7 +267,7 @@ void AgentCreator::createFountains() {
 					founApp_LR_val = 3;
 				} else {
 					std::cout << "ERROR: agentCreator rotate fountain groups" << std::endl;
-					pressSpaceToQuit();
+					Utilities::pressSpaceToQuit();
 				} //end point to center (purpose: agents can learn to propragate (grow) towards center)
 				founApp_add = 11;
 			} else if (xPlace==1 && yPlace==1) {//center position
@@ -306,7 +306,7 @@ void AgentCreator::createFountains() {
 					founApp_LR_val = 1;
 				} else {
 					std::cout << "ERROR: agentCreator rotate fountain groups" << std::endl;
-					pressSpaceToQuit();
+					Utilities::pressSpaceToQuit();
 				} //end point to center (purpose: agents can learn to propragate (grow) towards center)
 
 				founApp_add = 5;
@@ -467,25 +467,6 @@ void AgentCreator::createEffectors() {
 	delete freeCells;
 }
 
-void AgentCreator::pressSpaceToQuit() {
-	int ch;
-	std::cout << "press space..." << std::endl;
-	while (ch != ' ') {
-		ch = _getch();
-	}
-	exit(0);
-}
-
-void AgentCreator::pressSpaceOrQuit() {
-	int ch;
-	std::cout << "press space or 'q' to quit..." << std::endl;
-	while ((ch != ' ') && (ch != 'q')) {
-		ch = _getch();
-	}
-	if (ch == 'q')
-		exit(0);
-}
-
 
 int AgentCreator::getRandNumBetwZeroAnd(int maximum) {
 	int randomNum;
@@ -495,7 +476,7 @@ int AgentCreator::getRandNumBetwZeroAnd(int maximum) {
 		randomNum = ( ((double)rand()) / ((double)RAND_MAX)  ) *maximum;
 	if (randomNum<0) {
 		std::cout << "ERROR: getRandomNum" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	if (randomNum>maximum)
 		randomNum=maximum; //happens when rand() = RAND_MAX

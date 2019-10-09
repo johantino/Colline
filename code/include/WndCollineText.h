@@ -22,7 +22,6 @@ public:
 	void updateInfoVarStat();
 
 private:
-	void pressSpaceOrQuit();
 	std::string numToString(int number);
 	int getAverage(int fValue, int agents);
 	//void drawLabels();

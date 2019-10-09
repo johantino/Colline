@@ -10,8 +10,9 @@
 #include "Fountain.h"
 #include <iostream>
 #include "UIntGrid.h"
-#include <conio.h> //for press key
+#include <conio.h>
 #include "Konst.h"
+#include "Utilities.h"
 //#include "math.h"
 //using namespace jf_w3_agent;
 
@@ -85,7 +86,7 @@ void SyncManager::addAgentToList(Observable* newbornAgent) {
 	POSITION pos = idTags_currentAgents->Find( deadAgentId);
 	if (pos==NULL) {
 		std::cout << "ERROR: removeIdTag, id not in list" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	idTags_currentAgents->RemoveAt( pos );
 }*/
@@ -94,7 +95,7 @@ void SyncManager::removeAgentFromList(Observable* deadAgent) {
 	POSITION pos = list_currentAgents->Find( deadAgent);
 	if (pos==NULL) {
 		std::cout << "ERROR: removeIdTag, agent not in list" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	list_currentAgents->RemoveAt( pos );
 }
@@ -150,7 +151,7 @@ void SyncManager::run() {
 	std::cout << "num of drifters: " << nextDrifters->GetCount() << std::endl;
 	nextStopSession = sessionNum+1;
 	std::cout << " num of agents total: " << statHandler->getNumOfAgents() << std::endl;
-	pressSpaceOrQuit();
+	Utilities::pressSpaceOrQuit();
 	while (statHandler->getNumOfAgents() > NUM_OF_FOUNTAINS) {
 		prepareForNextCycle();
 		if (isLoadingFountains1st || isLoadingFountains2nd || isLoadingFountains3rd) 
@@ -163,7 +164,7 @@ void SyncManager::run() {
 	}
 	std::cout << "All living agents are dead! ..." << std::endl;
 	//statHandler->closeFiles();
-	pressSpaceToQuit();
+	Utilities::pressSpaceToQuit();
 
 }
 
@@ -246,7 +247,7 @@ void SyncManager::prepareForNextSession() {
 		std::cout << "ERROR: idTag_list and numOfAgents mismatch!" << std::endl;
 		std::cout << "list_currentAgents size: " << list_currentAgents->GetCount() << std::endl;
 		std::cout << "numOfAgents:     " << statHandler->getNumOfAgents() << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	} //end test numOfAgents
 	statHandler->saveSessionData();
 	DecisionCategory* decCat= (DecisionCategory*)decCategory; //Not nice style
@@ -276,7 +277,7 @@ void SyncManager::prepareForNextSession() {
 				exit(0);
 			} else {
 				std::cout << "ERROR: menu choice" << std::endl;
-				pressSpaceToQuit();
+				Utilities::pressSpaceToQuit();
 			}
 		}
 	}
@@ -301,7 +302,7 @@ void SyncManager::loadFountains() {
 	//std::cout << "DEBUG: loading fountains..."<< std::endl;
 	if (isLoadingFountains1st + isLoadingFountains2nd + isLoadingFountains3rd > 1) {
 		std::cout << "ERROR: 1st,2nd or 3rd fountain inflow can not overlap!" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	int loadingSlot;
 	if (isLoadingFountains1st)
@@ -312,11 +313,11 @@ void SyncManager::loadFountains() {
 		loadingSlot = cycleNum - loadingBeginCycle3rd;
 	else {
 		std::cout << "ERROR: loadFountains" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	if (loadingSlot < 0 || loadingSlot > (LOADING_TIME-1)) {
 		std::cout << "ERROR: loadingSlot error" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	Fountain* currentFountain;
 	for (int fNum=0; fNum < NUM_OF_FOUNTAINS; fNum++) {
@@ -398,25 +399,6 @@ void SyncManager::deleteDeadAgents() {
 
 void SyncManager::addFountain(Observable* f) {
 	fountains->AddTail(f);
-}
-
-void SyncManager::pressSpaceToQuit() {
-	int ch;
-	std::cout << "press space..." << std::endl;
-	while (ch != ' ') {
-		ch = _getch();
-	}
-	quit();
-}
-
-void SyncManager::pressSpaceOrQuit() {
-	int ch = 0;
-	std::cout << "press space or 'q' to quit..." << std::endl;
-	while ((ch != ' ') && (ch != 'q')) {
-		ch = _getch();
-	}
-	if (ch == 'q')
-		quit();
 }
 
 int SyncManager::press12345SaveOrQuit() {
@@ -913,13 +895,6 @@ void SyncManager::adjustParameters() {
 	}
 }
 
-void SyncManager::pressSpaceWait() {
-	int ch;
-	std::cout << "press space..." << std::endl;
-	while (ch != ' ') {
-		ch = _getch();
-	}
-}
 void SyncManager::quit() {
 	statHandler->closeFiles();
 	//stopSystem = true;

@@ -47,9 +47,6 @@ public:
 
 private:
 	void quit();
-	void pressSpaceToQuit();
-	void pressSpaceWait();
-	void pressSpaceOrQuit();
 	int press12345SaveOrQuit();
 	void adjustParameters();
 

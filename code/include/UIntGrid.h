@@ -46,7 +46,6 @@ private:
 	std::string toStringRow(int row);
 	int get2dIndex(int row, int column);
 	void testPos(int row, int column);
-	void pressSpaceToQuit();
 	bool isOneDim; //true if the hight is equal to one
 	int hight;
 	int width;

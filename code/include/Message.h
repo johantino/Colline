@@ -62,8 +62,6 @@ public:
 	void flipBit(int bNum); //move to private
 
 private:
-	void pressSpaceToQuit();
-	void pressSpaceOrQuit();
 	void changeValuesTo(Message* m); //change _this_ to equal 'm'
 	int makeValueFitSize(int val, int sz); //this function dumps leftmost bits
 	//The message bitstring is specified by:
