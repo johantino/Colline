@@ -18,26 +18,24 @@ static char THIS_FILE[]=__FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-GridRow::GridRow(int sz)
+GridRow::GridRow(int sz) :
+	row(sz, nullptr)
 {
 	size = sz;
-	row.SetSize(sz,0);
 }
 
 GridRow::~GridRow()
 {
-
 }
-
 
 void GridRow::setCellAt(int pos, GridCell* c) {
 	checkPos(pos);
-	row.SetAt(pos,c);
+	row.at(pos) = c;
 }
 
 GridCell* GridRow::getCellAt(int pos) {
 	checkPos(pos);
-	GridCell* cell = row.ElementAt(pos);
+	GridCell* cell = row.at(pos);
 	return cell;
 }
 

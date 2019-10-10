@@ -854,14 +854,13 @@ bool Agent::produceOffspring(Agent* mate) {
 	//std::cout << "Ofspring DNA ag  : " << (LPCTSTR)offspringDNA_AG->toStringBits() << std::endl;
 	//std::cout << "Ofspring DNA type: " << (LPCTSTR)offspringDNA_TYPE->toStringBits() << std::endl;
 	//std::cout << "INFO: number of bits mutated in offspring: " << numMut << " (" << addMutation << ")" << std::endl;
-	CList<GridCell*, GridCell*>* freeCells = collineGrid->getFreeCells(agentPosition, vicinityMat);
-	if (freeCells->GetCount() == 0) { //FIX move this test up before calc of offspringDNA
+	auto freeCells = collineGrid->getFreeCells(agentPosition, vicinityMat);
+	if (freeCells.empty()) { //FIX move this test up before calc of offspringDNA
 		//std::cout << "WARNING: Grid over-crowded, no room for new agents! (agent try to move)" << std::endl;
 		/*env->receiveFitness( getOffspringFitness() );
 		statHandler->adjustFitnessEnvironment( getOffspringFitness() );
 		env->receiveFitness( mate->getOffspringFitness() );
 		statHandler->adjustFitnessEnvironment( mate->getOffspringFitness() );*/
-		delete freeCells;
 		return false;
 	} else {
 		Observable* baby;
@@ -869,11 +868,10 @@ bool Agent::produceOffspring(Agent* mate) {
 		offspringFitness += getOffspringFitness(); //(subtract fitness from parent)
 		offspringFitness += mate->getOffspringFitness();
 		//std::cout << " (offspring fitness: " << offspringFitness << ")" << std::endl;
-		GridCell* babyPosition = freeCells->GetAt( freeCells->FindIndex( pickRandomPosition(freeCells->GetCount()) ));
+		auto babyPosition = *std::next(freeCells.begin(), pickRandomPosition(freeCells.size()) );
 		baby = makeBaby(env,collineStamp, collineGrid, babyPosition, syncMan, offspringFitness, offspringAppMat, offspringAppBusSmall, offspringDNA_AG, offspringDNA_TYPE);
 		increaseProducedOffspring();
 		mate->increaseProducedOffspring();
-		delete freeCells;
 		return true;
 	}
 	return true;

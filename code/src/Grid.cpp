@@ -19,9 +19,9 @@ static char THIS_FILE[]=__FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-Grid::Grid(int gridHight, int rowWidth)
+Grid::Grid(int gridHight, int rowWidth) :
+	grid(gridHight, nullptr)
 {
-	grid.SetSize(gridHight,0);
 	widthX = rowWidth;
 	hightY = gridHight;
 	if (widthX != hightY) {
@@ -57,7 +57,7 @@ Grid::~Grid()
 }
 
 void Grid::setRowAt(int pos, GridRow* row) {
-	grid.SetAt(pos, row);
+	grid.at(pos) = row;
 }
 
 GridCell* Grid::getCellAt(int posX, int posY) {
@@ -80,7 +80,7 @@ void Grid::checkPos(int posY) {
 }
 
 GridRow* Grid::rowAt(int posY) {
-	GridRow* row = grid.ElementAt(posY);
+	GridRow* row = grid.at(posY);
 	return row;
 }
 
@@ -235,17 +235,14 @@ int Grid::getNumOfNeighbours(GridCell* center, int vicinity, bool countCenterAge
 
 
 
-CList<GridCell*, GridCell*>* Grid::getFreeCells(GridCell* center, int vicinity) {
-	CList<GridCell*, GridCell*>* freeCells = new CList<GridCell*, GridCell*>(10);
-	int minX, minY, maxX, maxY;
-	GridCell* tempCell;
-	//vector<GridCell*> freeCells;
+std::list<GridCell*> Grid::getFreeCells(GridCell* center, int vicinity) {
+	auto freeCells = std::list<GridCell*>();
 	int centerX = center->getPosX();
 	int centerY = center->getPosY();
-	minX = centerX - vicinity;
-	minY = centerY - vicinity;
-	maxX = centerX + vicinity;
-	maxY = centerY + vicinity;
+	int minX = centerX - vicinity;
+	int minY = centerY - vicinity;
+	int maxX = centerX + vicinity;
+	int maxY = centerY + vicinity;
 	if (minX < 0)
 		minX = 0;
 	if (minY < 0)
@@ -260,9 +257,9 @@ CList<GridCell*, GridCell*>* Grid::getFreeCells(GridCell* center, int vicinity) 
 	for (int x=minX; x<=maxX; x++) {
 		for (int y=minY; y<=maxY; y++) {
 			if (x!=centerX || y!=centerY) { //only when both x and y are center, skip
-				tempCell = getCellAt(x,y);
+				auto tempCell = getCellAt(x,y);
 				if (!(tempCell->isOccupied())) 
-					freeCells->AddTail(tempCell);
+					freeCells.emplace_back(tempCell);
 			}
 		}
 	}
