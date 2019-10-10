@@ -25,7 +25,6 @@ public:
 	int getPosY();
 	int getDistance(GridCell* cell); //returns distance to cell 
 	Observable* getOccupier(); //agent or fountain
-	void pressSpaceToQuit();
 
 private:
 	bool occupied;

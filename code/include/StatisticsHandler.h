@@ -191,8 +191,6 @@ private:
 
 	std::string numToString(int number);
 	int getAverage(int fValue, int agents);
-	void pressSpaceToQuit();
-	void pressSpaceOrQuit();
 	bool getCollineAnswer();
 	void writeConstants();
 	void saveDNAinfo_common(FILE* f, Observable* agent);

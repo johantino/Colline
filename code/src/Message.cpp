@@ -7,8 +7,7 @@
 #include "Message.h"
 #include "math.h"
 #include "Konst.h"
-#include <conio.h> //for press key
-//#include "resource.h" //for std::cout
+#include "Utilities.h"
 #include <iostream>
 
 #ifdef _DEBUG
@@ -47,17 +46,17 @@ Message::Message(int val, int sz) //value must always match length in this const
 		std::cout << "ERROR: message construct negative!" << std::endl;
 		std::cout << "value: " << val << std::endl;
 		std::cout << "size : " << sz << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	if (val >= pow(2,sz) ) {
 		std::cout << "ERROR: message size error (value too big for length)" << std::endl; 
 		std::cout << "value: " << val << std::endl;
 		std::cout << "size: " << sz << std::endl;
-		pressSpaceToQuit(); //exit(0);
+		Utilities::pressSpaceToQuit(); //exit(0);
 	}
 	if (sz > MAX_MSIZE) {
 		std::cout << "ERROR: message size too large!" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 
 	size = sz;
@@ -73,7 +72,7 @@ Message::~Message()
 int Message::flipBits(int promilleChance) {
 	if (promilleChance<0 || promilleChance>1000) {
 		std::cout << "ERROR: message flipbits, must be promille" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	int numFlipped = 0;
 	int randVal;
@@ -90,7 +89,7 @@ int Message::flipBits(int promilleChance) {
 void Message::flipBit(int bNum) {
 	if (bNum>= size) {
 		std::cout << "ERROR: flipbit" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	bool isOne = bitNum(bNum);
 	int potens = (size-1) - bNum; //bNum is counted from left
@@ -133,7 +132,7 @@ bool Message::getBoolValue() {
 		bVal = true;
 	else {
 		std::cout << "ERROR: wrong getBoolValue call! " << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	return bVal;
 }
@@ -158,7 +157,7 @@ bool Message::getBoolValue() {
 bool Message::bitNum(unsigned int bNum) {
 	if (bNum >= getSize()) {
 		std::cout << "ERROR: Message, bitnum2 error" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	int tempVal = getValue();
 	int power;
@@ -183,7 +182,7 @@ Message* Message::readLeftMost(int numOfBits) {
 	if (rightShift<0) {
 		rightShift = 0;
 		std::cout << "ERROR: readLeftMost, message too small!" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	newVal = getValue() / pow(2,rightShift); //newVal >> rightShift;	
 	Message* newM = new Message(newVal, numOfBits);
@@ -212,7 +211,7 @@ Message* Message::takeLeftMost(unsigned int numOfBits) {
 	char bitsLeft = getSize() - numOfBits;
 	if ( numOfBits > getSize() ) { //cant use bitsLeft because of unsigned to signed conversion
 		std::cout << "ERROR: takeLeftMost numOfBits less than zero!" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	Message* retMess = readLeftMost(numOfBits);
 	Message* whatsLeft = readRightMost( bitsLeft );
@@ -224,7 +223,7 @@ Message* Message::takeRightMost(unsigned int numOfBits) {
 	char bitsLeft = getSize() - numOfBits;
 	if ( numOfBits > getSize() ) { //cant use bitsLeft because of unsigned to signed conversion
 		std::cout << "ERROR: takeRightMost numOfBits less than zero!" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	Message* retMess = readRightMost(numOfBits);
 	Message* whatsLeft = readLeftMost( bitsLeft );
@@ -275,7 +274,7 @@ std::string Message::toStringBits(Message* filter) {
 	std::string info;
 	if (getSize() != filter->getSize()) {
 		std::cout << "ERROR: toStringBits size error!" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	if (getSize() == 0)
 		return "empty";
@@ -319,7 +318,7 @@ Message* Message::readRange(unsigned int startPos, int numOfBits) {
 		return new Message(0,0);
 	if ((startPos + numOfBits) > getSize()) {
 		std::cout << "ERROR; readRange() position error!" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}		
 	Message* newM;
 	newM = readRightMost(getSize() - startPos);
@@ -371,14 +370,14 @@ bool Message::isEqualTo(Message* compareMess, Message* pickiness) {
 	//temp test (delete later):
 	if ((getValue() < 0) || (compareMess->getValue() < 0)) {
 		std::cout << "ERROR: mess, isEqualTo, value negative" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	//end temp test
 	bool doCare, accepted;
 	int numOfBits = compareMess->getSize();
 	if (numOfBits != getSize() ) {
 		std::cout << "ERROR: isEqualTo length mismatch!" << std::endl;
-		pressSpaceToQuit();
+		Utilities::pressSpaceToQuit();
 	}
 	accepted = true;
 	for (int i=0; i<numOfBits; i++) {
@@ -400,7 +399,7 @@ void Message::addToEnd(Message* tail) {
 		//std::cout << "ERROR: addToEnd do not support big mess (>31 bit)!" << std::endl;
 		//pressSpaceToQuit();
 		std::cout << "WARNING: addToEnd do not support big mess (>31 bit). Message truncated." << std::endl;
-		pressSpaceOrQuit();
+		Utilities::pressSpaceOrQuit();
 		int newTailSize = 31 - size;
 		int newTailValue = valueTail / pow(2, (sizeTail-newTailSize));
 		sizeTail = newTailSize;
@@ -459,23 +458,4 @@ Message* Message::replacePart(unsigned int startPos, unsigned int endPos, Messag
 
 Message* Message::clone() {
 	return new Message(getValue(), getSize() );
-}
-
-void Message::pressSpaceToQuit() {
-	int ch;
-	std::cout << "press space..." << std::endl;
-	while (ch != ' ') {
-		ch = _getch();
-	}
-	exit(0);
-}
-
-void Message::pressSpaceOrQuit() {
-	int ch;
-	std::cout << "press space or 'q' to quit..." << std::endl;
-	while ((ch != ' ') && (ch != 'q')) {
-		ch = _getch();
-	}
-	if (ch == 'q')
-		exit(0);
 }

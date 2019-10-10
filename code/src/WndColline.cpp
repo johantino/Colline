@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "Colline.h"
 #include "WndColline.h"
-#include <conio.h> //for press key
+//#include <conio.h> //for press key
 #include <iostream>
 
 
@@ -71,16 +71,6 @@ void WndColline::paintGrid( /*CUIntArray* gridView*/ /*CByteArray* gridView*/) {
 
 }*/
 
-
-void WndColline::pressSpaceOrQuit() {
-	int ch;
-	std::cout << "press space or 'q' to quit..." << std::endl;
-	while ((ch != ' ') && (ch != 'q')) {
-		ch = _getch();
-	}
-	if (ch == 'q')
-		exit(0);
-}
 
 int WndColline::getWidth() {
 	return gridWidth;

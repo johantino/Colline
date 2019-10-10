@@ -60,8 +60,6 @@ public:
 	bool isCollector();
 	int getType(); //TYPE_FOUNTAIN, TYPE_COLLECTOR, TYPE_INPODER or TYPE_EFFECTOR
 	//char getStatus();
-	void pressSpaceToQuit();
-	void pressSpaceOrQuit();
 	virtual std::string toString();
 	std::string toStringType();
 	std::string toStringId();

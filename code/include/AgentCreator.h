@@ -30,8 +30,6 @@ public:
 	void createEffectors();
 
 private:
-	void pressSpaceToQuit();
-	void pressSpaceOrQuit();
 	int getRandNumBetwZeroAnd(int maximum);
 	Environment* env;
 	StatisticsHandler* statHandler;
