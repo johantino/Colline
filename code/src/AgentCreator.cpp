@@ -341,11 +341,10 @@ void AgentCreator::createCollectors() {
 	Message* appBusSmall;
 	Message* DNA_ag;
 	Message* DNA_type_c;
-	GridCell* position;
 	int loopCheck = 0;
-	CList<GridCell*, GridCell*>* freeCells;
-	freeCells = agentGrid->getFreeCells( center, scanRadius);
-	position = freeCells->GetAt( freeCells->FindIndex( getRandNumBetwZeroAnd( freeCells->GetCount()-1 ) ));
+
+	auto freeCells = agentGrid->getFreeCells( center, scanRadius);
+	auto position = *std::next(freeCells.begin(), getRandNumBetwZeroAnd( freeCells.size() - 1 ) );
 	Collector* coll;
 	int num = 0;
 	for (; num < INIT_NUM_OF_COLL; num++) {
@@ -360,7 +359,7 @@ void AgentCreator::createCollectors() {
 		DNA_ag = new Message(valAg, N_DNA_AG);
 		DNA_type_c = new Message(valType, N_DNA_COLL);
 		while (position->isOccupied() && loopCheck<10000) {
-			position = freeCells->GetAt( freeCells->FindIndex( getRandNumBetwZeroAnd( freeCells->GetCount()-1 ) ));
+			position = *std::next(freeCells.begin(), getRandNumBetwZeroAnd( freeCells.size()-1 ) );
 			loopCheck++;
 		}			
 		coll = new Collector(env, statHandler, stamp, agentGrid, position, syncMan, initFitness, initFitness, 0, false, syncMan->getSessionNum(), appMat, appBusSmall, DNA_ag, DNA_type_c);
@@ -369,7 +368,6 @@ void AgentCreator::createCollectors() {
 		coll->TESTscatterMaxLifeTime( mlChange );
 	}
 	std::cout << num << " collectors created..." << std::endl;
-	delete freeCells;
 }
 
 void AgentCreator::createInpoders() {
@@ -385,11 +383,9 @@ void AgentCreator::createInpoders() {
 	Message* appBusSmall;
 	Message* DNA_ag;
 	Message* DNA_type_i;
-	GridCell* position;
 	int loopCheck = 0;
-	CList<GridCell*, GridCell*>* freeCells;
-	freeCells = agentGrid->getFreeCells( center, scanRadius );
-	position = freeCells->GetAt( freeCells->FindIndex( getRandNumBetwZeroAnd( freeCells->GetCount()-1) ));
+	auto freeCells = agentGrid->getFreeCells( center, scanRadius );
+	auto position = *std::next(freeCells.begin(), getRandNumBetwZeroAnd( freeCells.size()-1) );
 	Inpoder* inp;
 	int num = 0;
 	for (; num < INIT_NUM_OF_INP; num++) {
@@ -404,7 +400,7 @@ void AgentCreator::createInpoders() {
 		DNA_ag = new Message(valAg, N_DNA_AG);
 		DNA_type_i = new Message(valType, N_DNA_INP);
 		while (position->isOccupied() && loopCheck<10000) {
-			position = freeCells->GetAt( freeCells->FindIndex( getRandNumBetwZeroAnd( freeCells->GetCount()-1 ) ));
+			position = *std::next(freeCells.begin(), getRandNumBetwZeroAnd( freeCells.size()-1 ) );
 			loopCheck++;
 		}			
 		inp = new Inpoder(env, statHandler,stamp, agentGrid, position, syncMan, initFitness, initFitness, 0, false, syncMan->getSessionNum(), appMat, appBusSmall, DNA_ag, DNA_type_i);
@@ -413,7 +409,6 @@ void AgentCreator::createInpoders() {
 		inp->TESTscatterMaxLifeTime( mlChange );
 	}
 	std::cout << num << " inpoders created..." << std::endl;
-	delete freeCells;
 }
 
 void AgentCreator::createEffectors() {
@@ -429,12 +424,10 @@ void AgentCreator::createEffectors() {
 	Message* appBusSmall;
 	Message* DNA_ag;
 	Message* DNA_type_e;
-	GridCell* position;
 	int loopCheck = 0;
-	CList<GridCell*, GridCell*>* freeCells;
 
-	freeCells = agentGrid->getFreeCells( center , scanRadius);
-	position = freeCells->GetAt( freeCells->FindIndex( getRandNumBetwZeroAnd( freeCells->GetCount()-1) ));
+	auto freeCells = agentGrid->getFreeCells( center , scanRadius);
+	auto position = *std::next(freeCells.begin(), getRandNumBetwZeroAnd( freeCells.size()-1) );
 	Effector* eff;
 	int num = 0;
 	for (; num<INIT_NUM_OF_EFF; num++) {
@@ -451,7 +444,7 @@ void AgentCreator::createEffectors() {
 		//std::cout << DNA_type_e->toStringBits() << std::endl;
 		//pressSpaceOrQuit();
 		while (position->isOccupied() && loopCheck<10000) {
-			position = freeCells->GetAt( freeCells->FindIndex( getRandNumBetwZeroAnd( freeCells->GetCount()-1) ));
+			position = *std::next(freeCells.begin(), getRandNumBetwZeroAnd( freeCells.size()-1) );
 			loopCheck++;
 		}			
 		eff = new Effector(env, statHandler, stamp, agentGrid, position, syncMan, initFitness, initFitness, 0, false, syncMan->getSessionNum(), appMat, appBusSmall, DNA_ag, DNA_type_e, decCat);
@@ -464,7 +457,6 @@ void AgentCreator::createEffectors() {
 		eff->TESTscatterMaxLifeTime( mlChange );
 	}
 	std::cout << num << " effectors created..." << std::endl;
-	delete freeCells;
 }
 
 

@@ -2,15 +2,11 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_GRIDROW_H__36D36351_3543_42D0_8E40_D9B10CD4C6D1__INCLUDED_)
-#define AFX_GRIDROW_H__36D36351_3543_42D0_8E40_D9B10CD4C6D1__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "GridCell.h"
-#include <afxtempl.h>
+#include <vector>
+
 
 class GridRow : public CObject  
 {
@@ -22,8 +18,6 @@ public:
 
 private:
 	void checkPos(int pos);
-	CTypedPtrArray<CObArray, GridCell*> row;
+	std::vector<GridCell*> row;
 	int size;
 };
-
-#endif // !defined(AFX_GRIDROW_H__36D36351_3543_42D0_8E40_D9B10CD4C6D1__INCLUDED_)
