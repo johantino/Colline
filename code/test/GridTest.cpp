@@ -15,9 +15,10 @@ TEST_CASE("getObservers_001")
 	REQUIRE(grid1.getHightY() == 3);
 
 	GridCell cell1(1,1);
-	Observable observable;
-	cell1.placeOccupier(&observable);
-
+	Observable observable1;
+	cell1.placeOccupier(&observable1);
 	grid1.setCellAt(1, 1, &cell1);
-	auto res1 = grid1.getObservers(&cell1, 0, false);
+
+	auto res1 = grid1.getObservers(&cell1, 1, false);
+	REQUIRE(res1.size() == 0);
 }

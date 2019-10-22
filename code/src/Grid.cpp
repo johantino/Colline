@@ -166,16 +166,16 @@ std::list<Observable*> Grid::getNeighbours(GridCell* center, int vicinity, bool 
 
 //returns observers in neighbourhood, minus fountains
 std::list<Observable*> Grid::getObservers(GridCell* center, int vicinity, bool returnCenterAgent) {
-	auto observersInNB = std::list<Observable*>(10);
-	int minX, minY, maxX, maxY;
+	auto observersInNB = std::list<Observable*>();
+
 	GridCell* tempCell;
 	Observable* tempAgent;
 	int centerX = center->getPosX();
 	int centerY = center->getPosY();
-	minX = centerX - vicinity;
-	minY = centerY - vicinity;
-	maxX = centerX + vicinity;
-	maxY = centerY + vicinity;
+	int minX = centerX - vicinity;
+	int minY = centerY - vicinity;
+	int maxX = centerX + vicinity;
+	int maxY = centerY + vicinity;
 	if (minX < 0)
 		minX = 0;
 	if (minY < 0)

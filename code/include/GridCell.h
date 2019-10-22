@@ -2,14 +2,11 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_GRIDCELL_H__4F44EB84_0974_4BAE_AC22_DDFAEED9D49B__INCLUDED_)
-#define AFX_GRIDCELL_H__4F44EB84_0974_4BAE_AC22_DDFAEED9D49B__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "Observable.h"
+
+#include <string>
 
 class GridCell : public CObject  
 {
@@ -31,8 +28,4 @@ private:
 	Observable* occupier;
 	int posX;
 	int posY;
-
-
 };
-
-#endif // !defined(AFX_GRIDCELL_H__4F44EB84_0974_4BAE_AC22_DDFAEED9D49B__INCLUDED_)
